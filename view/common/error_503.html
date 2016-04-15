@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>503</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<link rel="stylesheet" href="/static/c-s/css/main.css" type="text/css" media="screen, projection" /> <!-- main stylesheet -->
+<link rel="stylesheet" type="text/css" media="all" href="/static/c-s/css/tipsy.css" /> <!-- Tipsy implementation -->
+<!--[if lt IE 9]>
+	<link rel="stylesheet" type="text/css" href="css/ie8.css" />
+<![endif]-->
+
+<script type="text/javascript" src="/static/c-s/scripts/jquery-1.7.2.min.js"></script> <!-- uiToTop implementation -->
+<script type="text/javascript" src="/static/c-s/scripts/custom-scripts.js"></script>
+<script type="text/javascript" src="/static/c-s/scripts/jquery.tipsy.js"></script> <!-- Tipsy -->
+<script type="text/javascript">
+$(document).ready(function(){universalPreloader(); });
+$(window).load(function(){
+	//remove Universal Preloader
+	universalPreloaderRemove();
+	rotate();
+    dogRun();
+	dogTalk();
+	//Tipsy implementation
+	$('.with-tooltip').tipsy({gravity: $.fn.tipsy.autoNS});			   
+});
+</script>
+</head>
+<body>
+
+<!-- Universal preloader -->
+<div id="universal-preloader">
+    <div class="preloader">
+        <img src="/static/c-s/images/universal-preloader.gif" alt="universal-preloader" class="universal-preloader-preloader" />
+    </div>
+</div>
+<!-- Universal preloader -->
+
+<div id="wrapper">
+<!-- 404 graphic -->
+	<div class="graphic"></div>
+<!-- 404 graphic -->
+<!-- Not found text -->
+	<div class="not-found-text">
+    	<h1 class="not-found-text">服务器出小bug了！！！</h1>
+    </div>
+<!-- Not found text -->
+
+<div class="dog-wrapper">
+<!-- dog running -->
+	<div class="dog"></div>
+<!-- dog running -->
+	
+<!-- dog bubble talking -->
+	<div class="dog-bubble"> </div>
+    
+    <!-- The dog bubble rotates these -->
+    <div class="bubble-options">
+    	<p class="dog-bubble">
+        	我嘞个去~
+        </p>
+    	<p class="dog-bubble">
+	        <br />
+        	我都不知道所什么了 ~
+        </p>
+        <p class="dog-bubble">
+        	<br />
+        	不要担心~
+        </p>
+        <p class="dog-bubble">
+        	<br />
+        	我等会就修改这个问题~
+        </p>
+        <p class="dog-bubble">
+        	<br />
+        	又一个循环~
+        </p>
+        <p class="dog-bubble">
+        	<br />
+        	我要继续输出咯~
+        </p>
+        <p class="dog-bubble">
+        	我看到了一只猫~ <br /><img style="margin-top:8px" src="/static/c-s/images/cat.png" alt="cat" />
+        </p>
+    </div>
+    <!-- The dog bubble rotates these -->
+<!-- dog bubble talking -->
+</div>
+
+<!-- planet at the bottom -->
+	<div class="planet"></div>
+<!-- planet at the bottom -->
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>YMAK - BLOG</title>
+
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="ymark">
+		<link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-material-design.css">
+		<link rel="stylesheet" type="text/css" href="/static/m/css/ripples.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/pace.css">
+		<link rel="stylesheet" type="text/css" href="/static/m/css/base.css">
+
+		<!-- Favicons -->
+		<link rel="icon" href="/static/img/favicon.ico">
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+		<script src="/static/js/pace.min.js"></script>
+		<script src="/static/js/jquery-2.1.3.min.js"></script>
+	    <script src="/static/js/bootstrap.min.js"></script>
+	    <script src="/static/m/js/material.min.js"></script>
+	    <script src="/static/m/js/ripples.min.js"></script>
+	    
+	    
+
+	    {% block import %}{% endblock %}
+	</head>
+
+	<body>
+		<script src="/static/m/js/ymark.js"></script>
+		<script src="/static/fun/layer/layer.js"></script>
+		<div class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="javascript:void(0)"><i class="material-icons">YMARK</i></a>
+		    </div>
+		    <div class="navbar-collapse collapse navbar-responsive-collapse">
+		      <ul class="nav navbar-nav">
+		        <li selectMode='article'><a href="/manage/article">ARTICLE</a></li>
+		        <li selectMode='tree'><a href="/manage/tree">TREE</a></li>
+		        <li class="dropdown">
+		          <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown
+		            <b class="caret"></b></a>
+		          <ul class="dropdown-menu">
+		            <li><a href="javascript:void(0)">Action </a></li>
+		            <li><a href="javascript:void(0)">Another action</a></li>
+		            <li><a href="javascript:void(0)">Something else here</a></li>
+		            <li class="divider"></li>
+		            <li class="dropdown-header">Dropdown header</li>
+		            <li><a href="javascript:void(0)">Separated link</a></li>
+		            <li><a href="javascript:void(0)">One more separated link</a></li>
+		          </ul>
+		        </li>
+		      </ul>
+		      <form class="navbar-form navbar-left">
+		        <div class="form-group">
+		          <input type="text" class="form-control col-md-8" placeholder="Search">
+		        </div>
+		      </form>
+		      <ul class="nav navbar-nav navbar-right">
+		        <li><a href="javascript:void(0)">Link</a></li>
+		        <li class="dropdown">
+		          <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown
+		            <b class="caret"></b></a>
+		          <ul class="dropdown-menu">
+		            <li><a href="javascript:void(0)">Action</a></li>
+		            <li><a href="javascript:void(0)">Another action</a></li>
+		            <li><a href="javascript:void(0)">Something else here</a></li>
+		            <li class="divider"></li>
+		            <li><a href="javascript:void(0)">Separated link</a></li>
+		          </ul>
+		        </li>
+		      </ul>
+		    </div>
+		  </div>
+		</div>
+		<p id="msg_error" class="text-warning">Etiam porta sem malesuada magna mollis euismod.</p>
+		<div class="container-fluid body-content">
+		  	{% block content %}{% endblock %}
+		</div>
+		
+		<script type="text/javascript">
+			$(function () {
+			    $.material.init();
+			});
+		</script>
+	</body>
+</html>
