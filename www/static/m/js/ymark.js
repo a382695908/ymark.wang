@@ -102,7 +102,7 @@ jQuery.extend( {
         }
         if(url.indexOf('/') != 0) url = '/'+url;
         var config = {  
-            url     : 'http://'+ window.location.host +'/manage'+ url ,    // 跳转到 action  
+            url     : 'http://'+ window.location.host +'/'+ url ,    // 跳转到 action  
             // async   : true ,            //默认值: true。默认设置下，所有请求均为异步请求。如果需要发送同步请求，请将此选项设置为 false。同步请求将锁住浏览器
             cache   : false,            //默认值: true，dataType 为 script 和 jsonp 时默认为 false。设置为 false 将不缓存此页面。
             // contentType : 'application/x-www-form-urlencoded' , //默认值适合大多数情况。如果你明确地传递了一个 content-type 给 $.ajax() 那么它必定会发送给服务器（即使没有数据要发送）。
