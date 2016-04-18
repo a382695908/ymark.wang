@@ -12,8 +12,8 @@ export default class extends Base {
      * @return {[type]} [description]
      */
     async listAction(){
-        let model_tree = this.model('coursenexus');
-        let list = await model_tree.field(['id,title,pid,deep,remark']).order('id').select();
+        let model_tree = this.model('coursecatalog');
+        let list = await model_tree.field(['id,title,pid,sort,remark']).order('id').select();
         if(!list || list.length <= 0) return this.success({});
         let list_len = list.length;
         /**
@@ -30,7 +30,7 @@ export default class extends Base {
             for(let i=startIndex;i<list_len;i++){
                 item    = list[i];
                 if(item.pid == pid) {
-                    node = {text:item.title ,id:item.id ,pid:item.pid ,deep:item.deep ,remark:item.remark};
+                    node = {text:item.title ,id:item.id ,pid:item.pid ,sort:item.sort ,remark:item.remark};
                     childs = getChilds(i ,item.id);
                     if(childs.length > 0) node.nodes = childs;
                     res.push(node);
@@ -48,7 +48,7 @@ export default class extends Base {
                 pid = k.pid;
                 // users.map( (uv) => {if(k.user_id == uv.id){k.user_name = uv.name; } });
                 if(pid == '0'){
-                    node = {text:k.title ,id:k.id ,pid:pid ,deep:k.deep ,remark:k.remark};
+                    node = {text:k.title ,id:k.id ,pid:pid ,sort:k.sort ,remark:k.remark};
                     childs = getChilds(v ,k.id);
                     if(childs.length > 0) node.nodes = childs; 
                     res.push(node);
@@ -80,7 +80,7 @@ export default class extends Base {
             id      : this.get().id ,
             title   : param.title ,
             pid     : param.pid ,
-            deep    : param.deep ,
+            sort    : param.sort ,
             remark  : param.remark 
         }
         let model_tree = this.model('tree');

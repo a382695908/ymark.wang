@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/static/fun/jsmind/jsmind.draggable.js"></script>
 <style type="text/css">
 	.nav-tabs{margin-bottom: 15px;margin-top: 0px;border-bottom: 0px;}
-	#divstructure{width:100%;min-height: 200px;height: 400px;}
+	#divstructure{width:100%;min-height: 200px;height: 500px;}
 </style>
 {% endblock %}
 
@@ -31,6 +31,8 @@
 		  <li><a href="#divform" data-toggle="tab" class="btn active">表单信息</a></li>
 		  <li><a href="#divstructure" data-toggle="tab" class="btn ">知识结构图</a></li>
 		  <li class="active"><a href="#divcontent" data-toggle="tab" class="btn ">内容</a></li>
+
+		  <li><a href="javascript:;" class="btn " id="btnSaveAll">保存</a></li>
 		</ul>
 		<div id="myTabContent" class="tab-content">
 		  <div class="tab-pane fade " id="divform">
@@ -69,10 +71,11 @@
 			  </fieldset>
 			</form>
 		  </div>
-		  <div class="tab-pane fade" id="divstructure">
+		  <div class="tab-pane fade active in" id="divstructure">
 		  </div>
-		  <div class="tab-pane fade active in" id="divcontent">
-		    <textarea style="display:none;">[TOC]
+		  <div class="tab-pane fade " id="divcontent">
+<textarea style="display:none;">
+[TOC]
 #### Disabled options
 
 - TeX (Based on KaTeX);
@@ -146,6 +149,10 @@
 			if($(this).attr('disabled') == 'disabled') return; 
 			objForm.resetForm(3);
 		});	
+
+		$('#btnSaveAll').click(function () {
+			console.log(objEditor.getHTML());
+		})
 	}
 
 	/**
@@ -160,6 +167,7 @@
             "h1", "h2", "h3", "h4", "h5", "h6", "|", 
             "list-ul", "list-ol","link", "image", "||", "watch", "fullscreen", "preview", "testIcon"]
 	        },
+	        saveHTMLToTextarea 	: true ,
 	        imageUpload 	: true ,
 	        imageUploadURL       : "xxx/upload/",
 	        crossDomainUpload    : false,

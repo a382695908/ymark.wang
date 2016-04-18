@@ -1,0 +1,16 @@
+@media (min-width: 1200px){
+	body{background-color: #e6e6e6;}
+	.container {
+		max-width: 1600px;
+	    width: 1400px;
+	}
+	.body-content{background: white;padding:1em;}
+
+}
+.navbar-blue{background: #428bca;color: #FFFFFF;}
+.navbar-blue .navbar-brand{color:white;}
+#divcatalogue{border-right:1px solid #ddd;}
+#divcatalogue .list-group-item{border:0px;}
+.body-content .page-header{margin-top: 20px; margin-bottom: 10px;}
+.breadcrumb{border-radius: 0px;}
+#divdiagram{width:100%;min-height:400px;max-height:1000px;height:600px;}
