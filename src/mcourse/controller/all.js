@@ -12,15 +12,15 @@ export default class extends Base {
   		let limit 	= params.limit || 10 ;
   		let page 	= (params.offset / limit) + 1 ;
 
-	  	let model 	= this.model('article') ;
-	  	let userList 	= await model.field([
-	  		'uid',
-	  		'title',
-	  		'synopsis',
-	  		'status',
-	  		"date_format(lasttime,'%Y年%m月%d日 %k:%i:%s') lasttime",
-	  		"date_format(addtime,'%Y年%m月%d日 %k:%i:%s') addtime",
-	  	]).page(page, limit).select();
+	  	// let model 	= this.model('course') ;
+	  	// let userList 	= await model.field([
+	  	// 	'uid',
+	  	// 	'title',
+	  	// 	'synopsis',
+	  	// 	'status',
+	  	// 	"date_format(lasttime,'%Y年%m月%d日 %k:%i:%s') lasttime",
+	  	// 	"date_format(addtime,'%Y年%m月%d日 %k:%i:%s') addtime",
+	  	// ]).page(page, limit).select();
 
 	  	let count = await model.count('uid');
 	    var data = [

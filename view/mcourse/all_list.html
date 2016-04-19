@@ -3,8 +3,6 @@
 {% block import %}
 <link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-treeview.css">
 <link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-table.css">
-<script src="/static/m/js/bootstrap-treeview.js"></script>
-<script src="/static/m/js/bootstrap-table.min.js"></script>
 <style type="text/css">
 .thumbnail {padding-top: 20px;}
 .thumbnail img{cursor: pointer;}
@@ -16,175 +14,150 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-sm-4 col-md-4">
+  <div class="col-sm-3 col-md-3">
     <div class="thumbnail">
       <img src="/static/img/book.png" alt="...">
       <div class="caption">
         <h3>信息系统项目管理师考试教程</h3>
-        <p><a href="#" class="btn btn-primary" role="button">详细</a> <a href="#" class="btn btn-default" role="button">修改</a></p>
+        <p><a href="javascript:;" class="btn btn-primary" role="button">详细</a> <a href="javascript:;" data-target="#modal_course_form" data-toggle="modal" class="btn btn-default" role="button">修改</a></p>
       </div>
     </div>
   </div>
-  <div class="col-sm-4 col-md-4">
+  <div class="col-sm-3 col-md-3">
     <div class="thumbnail">
       <img src="/static/img/book.png" alt="...">
       <div class="caption">
         <h3>Python入门指南</h3>
-        <p><a href="#" class="btn btn-primary" role="button">详细</a> <a href="#" class="btn btn-default" role="button">修改</a></p>
+        <p><a href="javascript:;" class="btn btn-primary" role="button">详细</a> <a href="javascript:;" class="btn btn-default" role="button">修改</a></p>
       </div>
     </div>
   </div>
-  <div class="col-sm-4 col-md-4">
+  <div class="col-sm-3 col-md-3">
     <div class="thumbnail">
       <img src="/static/img/book.png" alt="...">
       <div class="caption">
         <h3>Javascript入门学习</h3>
-        <p><a href="#" class="btn btn-primary" role="button">详细</a> <a href="#" class="btn btn-default" role="button">修改</a></p>
+        <p><a href="javascript:;" class="btn btn-primary" role="button">详细</a> <a href="javascript:;" class="btn btn-default" role="button">修改</a></p>
       </div>
     </div>
   </div>
-  <div class="col-sm-4 col-md-4">
+  <div class="col-sm-3 col-md-3">
     <div class="thumbnail">
       <img src="/static/img/book.png" alt="...">
       <div class="caption">
-        <h3>课程4</h3>
-        <p><a href="#" class="btn btn-primary" role="button">详细</a> <a href="#" class="btn btn-default" role="button">修改</a></p>
+        <h3>课程3</h3>
+        <p><a href="javascript:;" class="btn btn-primary" role="button">详细</a> <a href="javascript:;" class="btn btn-default" role="button">修改</a></p>
       </div>
     </div>
   </div>
-  <div class="col-sm-4 col-md-4">
+  <div class="col-sm-3 col-md-3">
     <div class="thumbnail">
-      <img src="/static/img/add.png" data-toggle="modal" data-target="#myModal" alt="...">
+      <img src="/static/img/book.png" alt="...">
       <div class="caption">
-        <h3>新建课程</h3>
+        <h3>信息系统项目管理师考试教程</h3>
+        <p><a href="javascript:;" class="btn btn-primary" role="button">详细</a> <a href="javascript:;" class="btn btn-default" role="button">修改</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 col-md-3">
+    <div class="thumbnail">
+      <img src="/static/img/book.png" alt="...">
+      <div class="caption">
+        <h3>Python入门指南</h3>
+        <p><a href="javascript:;" class="btn btn-primary" role="button">详细</a> <a href="javascript:;" class="btn btn-default" role="button">修改</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 col-md-3">
+    <div class="thumbnail">
+      <img src="/static/img/book.png" alt="...">
+      <div class="caption">
+        <h3>Javascript入门学习</h3>
+        <p><a href="javascript:;" class="btn btn-primary" role="button">详细</a> <a href="javascript:;" class="btn btn-default" role="button">修改</a></p>
       </div>
     </div>
   </div>
 </div>
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="courseForm" data-backdrop='static'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="courseForm">创建／更新课程</h4>
-      </div>
-      <div class="modal-body">
-       	<div class="form-group">
-		  <label class="control-label" for="inputWarning">课程名称</label>
-		  <input type="text" class="form-control" id="inputWarning">
-		</div>
-		<div class="form-group">
-		  <label class="control-label" for="inputWarning">课程介绍</label>
-		  <input type="text" class="form-control" id="inputWarning">
-		</div>
-		<div class="form-group">
-		  <label class="control-label" for="inputWarning">出版时间</label>
-		  <input type="text" class="form-control" id="inputWarning">
-		</div>
-		<div class="form-group">
-		  <label class="control-label" for="inputWarning">作者</label>
-		  <input type="text" class="form-control" id="inputWarning">
-		</div>
-		封面：
-		<div class="row">
-		  <div class="col-xs-6 col-md-3">
-		    <a href="#" class="thumbnail">
-		      <img src="/static/img/add.png" alt="...">
-		    </a>
-		  </div>
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary">创建</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
 
 <script type="text/javascript">
-	var objTree 	= undefined ,
-		objGrid 	= $('#table') ,
-		objTreeList = undefined ,
-		objGridList = undefined ;
+	// var objTree 	= undefined ,
+	// 	objGrid 	= $('#table') ,
+	// 	objTreeList = undefined ,
+	// 	objGridList = undefined ;
 
-	$(function () {
-		$('[selectMode=all]').addClass('active');
-		// objTreeList = treeList();
-		// loadEvent();
-	});
+	// $(function () {
+	// 	$('[selectMode=all]').addClass('active');
+	// 	// objTreeList = treeList();
+	// 	// loadEvent();
+	// });
 
-	/**
-	 * 绑定一些按钮的事件
-	 * @return {[type]} [description]
-	 */
-	function loadEvent(){
-		$('#btnSpreadNone').click(function () {objTree.treeview('collapseAll', { silent: true }) });
-		$('#btnSpread2').click(function () {objTree.treeview('expandAll', { levels: 1, silent: true }) });
-		$('#btnSpreadAll').click(function () {objTree.treeview('expandAll'); });
-		$('#btnSpreadThis').click(function () {
-			objTree.treeview('expandNode' , [ objTreeList.getNodeId(), { levels: 5, silent: true } ]);
-		})
-	}
+	// /**
+	//  * 绑定一些按钮的事件
+	//  * @return {[type]} [description]
+	//  */
+	// function loadEvent(){
+	// 	$('#btnSpreadNone').click(function () {objTree.treeview('collapseAll', { silent: true }) });
+	// 	$('#btnSpread2').click(function () {objTree.treeview('expandAll', { levels: 1, silent: true }) });
+	// 	$('#btnSpreadAll').click(function () {objTree.treeview('expandAll'); });
+	// 	$('#btnSpreadThis').click(function () {
+	// 		objTree.treeview('expandNode' , [ objTreeList.getNodeId(), { levels: 5, silent: true } ]);
+	// 	})
+	// }
 
-	function gridList(params){
-		layer.load(1);
-		setTimeout(function(){
-			$.query('article/list' ,params.data,function(e){
-				if(e.errno > 0){$.error(e.errmsg); return; }
-				e = e.data ;
-				layer.closeAll('loading');
-				params.success({
-		            total: e.count,
-		            rows: e.data
-		        });
-			} ,'post');
-		},50);
-	}
+	// function gridList(params){
+	// 	layer.load(1);
+	// 	setTimeout(function(){
+	// 		$.query('article/list' ,params.data,function(e){
+	// 			if(e.errno > 0){$.error(e.errmsg); return; }
+	// 			e = e.data ;
+	// 			layer.closeAll('loading');
+	// 			params.success({
+	// 	            total: e.count,
+	// 	            rows: e.data
+	// 	        });
+	// 		} ,'post');
+	// 	},50);
+	// }
 
-	function format_uid(v){ return '<a href="/article/'+v+'" target="_blank">'+v+'</a>'; }
-	function format_status(v){ return v=='0'?'草稿':(v=='1'?'已发布':'已下线'); }
-	function format_detail(i ,r){
-		var html = [];
-        $.each(r, function (key, value) {
-            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-        });
-        return html.join('');
-	}
-	function format_opt(v ,r){
-		return [
-	        '<div class="pull-left">',
-	        '<a class="like" href="javascript:void(0)" title="Like">',
-	        '<i class="glyphicon glyphicon-heart"></i>',
-	        '</a> ',
-	        '<a class="remove" href="javascript:void(0)" title="Remove">',
-	        '<i class="glyphicon glyphicon-remove"></i>',
-	        '</a>',
-	        '</div>'
-		].join('');
-	}
+	// function format_uid(v){ return '<a href="/article/'+v+'" target="_blank">'+v+'</a>'; }
+	// function format_status(v){ return v=='0'?'草稿':(v=='1'?'已发布':'已下线'); }
+	// function format_detail(i ,r){
+	// 	var html = [];
+ //        $.each(r, function (key, value) {
+ //            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+ //        });
+ //        return html.join('');
+	// }
+	// function format_opt(v ,r){
+	// 	return [
+	//         '<div class="pull-left">',
+	//         '<a class="like" href="javascript:void(0)" title="Like">',
+	//         '<i class="glyphicon glyphicon-heart"></i>',
+	//         '</a> ',
+	//         '<a class="remove" href="javascript:void(0)" title="Remove">',
+	//         '<i class="glyphicon glyphicon-remove"></i>',
+	//         '</a>',
+	//         '</div>'
+	// 	].join('');
+	// }
 
-	function treeList(){
-		var nodeId = 0;
-		$.query('tree/list' ,null,function(e){
-			if(e.errno > 0){console.error(e.errmsg); return; }
-			objTree = $('#tree').treeview({
-				data 			: e.data ,
-				onNodeSelected     : function(e ,node){
-					nodeId = node.nodeId;
-				}
-			});
-			objGridList = gridList();
-		} ,'post');
-		return {
-			getNodeId : function(){
-				return nodeId;
-			}
-		}
-	}
+	// function treeList(){
+	// 	var nodeId = 0;
+	// 	$.query('tree/list' ,null,function(e){
+	// 		if(e.errno > 0){console.error(e.errmsg); return; }
+	// 		objTree = $('#tree').treeview({
+	// 			data 			: e.data ,
+	// 			onNodeSelected     : function(e ,node){
+	// 				nodeId = node.nodeId;
+	// 			}
+	// 		});
+	// 		objGridList = gridList();
+	// 	} ,'post');
+	// 	return {
+	// 		getNodeId : function(){
+	// 			return nodeId;
+	// 		}
+	// 	}
+	// }
 </script>
 {% endblock %}

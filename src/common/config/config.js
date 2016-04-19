@@ -3,6 +3,7 @@
  * config
  */
 export default {
-  	encoding: "utf-8" ,
-  	route_on: true
+  	encoding 	: "utf-8" ,
+  	route_on 	: true ,
+  	timeout 	: 30
 };
