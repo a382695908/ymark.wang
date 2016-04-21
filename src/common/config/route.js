@@ -19,6 +19,9 @@ export default [
 		post 	: "mcourse/:1/save"
 	}],
 
+	[/^test\/(\w+)$/ ,{
+		get 	: "mcourse/test/:1" 
+	}],
 
 
 	[/^mcourse\/(\w+)\/(\w+)$/, {
