@@ -2,7 +2,7 @@
 
 {% block import %}
 <link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-treeview.css">
-<link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-table.css">
+<link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-table.min.css">
 <style type="text/css">
 .thumbnail {padding-top: 20px;}
 .thumbnail img{cursor: pointer;}
@@ -80,6 +80,19 @@
 </div>
 
 <script type="text/javascript">
+	// window.onload = function () {
+	// 	console.log($('.btn-default'))
+	// }
+	// console.log($);
+	// console.log(jQuery);
+	// $(document).ready(function() { 
+	// 	$.error('2222');
+	// // put all your jQuery goodness in here. 
+	// }); 
+	
+	$(function(){
+		console.log('2');
+	});
 	// var objTree 	= undefined ,
 	// 	objGrid 	= $('#table') ,
 	// 	objTreeList = undefined ,

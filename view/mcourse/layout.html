@@ -9,7 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="ymark">
 		<link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-material-design.css">
+		<link rel="stylesheet" type="text/css" href="/static/m/css/bootstrap-material-design.min.css">
 		<link rel="stylesheet" type="text/css" href="/static/css/pace.css">
 		<link rel="stylesheet" type="text/css" href="/static/m/css/base.css">
 		<!-- Favicons -->
@@ -23,6 +23,7 @@
 	</head>
 
 	<body>
+		<script src="/static/js/jquery-2.1.3.min.js"></script>
 		<div class="navbar navbar-inverse">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
@@ -42,7 +43,7 @@
 		        <li selectMode='cc'><a href="/mcourse/nexus">课程4</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="javascript:;" id="btnAddCourse" data-target="#modal_course_form" data-toggle="modal">
+		        <li><a href="javascript:;" id="btnAddCourse">
 		        	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加课程</a>
 		        </li>
 		        <li class="dropdown">
@@ -93,7 +94,6 @@
 		</div>
 		<script src="/static/js/sea.js"></script>
 		<script src="/static/js/pace.min.js"></script>
-		<script src="/static/js/jquery-2.1.3.min.js"></script>
 		<script src="/static/m/js/main.js"></script>
 	</body>
 </html>
