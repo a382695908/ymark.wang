@@ -7,8 +7,8 @@ export default class extends Base {
    * index action
    * @return {Promise} []
    */
-  indexAction(){
+  uploadAction(){
     //auto render template file index_index.html
-    this.redirect('/mcourse/all');
+    return this.display();
   }
 }

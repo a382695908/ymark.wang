@@ -1,4 +1,4 @@
-;(function(window,jQuery ,layer){
+;(function(window,jQuery){
     jQuery.extend( {
     	urlVal : function(name) {
     		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -61,6 +61,10 @@
             return _height;
         },
         query : function (url ,param ,callback ,type) {
+
+            // console.log(this.getCookie('thinkjs'));
+            // console.log(document.cookie);
+            // param = param || {__CSRF__:}
             callback = callback || function(e){};
             var al = arguments.length;
             if(al != 3 && al != 4) {callback({err:'参数个数出错！'}); return; }
@@ -92,6 +96,11 @@
                 error       : function() { callback({err:'错误！'}); }
             });
         },
+        getCookie   : function (name) {
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+            if(arr=document.cookie.match(reg)){return unescape(arr[2]);}
+            else{return null;}
+        },
         /**
          * 弹出错误信息
          * @param  {[type]} msg 弹出的错误消息
@@ -104,4 +113,4 @@
             layer.msg(msg, {offset: '65px'});
         }
     });
-})(window ,$ ,layer);
+})(window ,$);
