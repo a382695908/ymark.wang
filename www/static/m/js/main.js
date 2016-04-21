@@ -48,7 +48,7 @@ seajs.use(['bootstrap' ,'ripples','material'  ,'layer' ,'ymark'] ,function() {
 
     $(document).ajaxSend(function(e,req, set){
         loadingIndex = layer.load(1, {
-          shade: [0.4,'#fff'] //0.1透明度的白色背景
+          shade: [0.4,'#000'] //0.1透明度的白色背景
         });
     });
 });
@@ -61,7 +61,7 @@ function courseForm(){
     var uid         = undefined ;   // 当前操作表单课程的UID
 
     var callback_save   = function (e) {
-        if(e.errno > 0){console.error(e.errmsg); return; }
+        if(e.errno > 0){return; }
         $.info(e.data);
     }
     return {
