@@ -20,7 +20,7 @@ seajs.config({
   }
 });
 var layer = undefined ;
-seajs.use(['bootstrap' ,'material' ,'ripples' ,'layer' ,'ymark'] ,function() {
+seajs.use(['bootstrap' ,'ripples','material'  ,'layer' ,'ymark'] ,function() {
     $.material.init();
     layer.config({path: '/static/fun/layer/'});
     var objForm = courseForm() ,
