@@ -9,6 +9,6 @@ export default class extends Base {
    */
   indexAction(){
     //auto render template file index_index.html
-    this.redirect('/mcourse/all');
+    this.redirect('/mcourse/list');
   }
 }

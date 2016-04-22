@@ -60,14 +60,17 @@
             }
             return _height;
         },
-        query : function (url ,param ,callback ,type) {
-
+        get   : function(url ,param ,callback){
+            this.query(url ,param ,callback ,'get' ,false);
+        },
+        query : function (url ,param ,callback ,type ,_global) {
+            if(typeof(_global) == 'undefined') _global = true;
             // console.log(this.getCookie('thinkjs'));
             // console.log(document.cookie);
             // param = param || {__CSRF__:}
             callback = callback || function(e){};
             var al = arguments.length;
-            if(al != 3 && al != 4) {callback({err:'参数个数出错！'}); return; }
+            if(al != 3 && al != 4 && al != 5) {callback({err:'参数个数出错！'}); return; }
             if(url.indexOf('/') !== 0) {url = '/'+url;}
             jQuery.ajax({  
                 url     : 'http://'+ window.location.host +'/'+ url ,    // 跳转到 action  
@@ -79,7 +82,7 @@
                 // xhr         : function(XMLHttpRequest){},   //需要返回一个 XMLHttpRequest 对象。默认在 IE 下是 ActiveXObject 而其他情况下是 XMLHttpRequest 。用于重写或者提供一个增强的 XMLHttpRequest 对象。这个参数在 jQuery 1.3 以前不可用。
                 // dataFilter  : function(data ,type){},               //给 Ajax 返回的原始数据的进行预处理的函数。data 是 Ajax 返回的原始数据，type 是调用 jQuery.ajax 时提供的 dataType 参数。函数返回的值将由 jQuery 进一步处理。
                 // dataType    : 'json' ,      //
-                // global      : true ,        //是否触发全局 AJAX 事件。默认值: true。设置为 false 将不会触发全局 AJAX 事件，如 ajaxStart 或 ajaxStop 可用于控制不同的 Ajax 事件。
+                global      : _global ,        //是否触发全局 AJAX 事件。默认值: true。设置为 false 将不会触发全局 AJAX 事件，如 ajaxStart 或 ajaxStop 可用于控制不同的 Ajax 事件。
                 // ifModified  : false ,       //仅在服务器数据改变时获取新数据。默认值: false。使用 HTTP 包 Last-Modified 头信息判断。
                 // traditional : false ,       //如果你想要用传统的方式来序列化数据，那么就设置为 true。请参考工具分类下面的 jQuery.param 方法。
                 // username    : 'xx',         //用于响应 HTTP 访问认证请求的用户名。
