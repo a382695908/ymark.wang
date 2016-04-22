@@ -32,20 +32,18 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="javascript:void(0)"><i class="material-icons">YMARK</i></a>
+		      <a class="navbar-brand" href="/"><i class="material-icons">YMARK</i></a>
 		    </div>
 		    <div class="navbar-collapse collapse navbar-responsive-collapse">
 		      <ul class="nav navbar-nav">
-		        <li selectMode='all'><a href="/mcourse/all">所有课程</a></li>
-		        <li selectMode='019928'><a href="/mcourse/nexus">信息系统项目管理师考试教程</a></li>
-		        <li selectMode='as'><a href="/mcourse/nexus">Python入门指南</a></li>
-		        <li selectMode='dd'><a href="/mcourse/nexus">Javascript入门学习</a></li>
-		        <li selectMode='cc'><a href="/mcourse/nexus">课程4</a></li>
+
+		        <li selectMode='all'><a href="/mcourse/list">所有课程</a></li>
+		        {% for uid, name in controller.list %}
+		        	<li selectMode='{{ uid }}'><a href="/mcourse/nexus">{{ name }}</a></li>
+				{% endfor %}
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="javascript:;" id="btnAddCourse">
-		        	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加课程</a>
-		        </li>
+		      	{% block rightBtn %}{% endblock %}
 		        <li class="dropdown">
 		          <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">李白
 		            <b class="caret"></b></a>
@@ -59,41 +57,11 @@
 		    </div>
 		  </div>
 		</div>
+		<script src="/static/js/sea.js"></script>
+		<script src="/static/m/js/main.js"></script>
 		<div class="container-fluid body-content">
 		  	{% block content %}{% endblock %}
 		</div>
-		<div class="modal fade" id="modal_course_form" tabindex="-1" role="dialog" aria-labelledby="courseForm" data-backdrop='static'>
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="courseForm">课程表单</h4>
-		      </div>
-		      <div class="modal-body">
-		       	<div class="form-group">
-				  <label class="control-label" for="courseName">课程名称</label>
-				  <input type="text" class="form-control" id="courseName">
-				</div>
-				<div class="form-group">
-				  <label class="control-label" for="courseSummary">简要介绍</label>
-				  <input type="text" class="form-control" id="courseSummary">
-				</div>
-				封面：<br/>
-				<div class="form-group divcoverpics">
-				  <img src="/static/img/add.png" alt="...">
-				  <img src="/static/img/add.png" alt="...">
-				  <img src="/static/img/add.png" alt="...">
-				</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-		        <button type="button" class="btn btn-primary" id="btnSaveCourse">创建</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		<script src="/static/js/sea.js"></script>
 		<script src="/static/js/pace.min.js"></script>
-		<script src="/static/m/js/main.js"></script>
 	</body>
 </html>

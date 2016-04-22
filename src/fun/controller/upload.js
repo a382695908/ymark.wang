@@ -20,7 +20,7 @@ export default class extends Base {
       // 删除临时文件夹文件, 
       fs.unlink(filepath, function() {
          if (err) throw err;
-         self.success({msg:'上传成功！' ,path:'/upload/'+filename});
+         self.success({msg:'上传成功！' ,path:'/upload/'+filename ,name:filename});
       });
     });
   }

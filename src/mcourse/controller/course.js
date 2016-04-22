@@ -5,12 +5,23 @@ import Base from './base.js';
 
 export default class extends Base {
     async indexAction(){
+        console.log('222');
+
         return this.display('list');
     }
 
     detailAction(){
         console.log('detailAction');
+        // console.log(this.abc)
         return this.success({a:'detailAction'});
+    }
+
+    async listAction(){
+        let userId = this.getUserId();
+        console.log(userId);
+        let model = this.model('course');
+        // let count = await model.where(list_where).count('o.id');
+        return this.success('ssssssss');
     }
 
     async deleteAction(){
@@ -36,14 +47,14 @@ export default class extends Base {
         if(!uid){
             uid = UID.v1();
             row.uid = uid;
-            row.adduser = '1' ; //创建人
+            row.adduser = this.getUserId() ; //创建人
             row.addtime = time; //创建时间
             row.status  = 0 ; //状态（0：未上线，1：已上线，2：已下线）
             await model.add(row);
             return this.success(uid);
         }else{
-            let insertId = await model.update(row).where({uid:uid});
-            console.log(insertId);
+            console.log(uid);
+            let insertId = await model.where({uid:uid}).update(row);
             return this.success('修改成功');
         }
     }

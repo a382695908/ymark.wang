@@ -8,28 +8,26 @@ seajs.config({
 
   // 设置别名，方便调用
   alias: {
-    'bootstrap'	: 'js/bootstrap.min.js',
-    'material'	: 'mjs/material.min.js',
-    'ripples'	  : 'mjs/ripples.min.js',
-    'treeview'	: 'mjs/bootstrap-treeview.js',
-    'jsmind'	  : 'mjs/jsmind/jsmind.js',
+    'bootstrap'         : 'js/bootstrap.min.js',
+    'material'          : 'mjs/material.min.js',
+    'ripples'           : 'mjs/ripples.min.js',
+    'treeview'          : 'mjs/bootstrap-treeview.js',
+    'jsmind'            : 'mjs/jsmind/jsmind.js',
     'jsminddraggable'	: 'mjs/jsmind/jsmind.draggable.js',
-    'layer'     : 'fjs/layer/layer.js',
-    'ymark'	    : 'mjs/ymark.js',
-    
-  }
+    'ymark'	            : 'mjs/ymark.js',
+    'layer'             : 'fjs/layer/layer.js',
+    'jquery-ui'         : 'fjs/upload/jquery-ui.min.js',
+    'plupload'          : 'fjs/upload/plupload.full.min.js',
+    'plupload-ui'       : 'fjs/upload/jquery.ui.plupload.min.js',
+  } ,
+  preload : 'bootstrap'
 });
 var layer = undefined ;
-seajs.use(['bootstrap' ,'ripples','material'  ,'layer' ,'ymark'] ,function() {
+seajs.use(['ripples','material'  ,'layer' ,'ymark'] ,function() {
     $.material.init();
     layer.config({path: '/static/fun/layer/'});
-    var objForm = courseForm() ,
-        loadingIndex = undefined ;
-    $('#btnAddCourse').click(function(){
-      $('#modal_course_form').modal();
-      objForm.resetForm();
-    });
-    $('#btnSaveCourse').click(objForm.saveForm);
+    
+    var loadingIndex = undefined ;
     $(document).ajaxComplete(function(e,req, set){
         var res = req.responseJSON;
         layer.close(loadingIndex);
@@ -47,48 +45,10 @@ seajs.use(['bootstrap' ,'ripples','material'  ,'layer' ,'ymark'] ,function() {
     });
 
     $(document).ajaxSend(function(e,req, set){
-        loadingIndex = layer.load(1, {
-          shade: [0.4,'#000'] //0.1透明度的白色背景
+        loadingIndex = layer.load('加载中', {
+            icon: 16 ,
+            shade: [0.3,'#fff'] //0.1透明度的白色背景
         });
     });
 });
 
-function courseForm(){
-    var $formTitle  = $('#courseForm') ,
-        $name       = $('#courseName') ,
-        $summary    = $('#courseSummary') ;
- 
-    var uid         = undefined ;   // 当前操作表单课程的UID
-
-    var callback_save   = function (e) {
-        if(e.errno > 0){return; }
-        $.info(e.data);
-    }
-    return {
-        /**
-         * 重置表单
-         * @param  {int} type undefined : 添加，否则，修改
-         */
-        resetForm   : function (_uid) {
-          console.log(_uid);
-          if(!_uid){ //添加
-              $formTitle.text('添加课程');
-          }else{
-              uid = _uid;
-              $formTitle.text('修改课程');
-          }
-        },
-        /**
-         * 保存一个表单
-         */
-        saveForm  : function(){
-            if(!$name.val()){$.error('请填写课题名称啊~少年'); return; }
-            var summary = $summary.val();
-            if(!summary){$.error('最好填写一下简要介绍！比如：<br/>软考-高级，结构化整理<br/>等等'); return; }
-            if(summary.length >= 200){$.error('字数不要超过200字~');return;}
-            var param = {uid:uid ,name:$name.val() ,summary:summary} ;
-            if(uid) $.query('/mcourse/course/'+uid ,param ,callback_save ,'put');
-            else $.query('/mcourse/course/' ,param ,callback_save ,'post');
-        }
-    }
-}
