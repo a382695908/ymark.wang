@@ -23,7 +23,7 @@ seajs.config({
   preload : 'bootstrap'
 });
 var layer = undefined ;
-seajs.use(['ripples','material'  ,'layer' ,'ymark'] ,function() {
+seajs.use(['ripples','material' ,'layer' ,'ymark'] ,function() {
     $.material.init();
     layer.config({path: '/static/fun/layer/'});
     
@@ -52,3 +52,8 @@ seajs.use(['ripples','material'  ,'layer' ,'ymark'] ,function() {
     });
 });
 
+function noImg(){
+    var img=event.srcElement;
+    img.src="/static/img/none.png";
+    img.onerror=null; //控制不要一直跳动
+}
