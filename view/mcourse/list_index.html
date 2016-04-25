@@ -117,20 +117,35 @@
 			if(img.indexOf('/')>0) img=img.split('/')[0];
 			return '<div class="col-sm-3 col-md-3">' +
 			'    <div class="thumbnail">' +
-			'      <img src="/upload/'+img+'" alt="...">' +
+			'      <img src="/upload/'+img+'" alt="..." onerror="noImg();">' +
 			'      <div class="caption">' +
 			'        <h3>'+item.name+'</h3>' +
-			'        <p key="'+item.uid+'"><a href="javascript:;" class="btn btn-default" role="button">详细</a> <a href="javascript:;" class="btn btn-primary" role="button">修改</a></p>' +
-			'      </div>' +
+			'        <p key="'+item.uid+'"><a href="javascript:;" class="btn btn-default btn-delete" role="button">删除</a> <a href="javascript:;" class="btn btn-primary" role="button">修改课程</a>' +
+			'   <a href="/mcourse/'+item.uid+'" target="_blank" class="btn" role="button">编辑内容</a> '+
+			'      </p></div>' +
 			'    </div>' +
 			'</div>'
 		},
 		loadEvent 	= function(){
+			$listview.find('.btn-delete').click(function(){
+				var pkey = $(this).parent('p').attr('key');
+				console.log(pkey);
+				layer.confirm('将会删除以下内容：课程表、课程目录表、课程内容表、课程分享表、试题表、纠错表；确认要删除吗？', {btn: ['就是要删除','还是取消吧'] }, function(){
+				  	if(!pkey){console.error('deleteNode id is empty'); return; }
+					$.query('/mcourse/info/'+pkey ,{},function(e){
+						if(e.errno > 0){console.error(e.errmsg); return; }
+						$.info(e.data);
+						loadList();
+					} ,'delete');
+				});
+			});
+
 			$listview.find('.btn-primary').click(function(){
 				var pkey = $(this).parent('p').attr('key');
 				objForm.resetForm(getInfo(pkey));
 				$modalForm.modal();
-			})
+			});
+			
 		},
 		getInfo 	= function(uid){
 			var data = dataList;
