@@ -7,6 +7,13 @@ export default class extends Base {
         return this.display('list');
     }
 
+    async getjsonAction(){
+        return this.display([
+          { "id" : "demo_root_1", "text" : "Root 1", "children" : true, "type" : "root" },
+          { "id" : "demo_root_2", "text" : "Root 2", "type" : "root" }
+        ]);
+    }
+
     /**
      * 获得列表树，返回一个格式化后的Tree
      * @return {[type]} [description]
@@ -32,7 +39,7 @@ export default class extends Base {
                 if(item.pid == pid) {
                     node = {text:item.title ,id:item.id ,pid:item.pid ,sort:item.sort ,remark:item.remark};
                     childs = getChilds(i ,item.id);
-                    if(childs.length > 0) node.nodes = childs;
+                    if(childs.length > 0) node.children = childs;
                     res.push(node);
                 }
             }
@@ -50,14 +57,14 @@ export default class extends Base {
                 if(pid == '0'){
                     node = {text:k.title ,id:k.id ,pid:pid ,sort:k.sort ,remark:k.remark};
                     childs = getChilds(v ,k.id);
-                    if(childs.length > 0) node.nodes = childs; 
+                    if(childs.length > 0) node.children = childs; 
                     res.push(node);
                 }
             });
             return res;
         }
         
-        return this.success(getTreeList(list));
+        return this.json(getTreeList(list));
     }
 
     detailAction(){

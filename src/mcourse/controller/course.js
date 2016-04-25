@@ -5,9 +5,7 @@ import Base from './base.js';
 
 export default class extends Base {
     async indexAction(){
-        console.log('222');
-
-        return this.display('list');
+        return this.display('edit');
     }
 
     detailAction(){
@@ -25,10 +23,22 @@ export default class extends Base {
     }
 
     async deleteAction(){
-        let id = this.get().id;
-        if(!id) return this.fail({errno: -1, errmsg: '请填写完整参数'});
-        let model_tree = this.model('tree');
-        model_tree.delete({where: {id: id} });
+        let uid = this.get().id;
+        if(!uid) return this.fail({errno: -1, errmsg: '请填写完整参数'});
+        // 需要删除 课程表、课程目录表、课程内容表、课程分享表、试题表、纠错表
+        let model_course        = this.model('course') ,
+            model_coursecatalog = this.model('coursecatalog') ,
+            model_coursecontent = this.model('coursecontent') ,
+            model_courseshare   = this.model('courseshare') ,
+            model_question      = this.model('question') ,
+            model_buglog        = this.model('buglog');
+
+        model_course.delete({where: {uid: uid} });
+        model_coursecatalog.delete({where: {cuid: uid} });
+        model_coursecontent.delete({where: {cuid: uid} });
+        model_courseshare.delete({where: {cuid: uid} });
+        model_question.delete({where: {cuid: uid} });
+        model_buglog.delete({where: {cuid: uid} });
         return this.success('删除成功！');
     }
 

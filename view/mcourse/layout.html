@@ -38,9 +38,6 @@
 		      <ul class="nav navbar-nav">
 
 		        <li selectMode='all'><a href="/mcourse/list">所有课程</a></li>
-		        {% for uid, name in controller.list %}
-		        	<li selectMode='{{ uid }}'><a href="/mcourse/nexus">{{ name }}</a></li>
-				{% endfor %}
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		      	{% block rightBtn %}{% endblock %}

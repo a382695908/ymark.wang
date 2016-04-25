@@ -20,6 +20,9 @@ export default [
 	// 在article.js中 定义indexAction(){ return this.display('list'); }
 	// 这样就实现了自动输出模板
 
+	[/^mcourse\/((?!list).)*$/, {get : "mcourse/course/index?id=:1"}],
+
+
 	[/^mcourse\/info\/(\S*)$/, {
 	    get 	: "mcourse/course/detail?id=:1",
 	    delete 	: "mcourse/course/delete?id=:1",
