@@ -95,17 +95,15 @@
 
 		var dataList = [];
 
-		var loadList = function(){
+		var loadData = function(){
 			divNoneData.hide();
 			$.query('/mcourse/list/all' ,{} ,function (e) {
 				if(e.errno > 0){ return; }
 				e = e.data ;
-				if(e.length <= 0){divNoneData.show(); return; }
+				if(e.length <= 0){$listview.html(''); divNoneData.show(); return; }
 				dataList = e;
 				var html = [];
-				for(var i=0,len=e.length;i<len;i++){
-					html.push(loadItem(e[i]));
-				}
+				for(var i=0,len=e.length;i<len;i++){html.push(loadItem(e[i])); }
 				$listview.html(html.join(''));
 				$.material.ripples();
 				loadEvent();
@@ -114,23 +112,37 @@
 		},
 		loadItem 	= function (item) {
 			var img = item.coverpics;
-			if(img.indexOf('/')>0) img=img.split('/')[0];
+			if(img){ if(img.indexOf('/')>0){img='/upload/'+img.split('/')[0]; }else img='/upload/'+img;}
+			else{img='/static/img/none.png';}
 			return '<div class="col-sm-3 col-md-3">' +
 			'    <div class="thumbnail">' +
-			'      <img src="/upload/'+img+'" alt="...">' +
+			'      <img src="'+img+'" alt="..." onerror="noImg();">' +
 			'      <div class="caption">' +
 			'        <h3>'+item.name+'</h3>' +
-			'        <p key="'+item.uid+'"><a href="javascript:;" class="btn btn-default" role="button">详细</a> <a href="javascript:;" class="btn btn-primary" role="button">修改</a></p>' +
-			'      </div>' +
+			'        <p key="'+item.uid+'"><a href="javascript:;" class="btn btn-default btn-delete" role="button">删除</a> <a href="javascript:;" class="btn btn-primary" role="button">修改课程</a>' +
+			'   <a href="/mcourse/'+item.uid+'" target="_blank" class="btn" role="button">编辑内容</a> '+
+			'      </p></div>' +
 			'    </div>' +
 			'</div>'
 		},
 		loadEvent 	= function(){
+			$listview.find('.btn-delete').click(function(){
+				var pkey = $(this).parent('p').attr('key');
+				layer.confirm('将会删除以下内容：课程表、课程目录表、课程内容表、课程分享表、试题表、纠错表；确认要删除吗？', {btn: ['就是要删除','还是取消吧'] }, function(){
+				  	if(!pkey){console.error('deleteNode id is empty'); return; }
+					$.query('/mcourse/info/'+pkey ,{},function(e){
+						if(e.errno > 0){console.error(e.errmsg); return; }
+						$.info(e.data);
+						setTimeout(function(){objList.loadList(); },200);
+					} ,'delete');
+				});
+			});
+
 			$listview.find('.btn-primary').click(function(){
 				var pkey = $(this).parent('p').attr('key');
 				objForm.resetForm(getInfo(pkey));
 				$modalForm.modal();
-			})
+			});
 		},
 		getInfo 	= function(uid){
 			var data = dataList;
@@ -138,11 +150,8 @@
 				if(data[i]['uid'] == uid) return data[i];
 			}
 		}
-
 		return {
-			loadList 	: function(options){
-				loadList();
-			}
+			loadList 	: loadData
 		}
 	}
 
@@ -161,7 +170,20 @@
 	    $summary.blur(function () {
 	    	if(!$summary.val()){$msgSummary.show(); }
 	    	else{$msgSummary.hide(); }
-	    })
+	    });
+
+	    var save = function(){
+	    	var param = {uid:uid ,name:$name.val() ,summary:$summary.val() ,coverpics:''} ;
+	    	if(fileArr.length > 0){param.coverpics = fileArr.join('/'); }
+			var url = '/mcourse/info/' ;
+            if(uid){url += uid;} else{url += 'add';param.uid='add';}
+			$.query(url ,param ,function (e) {
+				if(e.errno > 0){return; }
+				$modalForm.modal('hide');
+				$.info(e.data);
+				objList.loadList();
+			} ,uid ? 'put' : 'post');
+	    }
 
 
 	    return {
@@ -179,10 +201,9 @@
 	              if(coverpics.indexOf('/')>0){coverpics.split('/');}
 	              else{coverpics=[coverpics];}
 	              fileArr = coverpics;
-	              console.log(coverpics);
-	              console.log(objUpload.plupload('getFiles'));
 	              $msgSummary.hide();
 	          }else{ //添加
+	          	  uid = '';
 	              $formTitle.text('添加课程');
 	              $name.val('');
 	              $summary.val('');
@@ -196,12 +217,10 @@
 	        saveForm  : function(){
 	            if(!$name.val()){$.error('请填写课题名称啊~少年'); return; }
 	            // 先上传图片
-		    	if(fileArr.length > 0){
+		    	if(objUpload.plupload('getFiles').length > 0){
 		    		objUpload.plupload('start');
 		    	}else{
-		    		layer.confirm('没有上传封面，您确认要继续添加课程吗？', {btn: ['继续保存！','算了还是不添加了'] }, function(){
-					 	objUpload.plupload('start');
-					});
+		    		layer.confirm('没有上传封面，您确认要继续添加课程吗？', {btn: ['继续保存！','算了还是不添加了'] }, save);
 		    	}
 	        },
 	        /**
@@ -228,100 +247,11 @@
 							if(info.errno > 0){$.error(info.msg); }
 							fileArr.push(info.data.name);
 						},
-						UploadComplete: function(up, files) {
-							var param = {uid:uid ,name:$name.val() ,summary:$summary.val() ,coverpics:fileArr.join('/')} ;
-							var url = '/mcourse/info/' ;
-				            if(uid){url += uid;} 
-							$.query(url ,param ,function (e) {
-								if(e.errno > 0){return; }
-	        					$.info(e.data);
-	        					objList.loadList();
-							} ,uid ? 'put' : 'post');
-						}
+						UploadComplete: function(up, files) {save(); }
 					}
 				});
 	        }
 	    }
 	}
-
-	// var objTree 	= undefined ,
-	// 	objGrid 	= $('#table') ,
-	// 	objTreeList = undefined ,
-	// 	objGridList = undefined ;
-
-	// $(function () {
-	// 	$('[selectMode=all]').addClass('active');
-	// 	// objTreeList = treeList();
-	// 	// loadEvent();
-	// });
-
-	// /**
-	//  * 绑定一些按钮的事件
-	//  * @return {[type]} [description]
-	//  */
-	// function loadEvent(){
-	// 	$('#btnSpreadNone').click(function () {objTree.treeview('collapseAll', { silent: true }) });
-	// 	$('#btnSpread2').click(function () {objTree.treeview('expandAll', { levels: 1, silent: true }) });
-	// 	$('#btnSpreadAll').click(function () {objTree.treeview('expandAll'); });
-	// 	$('#btnSpreadThis').click(function () {
-	// 		objTree.treeview('expandNode' , [ objTreeList.getNodeId(), { levels: 5, silent: true } ]);
-	// 	})
-	// }
-
-	// function gridList(params){
-	// 	layer.load(1);
-	// 	setTimeout(function(){
-	// 		$.query('article/list' ,params.data,function(e){
-	// 			if(e.errno > 0){$.error(e.errmsg); return; }
-	// 			e = e.data ;
-	// 			layer.closeAll('loading');
-	// 			params.success({
-	// 	            total: e.count,
-	// 	            rows: e.data
-	// 	        });
-	// 		} ,'post');
-	// 	},50);
-	// }
-
-	// function format_uid(v){ return '<a href="/article/'+v+'" target="_blank">'+v+'</a>'; }
-	// function format_status(v){ return v=='0'?'草稿':(v=='1'?'已发布':'已下线'); }
-	// function format_detail(i ,r){
-	// 	var html = [];
- //        $.each(r, function (key, value) {
- //            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
- //        });
- //        return html.join('');
-	// }
-	// function format_opt(v ,r){
-	// 	return [
-	//         '<div class="pull-left">',
-	//         '<a class="like" href="javascript:void(0)" title="Like">',
-	//         '<i class="glyphicon glyphicon-heart"></i>',
-	//         '</a> ',
-	//         '<a class="remove" href="javascript:void(0)" title="Remove">',
-	//         '<i class="glyphicon glyphicon-remove"></i>',
-	//         '</a>',
-	//         '</div>'
-	// 	].join('');
-	// }
-
-	// function treeList(){
-	// 	var nodeId = 0;
-	// 	$.query('tree/list' ,null,function(e){
-	// 		if(e.errno > 0){console.error(e.errmsg); return; }
-	// 		objTree = $('#tree').treeview({
-	// 			data 			: e.data ,
-	// 			onNodeSelected     : function(e ,node){
-	// 				nodeId = node.nodeId;
-	// 			}
-	// 		});
-	// 		objGridList = gridList();
-	// 	} ,'post');
-	// 	return {
-	// 		getNodeId : function(){
-	// 			return nodeId;
-	// 		}
-	// 	}
-	// }
 </script>
 {% endblock %}

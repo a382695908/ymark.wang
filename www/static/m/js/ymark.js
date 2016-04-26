@@ -34,14 +34,6 @@
         　　return pwd;
         },
         getHeight : function(){
-            var _parent = window.parent;
-            if(_parent!=window){
-                var _temp = _parent.layout;
-                if(_temp){
-                    _temp = _temp.contentHeight;
-                    if(_temp) {return _temp;}
-                }
-            }
             var _height ,_t ;
             if(window.navigator.userAgent.indexOf("Firefox")>0){_t = window.document.documentElement; _height = _t.scrollHeight; }
             else{
@@ -59,6 +51,15 @@
               // else console.log("这种情况发生在不支持DHTML的老版本浏览器（现在一般都支持）");
             }
             return _height;
+        },
+        getWidth : function(){
+            var _width ,_t ;
+            if(window.navigator.userAgent.indexOf("Firefox")>0){ _width = window.document.documentElement.scrollWidth; }
+            else{
+              if(window.addEventListener) {_width=window.document.body.scrollWidth; }
+              else if(window.attachEvent) {_width=jQuery(window).width();} //> ? =IE8 [升级到11的IE8]
+            }
+            return _width;
         },
         get   : function(url ,param ,callback){
             this.query(url ,param ,callback ,'get' ,false);

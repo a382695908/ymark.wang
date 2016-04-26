@@ -23,7 +23,7 @@ seajs.config({
   preload : 'bootstrap'
 });
 var layer = undefined ;
-seajs.use(['ripples','material'  ,'layer' ,'ymark'] ,function() {
+seajs.use(['ripples','material' ,'layer' ,'ymark'] ,function() {
     $.material.init();
     layer.config({path: '/static/fun/layer/'});
     
@@ -45,10 +45,12 @@ seajs.use(['ripples','material'  ,'layer' ,'ymark'] ,function() {
     });
 
     $(document).ajaxSend(function(e,req, set){
-        loadingIndex = layer.load('加载中', {
-            icon: 16 ,
-            shade: [0.3,'#fff'] //0.1透明度的白色背景
-        });
+        loadingIndex = layer.load('加载中', {icon: 16 , shade: [0.3,'#fff'] }); 
     });
 });
 
+function noImg(){
+    var img=event.srcElement;
+    img.src="/static/img/none.png";
+    img.onerror=null; //控制不要一直跳动
+}

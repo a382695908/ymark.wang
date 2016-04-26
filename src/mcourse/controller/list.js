@@ -3,12 +3,7 @@
 import Base from './base.js';
 
 export default class extends Base {
-    async indexAction(){
-        let model   = this.model('course') ;
-        this.list = await model.field([
-            'uid',
-            'name'
-        ]).where({'adduser'   : this.getUserId() }).select(); ;
+    indexAction(){
         return this.display();
     }
 	

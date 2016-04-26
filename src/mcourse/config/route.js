@@ -19,10 +19,17 @@ export default [
 	// /manage/article -> manage/article/index
 	// 在article.js中 定义indexAction(){ return this.display('list'); }
 	// 这样就实现了自动输出模板
-
 	[/^mcourse\/info\/(\S*)$/, {
 	    get 	: "mcourse/course/detail?id=:1",
+	    post 	: "mcourse/course/save?id=:1",
 	    delete 	: "mcourse/course/delete?id=:1",
 	    put 	: "mcourse/course/save?id=:1"
-	}]
+	}],
+	[/^mcourse\/nexus\/(\S*)$/, {
+	    get 	: "mcourse/nexus/list?uid=:1",
+	    post 	: "mcourse/nexus/save?id=:1",
+	    delete 	: "mcourse/nexus/delete?id=:1",
+	    put 	: "mcourse/nexus/save?id=:1"
+	}],
+	[/^mcourse\/(((?!list).)*)$/, {get : "mcourse/course/index?id=:1"}],
 ];
