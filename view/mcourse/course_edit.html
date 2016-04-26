@@ -20,6 +20,29 @@
 
 	<body>
 		<div id="divEditor"> <p>请输入内容...</p> </div>
+		<input type="hidden" id="uid" value="{{ controller.uid }}" />
+		<div id="divCatalogForm">
+			<form>
+				<div class="form-group">
+				    <label>父节点：</label> <span id="catalog_ptitle">信息系统项目管理师考试教程</span>
+				</div>
+				<div class="form-group">
+				    <label>深度：</label> <span id="catalog_deep">1</span>
+				</div>
+			  <div class="form-group">
+			    <label for="catalog_title">节点名称</label>
+			    <input type="email" class="form-control" id="catalog_title">
+			  </div>
+			  <div class="form-group">
+			    <label for="catalog_remark">备注</label>
+			    <textarea class="form-control" id="catalog_remark" rows="3"></textarea>
+			  </div>
+			  <button type="button" class="btn btn-warning" id="catalog_btn_close">关闭</button>
+			  <button type="button" class="btn btn-info" id="catalog_btn_submit">提交</button>
+			  <button type="button" class="btn btn-primary" id="catalog_btn_submit_new">保存并新建</button>
+			</form>
+
+		</div>
 		<script src="/static/js/jquery-2.1.3.min.js"></script>
 		<script src="/static/fun/editor/wangEditor.min.js"></script>
 		<script src="/static/js/sea.js"></script>
@@ -139,7 +162,6 @@
 		    				catalogWidth = objCatalog.getWidth();
 		    				domEditor.width($.getWidth() - catalogWidth);
 		    			});
-		    			
 		    		});
 		    	}
 		    	objEditor.config.customUpload = true;  // 配置自定义上传
@@ -151,16 +173,154 @@
 			function catalog(){
 				var domTree = null; 
 
+				var objForm = null;
+
+				var layindex_form = null;
+
 				var data 	= [];
 				var loadCatalog = function(callback){
-					domTree = $('<div id="catalogTree" class="catalog-tree">2222</div>');
+					domTree = $('<div id="catalogTree" class="catalog-tree"></div>');
 					$('#divEditor').parent('.wangEditor-container').append(domTree);
 					if(callback) callback();
-				} ,
-				getData = function(){
+				},
+				/**
+				 * 表单的一些方法
+				 * @return {[type]} [description]
+				 */
+				catalogForm = function(){
+					// var model = {id  ,nodeid ,deep ,title ,pid ,sort ,remark ,wimport ,wscore };
+					var $ptitle = $('#catalog_ptitle'),
+						$deep 	= $('#catalog_deep'),
+						$title 	= $('#catalog_title'),
+						$remark = $('#catalog_remark') ,
 
+						id 		= null,
+						pid 	= null,
+						nodeid 	= null,
+						cuid 	= $('#uid').val() ,
+						optType = 1;	//1:添加，2:修改
+					
+					var $btnclose 	= $('#catalog_btn_close'),
+						$btnsave 	= $('#catalog_btn_submit') ,
+						$btnsavenew = $('#catalog_btn_submit_new');
+
+					$btnclose.click(function(){
+						layer.close(layindex_form);
+					});
+
+					$btnsave.click(function () {
+						saveNode(function(){
+							layer.close(layindex_form);	
+						});
+					});
+
+					$btnsavenew.click(function () {
+						saveNode(function(){
+							$title.val('');
+							$remark.val('');
+							var fd = nodeid.substring(0 ,nodeid.length - 2);
+							var ld = parseInt(nodeid.substr(nodeid.length - 2));
+							ld += 1;
+							if(ld>9){nodeid = fd+''+ld; }
+							else{nodeid = fd+'0'+ld; }
+							optType = 1;
+							id = 0;
+						});
+					});
+
+					/**
+					 * 获取子节点的节点值
+					 * @param  {[type]} pid      [description]
+					 * @param  {[type]} pnid     [description]
+					 * @param  {[type]} brothers [description]
+					 */
+					var getNodeId = function(pid ,pnid ,brothers){
+						var ref 	= domTree.jstree('get_children_dom' ,pid) ,
+							inst 	= jQuery.jstree.reference(ref);
+
+						var maxId	= 0,	//获取最后两位的值
+							bnode 		= '';
+
+						for(var i=0,len=brothers.length ,item ,inode ,mid;i<len;i++){
+							item 	= inst.get_node(brothers[i]);
+							inode	= item.original.nodeid;
+							mid 	= parseInt(inode.substr(inode.length - 2));
+							if(mid > maxId) maxId = mid;
+						}
+						maxId += 1;
+						if(maxId>9){return pnid+''+maxId; }
+						else{return pnid+'0'+maxId; }
+					},
+					/**
+					 * 保存一个节点
+					 * @param  {Function} callback [description]
+					 */
+					saveNode 	= function(callback){
+						var title = $title.val();
+						if(!title){
+							$.error('节点名称可不能为空！~');
+							return;
+						}
+						callback = callback || function(){};
+						var param = {
+							nodeid 	: nodeid,
+							deep 	: $deep.text(),
+							title 	: title,
+							pid 	: pid,
+							cuid 	: cuid ,
+							remark 	: $remark.val() 
+						}
+						var url = '/mcourse/nexus/';
+						if(optType ==1){ url+='add'; }
+						else if(optType == 2){url += id; }
+						else{$.error('操作类型出错！'); return; }
+						$.query(url ,param,function(e){
+							if(e.errno > 0){$.error(e.errmsg); return; }
+							$.info(e.data);
+							callback();
+							domTree.jstree('refresh');
+						} ,optType==1 ? 'post' : 'put');
+					}
+
+					return{
+						/**
+						 * 根据父节点，加载子节点的相关信息
+						 * @param  {[type]} pnode    [description]
+						 * @param  {[type]} brothers [description]
+						 * @return {[type]}          [description]
+						 */
+						loadChildNode 	: function(pnode ,brothers){
+							optType = 1;
+							$ptitle.text(pnode.text);
+							$deep.text(pnode.deep+1);
+							$title.val('');
+							$remark.val('');
+							pid = pnode.id;
+							nodeid = getNodeId(pnode.id ,pnode.nodeid ,brothers);
+							id = 0;
+						},
+						/**
+						 * 加载一个节点，主要是为了修改节点信息
+						 * @param  {[type]} node [description]
+						 */
+						loadNode 		: function(node){
+							optType = 2;
+							var ref 	= domTree.jstree('get_children_dom' ,node.pid) ,
+								inst 	= jQuery.jstree.reference(ref),
+								pnode 	= inst.get_node(node.pid);
+							console.log(node);
+							id = node.id;
+							$ptitle.text(pnode.text);
+							$deep.text(node.deep);
+							$title.val(node.text);
+							$remark.val(node.remark);
+							pid = node.pid;
+							nodeid = node.nodeid;
+						}
+					}
 				}
-				getData();
+
+				objForm = catalogForm();
 				return {
 					loadHtml : loadCatalog  ,
 					loadTree : function(){
@@ -169,7 +329,7 @@
 							    animation : 0,
 							    check_callback : true,
 							    data : {
-								    url : function (node) {return '/mcourse/nexus/list'; },
+								    url : function (node) {return '/mcourse/nexus/'+$('#uid').val(); },
 								    data : function (node) {return { 'id' : node.id }; }
 								}
 						  	},
@@ -182,37 +342,65 @@
 						            "ccp":null,
 						            "addNode":{
 						                "label":"添加子节点",  
-						                "action":function(data){  
-						                	console.log('addNode');
-						                    console.log(data);
-						                    var inst 	= jQuery.jstree.reference(data.reference),  
+						                "action":function(data){
+						                	var inst 	= jQuery.jstree.reference(data.reference),  
 						                   		obj 	= inst.get_node(data.reference);
-						                    console.log({"title":"新建“"+obj.text+"”的子菜单",url:"/accountmanage/createMenu?id="+obj.id,height:280,width:400});
+						                   	objForm.loadChildNode(obj.original ,obj.children);
+						                	layindex_form = layer.open({
+											  	type: 1,
+											  	title : '添加“'+obj.text+'”的子节点',
+											  	shift: 5,
+											  	// move : false,
+											  	content: $('#divCatalogForm')
+											});
 						                }
 						            },
 						            "delNode":{
 						                "label":"删除",
 						                "action":function(data){  
-						                    var inst = jQuery.jstree.reference(data.reference),  
-						                    obj = inst.get_node(data.reference);  
-						                    if(confirm("确定要删除此菜单？删除后不可恢复。")){  
-						                        jQuery.get("/accountmanage/deleteMenu?id="+obj.id,function(dat){  
-						                            if(dat == 1){  
-						                                alert("删除菜单成功！");  
-						                                jQuery("#"+treeid).jstree("refresh");  
-						                            }else{  
-						                                alert("删除菜单失败！");  
-						                            }  
-						                        });  
-						                    }  
+						                    var inst 	= jQuery.jstree.reference(data.reference),  
+						                    	obj 	= inst.get_node(data.reference),
+						                    	node 	= obj.original ,
+						                    	child 	= obj.children;
+						                    if(node.nodeid == 'r'){
+						                    	layer.msg('此节点为根节点，不能被删除，只有删除整个课程的时候，此节点才会被删除！');
+						                    	return;
+						                    }
+						                    if(child.length > 0){
+						                    	layer.msg('节点存在子节点，不能被删除！你可以一个一个从子节点开始删除~');
+						                    }else{
+						                    	layer.confirm('删除节点会把节点所关联的文章删除，一定要删除吗？', {btn: ['一定要删除','还是取消吧'] }, function(){
+													$.query('/mcourse/nexus/'+node.id ,{},function(e){
+														if(e.errno > 0){console.error(e.errmsg); return; }
+														$.info(e.data);
+														domTree.jstree('refresh');
+													} ,'delete');
+												});
+						                    }
+			                    			
 						                }  
 						            },  
-						            "edit":{  
-						                "label":"编辑",  
+						            "editNode":{  
+						                "label":"编辑节点",  
+						                "action":function(data){  
+						                    var inst 	= jQuery.jstree.reference(data.reference),  
+						                    	obj 	= inst.get_node(data.reference); 
+						                    objForm.loadNode(obj.original);
+						                    layindex_form = layer.open({
+											  	type: 1,
+											  	title : '修改节点：“'+obj.text+'”',
+											  	shift: 5,
+											  	// move : false,
+											  	content: $('#divCatalogForm')
+											});
+						                }  
+						            },
+						            "editContent":{  
+						                "label":"编辑文章",  
 						                "action":function(data){  
 						                    var inst = jQuery.jstree.reference(data.reference),  
 						                    obj = inst.get_node(data.reference);  
-						                    dialog.show({"title":"编辑“"+obj.text+"”菜单",url:"/accountmanage/editMenu?id="+obj.id,height:280,width:400});  
+						                   
 						                }  
 						            }
 								}

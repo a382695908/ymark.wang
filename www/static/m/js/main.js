@@ -45,10 +45,7 @@ seajs.use(['ripples','material' ,'layer' ,'ymark'] ,function() {
     });
 
     $(document).ajaxSend(function(e,req, set){
-        loadingIndex = layer.load('加载中', {
-            icon: 16 ,
-            shade: [0.3,'#fff'] //0.1透明度的白色背景
-        });
+        loadingIndex = layer.load('加载中', {icon: 16 , shade: [0.3,'#fff'] }); 
     });
 });
 

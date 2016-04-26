@@ -29,7 +29,7 @@
         var menu = new E.Menu({
             editor: editor,  // 编辑器对象
             id: menuId,  // 菜单id
-            title: '目录', // 菜单标题
+            title: '编辑目录', // 菜单标题
             $domNormal: $('<a href="javascript:;" tabindex="-1"><i class="glyphicon glyphicon-th-list"></i></a>'),
             $domSelected: $('<a href="javascript:;" tabindex="-1" class="selected"><i class="glyphicon glyphicon-th-list"></i></a>')
         });
