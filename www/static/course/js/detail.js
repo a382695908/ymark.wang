@@ -1,18 +1,30 @@
 (function($) {
 	var objCatalogue 	= undefined ,
 		objDiagram 		= undefined ,
-		objEditor 		= undefined ;
+		objContent 		= undefined ;
 
 	var courseuid = $('#courseuid').val() ;
 
 
 	$(function () {
-		catalog();
-		setTimeout(diagram ,50);
-		setTimeout(content ,200);
+		objCatalogue 	= catalog();
+		loadEvent();
+		objDiagram 		= diagram();
+		objContent 		= content();
+
 	});
 
+	function loadEvent() {
+		var $show = $('[showTo]');
+		$show.click(function () {
+			var self = $(this);
+			$show.removeClass('active');
+			self.addClass('active');
+			$(self.attr('hideTo')).hide();
+			$(self.attr('showTo')).show();
+		});
 
+	}
 
 	function catalog(){
 		$.get('/course/catalog/'+courseuid ,null,function(e){
@@ -21,7 +33,7 @@
 				data 	: e.data ,
 				levels 	: 100 ,
 				onNodeSelected     : function(e ,node){
-					// objForm.loadNodeInfo(node); 
+					objContent.loadContent(node.id); 
 				}
 			});
 		})
@@ -55,18 +67,30 @@
             ]
         };
         var options = {
-            container:'divdiagram',
+            container:'divstruct',
             editable:false,
             theme:'primary'
         }
         var jm = jsMind.show(options,mind);
+
+        return {
+        	loadDiagram 	: function(courseuid){
+        		
+        	}
+        }
 	}
 
 	function content(){
-        $.get('/course/content/'+courseuid ,null,function(e){
-            // $('#divcontent').html()
-        });
-		 
+        var $content = $('#divcontent') 
+		return {
+		 	loadContent : function(courseuid){
+		 		$.get('/course/content/'+courseuid ,null,function(e){
+		          	if(e.errno > 0){console.error(e.errmsg); return; }
+		          	e = e.data;
+		          	$content.html(e.content);
+		        });
+		 	}
+		 }
 
 	}
 	

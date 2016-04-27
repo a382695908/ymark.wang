@@ -1,7 +1,8 @@
 'use strict';
 
 export default {
-	mcourse : {reg :/^mcourse/ }
+	mcourse : {reg :/^mcourse/ },
+	course 	: {reg :/^course/ }
 };
 
 // export default [

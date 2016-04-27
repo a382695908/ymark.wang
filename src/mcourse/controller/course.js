@@ -5,7 +5,11 @@ import Base from './base.js';
 
 export default class extends Base {
     async indexAction(){
-        this.uid = this.get().id;
+        let uid     = this.get().id;
+        let list   = await this.model('coursecontent').where({cuid:uid}).order('cid').limit(0,1).select();
+        
+        this.uid    = uid;
+        this.model  = list[0];
         return this.display('edit');
     }
 

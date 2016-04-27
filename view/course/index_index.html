@@ -5,11 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		<!--[if lte IE 8]><script src="/static/course/css/ie/html5shiv.js"></script><![endif]-->
-		<script src="/static/course/js/jquery.min.js"></script>
-		<script src="/static/course/js/jquery.poptrox.min.js"></script>
-		<script src="/static/course/js/skel.min.js"></script>
-		<script src="/static/course/js/init.js"></script>
+		
 		<noscript>
 			<link rel="stylesheet" href="/static/course/css/skel.css" />
 			<link rel="stylesheet" href="/static/course/css/style.css" />
@@ -18,69 +14,74 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="/static/course/css/ie/v8.css" /><![endif]-->
 	</head>
 	<body id="top">
-
+		<!--[if lte IE 8]><script src="/static/course/css/ie/html5shiv.js"></script><![endif]-->
+		<script src="/static/course/js/jquery.min.js"></script>
+		<script src="/static/course/js/jquery.poptrox.min.js"></script>
+		<script src="/static/course/js/skel.min.js"></script>
+		<script src="/static/course/js/init.js"></script>
 		<!-- Header -->
-			<header id="header">
-				<h1><strong>YMARK - COURSE</strong></h1>
-			</header>
+		<header id="header">
+			<h1><strong>YMARK - COURSE</strong></h1>
+		</header>
 
 		<!-- Main -->
-			<div id="main">
-				
-				<!-- One -->
-					<section id="one">
-						<header class="major">
-							<h2>易马克 - 课程专题</h2>
-						</header>
-						<p>分享你的知识结构、学习方法</p>
-					</section>
-				
-				<!-- Two -->
-					<section id="two">
-						<h2>COURSE LIST</h2>
-						<div class="row">
-							<article class="6u 12u$(3) work-item">
-								<a href="/static/course/images/fulls/01.jpg" class="image fit thumb">
-									<img src="/static/course/images/thumbs/01.jpg" alt="" />
-								</a>
-								<h3><a href="/course/xxxxx" >信息系统项目管理师考试教程</a></h3>
-								<p>软考-高级.分享结构化知识.</p>
-							</article>
-							<article class="6u$ 12u$(3) work-item">
-								<a href="/static/course/images/fulls/02.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/02.jpg" alt="" /></a>
-								<h3>Ultricies lacinia interdum</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u 12u$(3) work-item">
-								<a href="/static/course/images/fulls/03.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/03.jpg" alt="" /></a>
-								<h3>Tortor metus commodo</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u$ 12u$(3) work-item">
-								<a href="/static/course/images/fulls/04.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/04.jpg" alt="" /></a>
-								<h3>Quam neque phasellus</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u 12u$(3) work-item">
-								<a href="/static/course/images/fulls/05.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/05.jpg" alt="" /></a>
-								<h3>Nunc enim commodo aliquet</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u$ 12u$(3) work-item">
-								<a href="/static/course/images/fulls/06.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/06.jpg" alt="" /></a>
-								<h3>Risus ornare lacinia</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-						</div>
-					</section>
-                    
-			</div>
+		<div id="main">
+			<!-- One -->
+			<section id="one">
+				<header class="major">
+					<h2>易马克 - 课程专题</h2>
+				</header>
+				<p>分享你的知识结构、学习方法</p>
+			</section>
+			<!-- Two -->
+			<section id="two">
+				<h2>COURSE LIST</h2>
+				<div class="row">
+					{% for item in controller.list %}
+					<article class="6u 12u$(3) work-item" pics="{{ item.coverpics }}">
+						<a href="/upload/{{ item.coverpics }}" class="image fit thumb">
+							<img src="/upload/{{ item.coverpics }}" onerror="noImg();" alt="" />
+						</a>
+						<h3><a href="/course/{{ item.uid }}" >{{ item.name }}</a></h3>
+						<p>{{ item.summary }}</p>
+					</article>
+					{% endfor %}
+					<!-- <article class="6u$ 12u$(3) work-item">
+						<a href="/static/course/images/fulls/02.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/02.jpg" alt="" /></a>
+						<h3>Ultricies lacinia interdum</h3>
+						<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
+					</article>
+					<article class="6u 12u$(3) work-item">
+						<a href="/static/course/images/fulls/03.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/03.jpg" alt="" /></a>
+						<h3>Tortor metus commodo</h3>
+						<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
+					</article>
+					<article class="6u$ 12u$(3) work-item">
+						<a href="/static/course/images/fulls/04.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/04.jpg" alt="" /></a>
+						<h3>Quam neque phasellus</h3>
+						<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
+					</article>
+					<article class="6u 12u$(3) work-item">
+						<a href="/static/course/images/fulls/05.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/05.jpg" alt="" /></a>
+						<h3>Nunc enim commodo aliquet</h3>
+						<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
+					</article>
+					<article class="6u$ 12u$(3) work-item">
+						<a href="/static/course/images/fulls/06.jpg" class="image fit thumb"><img src="/static/course/images/thumbs/06.jpg" alt="" /></a>
+						<h3>Risus ornare lacinia</h3>
+						<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
+					</article> -->
+				</div>
+			</section>     
+		</div>
 			
 		<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="https://github.com/ymma/ymark.wang" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
-				</ul>
-			</footer>
+		<footer id="footer">
+			<ul class="icons">
+				<li><a href="https://github.com/ymma/ymark.wang" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
+			</ul>
+		</footer>
+		
+			
 	</body>
 </html>
