@@ -19,7 +19,7 @@
 	</head>
 
 	<body>
-		<div id="divEditor"> <p></p>{{ controller.model.content }} </div>
+		<div id="divEditor"></div>
 		<input type="hidden" id="uid" value="{{ controller.uid }}" />
 		<div id="divCatalogForm">
 			<form>
@@ -43,7 +43,7 @@
 			</form>
 		</div>
 		<div id="divBtnGroup">
-			<button type="button" class="btn btn-primary" id="btnContentSaveQuick">快速保存</button>
+			<button type="button" class="btn btn-primary" read="0" id="btnContentSaveQuick">快速保存</button>
 			<button type="button" class="btn btn-info"  id="btnContentSave">保存</button>
 		</div>
 		<script src="/static/js/jquery-2.1.3.min.js"></script>
@@ -157,6 +157,7 @@
 		    			objEditor.create(); 
 		    			domEditor = $('#divEditor');
 		    			domEditor.show();
+		    			objEditor.$txt.html($('#tempContent').html());
 		    			offsetWidth();
 		    		});
 		    	},
@@ -352,21 +353,6 @@
 						            "rename":null,
 						            "remove":null,
 						            "ccp":null,
-						            "addNode":{
-						                "label":"添加子节点",  
-						                "action":function(data){
-						                	var inst 	= jQuery.jstree.reference(data.reference),  
-						                   		obj 	= inst.get_node(data.reference);
-						                   	objForm.loadChildNode(obj.original ,obj.children);
-						                	layindex_form = layer.open({
-											  	type: 1,
-											  	title : '添加“'+obj.text+'”的子节点',
-											  	shift: 5,
-											  	// move : false,
-											  	content: $('#divCatalogForm')
-											});
-						                }
-						            },
 						            "editContent":{  
 						                "label":"编辑文章",  
 						                "action":function(data){  
@@ -384,7 +370,21 @@
 						                   	// objContent.loadArticle(obj.id);
 						                }  
 						            },
-
+						            "addNode":{
+						                "label":"添加子节点",  
+						                "action":function(data){
+						                	var inst 	= jQuery.jstree.reference(data.reference),  
+						                   		obj 	= inst.get_node(data.reference);
+						                   	objForm.loadChildNode(obj.original ,obj.children);
+						                	layindex_form = layer.open({
+											  	type: 1,
+											  	title : '添加“'+obj.text+'”的子节点',
+											  	shift: 5,
+											  	// move : false,
+											  	content: $('#divCatalogForm')
+											});
+						                }
+						            },
 						            "delNode":{
 						                "label":"删除",
 						                "action":function(data){  
@@ -440,23 +440,34 @@
 					title 		= "{{ controller.model.title }}",
 				    labels 		= "{{ controller.model.labels }}",
 				    summary 	= "{{ controller.model.summary }}",
-				    content 	= "{{ controller.model.content }}",
 				    lasttime 	= "{{ controller.model.lasttime }}",
 				    recontent 	= "{{ controller.model.recontent }}";
 
 				var $btnContentSaveQuick 	= $('#btnContentSaveQuick'),
 					$btnContentSave 		= $('#btnContentSave');
 
+				// 快速保存
 				$btnContentSaveQuick.click(function(){
+					var self = $(this);
+					if(self.attr('read') == '1'){return;}	//避免连续操作
+					self.attr('read', '1');
+					self.text('保存中...');
 					var param = {
 						id 			: id ,
 						content 	:  objEditor.$txt.html() ,
 						savetype 	: 'quick'
 					}
 					$.query('/mcourse/cc/'+id, param ,function(e){
-						console.log(e);
+						if(e.errno > 0){ $.error(e.errmsg); return; }
+						self.text('保存完成');
+						setTimeout(function(){
+							self.attr('read', '0');
+							self.text('快速保存');
+						},5000);
 					},'post');
 				});
+
+
 
 
 				return {

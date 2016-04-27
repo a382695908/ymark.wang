@@ -28,7 +28,6 @@ export default class extends Base {
 
         let param   = this.post();
         let savetype= param.savetype ,
-            id      = param.id ,
             time    = DateFormat(new Date(), "yyyy-mm-dd hh:MM:ss");   
 
         let row = {
@@ -38,7 +37,7 @@ export default class extends Base {
         }
         let model = this.model('coursecontent');
         if(savetype == 'quick'){    //快速保存
-            await model_course.where({id:id}).update(row);
+            await model.where({id:id}).update(row);
             return this.success('保存完成');
         }else{  // 保存
 

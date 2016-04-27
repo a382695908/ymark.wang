@@ -14,3 +14,4 @@ html, body {margin:0px;height:100%;overflow: hidden;font-size: 14px;}
 .wangEditor-container .code-textarea{padding-top: 30px;margin-left: 230px;}
 #divBtnGroup{position: fixed;right:0;top:0;padding:2px;z-index:99;}
 #divBtnGroup>button{height:26px;font-size:12px;line-height:14px;text-align:center;}
+#divBtnGroup>.btn-loading{}

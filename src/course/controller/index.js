@@ -7,13 +7,16 @@ export default class extends Base {
    * index action
    * @return {Promise} []
    */
-  indexAction(){
-    //auto render template file index_index.html
+  async indexAction(){
+    let list   = await this.model('course').field('uid,name,coverpics,summary,lasttime').order('addtime desc').select();
+    this.list  = list;
     return this.display();
   }
 
-  detailAction(){
-    console.log('2222222222222');
+  async detailAction(){
+    var uid = this.get().id;
+    let list   = await this.model('course').where({uid:uid}).field('uid,name,coverpics,summary,lasttime').limit(0,1).select();
+    this.model  = list[0];
     return this.display('detail_list');
   }
 
@@ -21,60 +24,57 @@ export default class extends Base {
    * 详细页目录列表，根据课程的UID
    * @return {[type]} [description]
    */
-  cataloglistAction(){
-    var tree = [
-      {text: "教程信息" },
-      {text: "序/前言"},
-      {text: "整体知识结构图"},
-      {
-        text: "第一章 诸论",
-        nodes: [
-          {
-            text: "什么是项目",
-            nodes: [{text: "项目的定义"}, {text: "信息系统项目的特点"} ]
-          },
-          {text: "项目与日常运营"},
-          {text: "项目和战略"},
-          {text: "项目管理的定义及其他知识范围"},
-          {text: "项目管理需要的专门知识领域" ,
-              nodes: [
-                {text: "项目管理知识体系"}, 
-                {text: "应用领域的知识、标准和规定"}, 
-                {text: "理解项目环境"}, 
-                {text: "一般的管理知识和技能"}, 
-                {text: "处理人际关系技能"} ]
-          },
-          {text: "项目管理高级话题"}
-        ]
-      },
-      
-      {
-        text: "Parent 3"
-      },
-      {
-        text: "Parent 4"
-      },
-      {
-        text: "Parent 5"
-      }
-    ];
-    return this.success(tree)
+  async cataloglistAction(){
+    let uid = this.get().uid;
+    if(!uid) return this.fail('UID为空！');
+    let model_catalog = this.model('coursecatalog');
+    let list = await model_catalog.order('id').where({cuid:uid}).select();
+    if(!list || list.length <= 0) return this.success({});
+    let list_len = list.length;
+    /**
+     * 得到父节点为ID的节点
+     * @param  {[type]} startIndex [开始遍历的索引]
+     */
+    let getChilds = function(startIndex, pid){
+        let item    = undefined ,
+            node    = undefined ,
+            childs  = undefined ,
+            res     = [] ;
+        for(let i=startIndex;i<list_len;i++){
+            item    = list[i];
+            if(item.pid == pid) {
+                node = {id:item.id,text:item.title,remark:item.remark};
+                childs = getChilds(i ,item.id);
+                if(childs.length > 0) node.nodes = childs;
+                res.push(node);
+            }
+        }
+        return res;
+    },
+    getTreeList = function (data) {
+        let pid     = undefined ,
+            node    = undefined ,
+            childs  = undefined ,
+            res     = [] ;
+
+        data.map( (k ,v) =>{
+            pid = k.pid;
+            if(pid == '0'){
+                node = {id:k.id,text:k.title,remark:k.remark};
+                childs = getChilds(v ,k.id);
+                if(childs.length > 0) node.nodes = childs; 
+                res.push(node);
+            }
+        });
+        return res;
+    }
+    return this.success(getTreeList(list));
   }
 
-  contentAction(){
-    var res = [
-      '项目具有临时性、独特性和渐进性特点。',
-      '',
-      '1. 临时性：每个项目都有确定的开始和结束。',
-      '2. 独特的产品、服务或成果：',
-      '  项目创造独特的可交付成果：产品、服务、成果。',
-      '  - 产品：项目可以创造、生产出来可以量化的产品或制品。',
-      '  - 服务：',
-      '  - 成果：',
-      '3. 渐进明细：项目逐步完善的过程。',
-      '  渐进明细意味着分布、连续的积累。',
-    ];
-    return this.success(res.join(''))
+  async contentAction(){
+    var id    = this.get().id;
+    let list  = await this.model('coursecontent').where({cid:id}).field('id,title,labels,summary,content,lasttime,viewnum,recontent').limit(0,1).select();
+    return this.success(list[0])
   }
 
 }
