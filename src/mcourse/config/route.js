@@ -31,11 +31,17 @@ export default [
 	    delete 	: "mcourse/nexus/delete?id=:1",
 	    put 	: "mcourse/nexus/save?id=:1"
 	}],
-	[/^mcourse\/cc\/(\S*)$/, {
+	[/^mcourse\/cc\/(\S*)$/, {	//course content
 	    get 	: "mcourse/coursecontent/detail?id=:1",
 	    post 	: "mcourse/coursecontent/save?id=:1",
 	    delete 	: "mcourse/coursecontent/delete?id=:1",
 	    put 	: "mcourse/coursecontent/save?id=:1"
+	}],
+	[/^mcourse\/cm\/(\S*)$/, {	//course mind
+	    get 	: "mcourse/coursemind/detail?id=:1",
+	    post 	: "mcourse/coursemind/save?cuid=:1",
+	    delete 	: "mcourse/coursemind/delete?id=:1",
+	    put 	: "mcourse/coursemind/save?cuid=:1"
 	}],
 	[/^mcourse\/(((?!list).)*)$/, {get : "mcourse/course/index?id=:1"}],
 ];

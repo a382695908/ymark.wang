@@ -9,8 +9,6 @@
 		<meta name="author" content="ymark">
 		<link rel="stylesheet" type="text/css" href="/static/css/pace.css">
 		<link rel="stylesheet" type="text/css" href="/static/course/css/detail.css">
-		<!-- 结构图 -->
-		<link type="text/css" rel="stylesheet" href="/static/fun/jsmind/jsmind.css" />
 		<!-- Favicons -->
 		<link rel="icon" href="/static/img/favicon.ico">
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -52,7 +50,7 @@
 		                </div>
 		            </div>
 		        </div>
-		        <div class="manual-right">
+		        <div class="manual-right" id="panelRight">
 		            <div class="m-article">
 		                <div class="article-head">
 		                    <div class="head-tool">
@@ -60,40 +58,39 @@
 		                    <div class="head-util">
 
 		                    <div class="item w-drop drop-hover">
-		                    	<span class="drop-show active" showTo="#divstruct" hideTo="#divcontent">
+		                    	<span id="spanShowTypeMind" class="drop-show ">
 			                        <span class="glyphicon glyphicon-scissors" aria-hidden="true"></span>
 			                        <b class="text"> 知识点结构图 </b>
 			                    </span>
-		                      	<span class="drop-show " showTo="#divcontent" hideTo="#divstruct">
+		                      	<span id="spanShowTypeCont" class="drop-show active">
 		                        	<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
 		                        	<b class="text"> 文章内容 </b>
 		                      	</span>
 		                    </div>
 		                    </div>
-		                    <h1>{{ controller.model.name }}</h1>
+		                    <h1 id="info_title">{{ controller.model.name }}</h1>
 		                </div>
 		                <div class="article-wrap">
 		                    <div class="article-view">
 		                        <div class="view-body think-editor-content" id="divcontent"> </div>
-		                        <div class="view-body think-editor-content view-struct" id="divstruct"> 3333</div>
-		                        <div class="view-foot">
+		                        <!-- <div class="view-foot">
 		                            <div class="article-jump">
 		                                <span class="jump-up" style="display: block;">上一篇：<a href="#">下载</a></span>
 		                                <span class="jump-down" style="display: block;">下一篇：<a href="#">生成编辑器（使用ID）</a></span>
 		                            </div>
 		                            <a class="view-backtop"><i class="icon-arrow-up2"></i></a>
-		                        </div>
+		                        </div> -->
 		                    </div>
 		                </div>
 		            <div class="think-loading loading-ripple"><span class="loading-inner"><i class="loading-image"></i><b class="loading-text"></b></span></div></div>
 		        </div>
 		    <div class="manual-progress"></div></div>
 		    <div class="manual-mask"></div>
+		    <div id="divstruct"></div>
 		</div>
 		<script type="text/javascript" src="/static/js/pace.min.js"></script>
 		<script type="text/javascript" src="/static/js/jquery-2.1.3.min.js"></script>
-	    <script type="text/javascript" src="/static/m/js/bootstrap-treeview.js"></script>
-		<script type="text/javascript" src="/static/fun/jsmind/jsmind.js"></script>
+		<script src="/static/js/sea.js"></script>
 	    <script src="/static/course/js/detail.js"></script>
 	</body>
 </html>
