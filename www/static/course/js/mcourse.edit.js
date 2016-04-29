@@ -226,8 +226,8 @@ function loadEditor(){
 	objEditor.config.customUpload = true;  // 配置自定义上传
 	objEditor.config.customUploadInit = uploaderInit;  // 配置上传事件
 	objEditor.config.menus = ['menureturn', 'catalog', '|',
-		'source', 'bold', 'underline', 'italic', 'strikethrough', 'forecolor', 'eraser', '|',
-		'quote', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright', '|',
+		'source', 'bold', 'underline', 'italic', 'strikethrough', 'forecolor' ,'bgcolor', 'eraser', '|',
+		'quote', 'fontsize', 'head', 'unorderlist', 'alignleft', 'aligncenter', 'alignright', '|',
 		'link', 'unlink', 'table', '|',
 		'img', 'insertcode',
 	];
