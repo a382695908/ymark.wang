@@ -13,32 +13,20 @@ export default class extends Base {
         return this.display('edit');
     }
 
-    detailAction(){
-        console.log('detailAction');
-        // console.log(this.abc)
-        return this.success({a:'detailAction'});
-    }
-
-    async listAction(){
-        let userId = this.getUserId();
-        console.log(userId);
-        let model = this.model('course');
-        // let count = await model.where(list_where).count('o.id');
-        return this.success('ssssssss');
-    }
-
     async deleteAction(){
         let uid = this.get().id;
         if(!uid) return this.fail({errno: -1, errmsg: '请填写完整参数'});
-        // 需要删除 课程表、课程目录表、课程内容表、课程分享表、试题表、纠错表
+        // 需要删除 课程表、课程目录表、课程内容表、课程结构表、课程分享表、试题表、纠错表
         let model_course        = this.model('course') ,
             model_coursecatalog = this.model('coursecatalog') ,
             model_coursecontent = this.model('coursecontent') ,
+            model_coursemind    = this.model('coursemind') ,
             model_courseshare   = this.model('courseshare') ,
             model_question      = this.model('question') ,
             model_buglog        = this.model('buglog');
 
         model_course.delete({where: {uid: uid} });
+        model_coursemind.delete({where:{cuid:uid}});
         model_coursecatalog.delete({where: {cuid: uid} });
         model_coursecontent.delete({where: {cuid: uid} });
         model_courseshare.delete({where: {cuid: uid} });
@@ -65,6 +53,7 @@ export default class extends Base {
         let model_course = this.model('course');
         if(method=='POST' && uid == 'add'){
             let model_coursecatalog = this.model('coursecatalog'), 
+                model_coursemind    = this.model('coursemind'), 
                 model_coursecontent = this.model('coursecontent');
             let userId = this.getUserId();
             // 添加的时候，还需要向课程目录表，插入一条内容
@@ -77,6 +66,7 @@ export default class extends Base {
             await model_course.add(row);    //添加课程目录
             let catalogId = await model_coursecatalog.add({nodeid:'r', cuid:uid, deep:0, title:name, pid:0});   //向课程目录表插入默认记录
             let contentId = await model_coursecontent.add({title:name, cuid:uid, cid:catalogId, status:0, addtime:time, lasttime:time, adduser:userId});   //向课程内容表中插入记录
+            await model_coursemind.add({nid:'1',pnid:0 ,title:name, cuid:uid, cid:catalogId, ctid:contentId});  
             return this.success('添加成功！');
         }else if(uid){
             let insertId = await model_course.where({uid:uid}).update(row);

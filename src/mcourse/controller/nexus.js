@@ -7,13 +7,6 @@ export default class extends Base {
         return this.display('list');
     }
 
-    async getjsonAction(){
-        return this.display([
-          { "id" : "demo_root_1", "text" : "Root 1", "children" : true, "type" : "root" },
-          { "id" : "demo_root_2", "text" : "Root 2", "type" : "root" }
-        ]);
-    }
-
     /**
      * 获得列表树，返回一个格式化后的Tree
      * @return {[type]} [description]
@@ -67,13 +60,16 @@ export default class extends Base {
     }
 
     async deleteAction(){
-        let id = this.get().id;
+        let id = this.get().id ;
+            // cuid = this.post().uid;
         if(!id) return this.fail({errno: -1, errmsg: '请填写完整参数'});
         let model_catalog       = this.model('coursecatalog') ,
+            model_coursemind    = this.model('coursemind') ,
             model_coursecontent = this.model('coursecontent') ;
 
         model_catalog.delete({where: {id: id} });
         model_coursecontent.delete({where: {cid: id} });
+        model_coursemind.delete({where:{cid: id}});
         return this.success('删除成功！');
     }
 
@@ -92,11 +88,13 @@ export default class extends Base {
         if(id){
             if(id == 'add'){
                 // 添加的时候，会向文章表中插入一条所关联的文章的记录
-                let model_coursecontent = this.model('coursecontent');
+                let model_coursecontent = this.model('coursecontent') ,
+                    model_coursemind = this.model('coursemind') ;
                 let time    = DateFormat(new Date(), "yyyy-mm-dd hh:MM:ss"),
                     userId  = this.getUserId();
                 let catalogId = await model_catalog.add(row);
                 let contentId = await model_coursecontent.add({title:param.title, cuid:param.cuid, cid:catalogId, status:0, addtime:time, lasttime:time, adduser:userId});
+                await model_coursemind.add({nid:'1',pnid:0 ,title:param.title, cuid:param.cuid, cid:catalogId, ctid:catalogId});  
                 return this.success('添加成功');
             }else{
                 await model_catalog.where({id:id}).update(row);
