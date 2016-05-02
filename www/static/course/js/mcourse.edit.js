@@ -612,6 +612,8 @@ function courseMind(){
 		saveStatus 	= 0 ; //0仅是查看，并未做修改；1已经修改文章
 
 	var $btnHelp 	= $('#mindHelp'),
+		$btnNewCN	= $('#mindToolsNewCNode') ,
+		$btnDelN	= $('#mindToolsDelNode') ,
 		layindex_help 	= 0 ,
 		htmlHelp 	= $('#divPanelMindHelp').html() ;
 
@@ -628,6 +630,19 @@ function courseMind(){
     	}else{
         	layindex_help = layer.tips(htmlHelp, $btnHelp, {tips: [3, '#78BA32'] , time : 0 });
 		}
+    });
+
+    $btnNewCN.click(function(){
+    	var selected_node = objDiagram.get_selected_node(); // as parent of new node
+        if(!selected_node){$.error('please select a node first.');}
+        var nodeid = jsMind.util.uuid.newid();
+        var node = objDiagram.add_node(selected_node, nodeid, '* 新节点*');
+    });
+
+    $btnDelN.click(function(){
+    	var selected_id = objDiagram.get_selected_node();
+        if(!selected_id){$.error('please select a node first.');}
+        objDiagram.remove_node(selected_id);
     });
 
 	objDiagram = new jsMind(options);

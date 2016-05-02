@@ -20,7 +20,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  line-height: 1;
 }
 .wangEditor-container img {
   border: none;
@@ -213,7 +212,6 @@
 .wangEditor-container .wangEditor-txt h3,
 .wangEditor-container .wangEditor-txt h4,
 .wangEditor-container .wangEditor-txt h5 {
-  margin: 10px 0;
   line-height: 1.8;
 }
 .wangEditor-container .wangEditor-txt ul,
@@ -821,3 +819,6 @@
 .hljs-chunk {
   color: #aaa;
 }
+.wangEditor-container .wangEditor-txt{background-color: rgb(252, 252, 251);font: 16px/1.8 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,'Hiragino Sans GB',sans-serif!important;}
+.wangEditor-container .wangEditor-txt a{color: #259;}
+.wangEditor-container .wangEditor-txt pre{font-size: 14px; border: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.5); line-height: 1.5; font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New",monospace;}

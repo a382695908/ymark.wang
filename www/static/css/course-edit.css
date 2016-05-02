@@ -20,6 +20,9 @@ html, body {margin:0px;height:100%;overflow: hidden;font-size: 14px;}
 .btn,.btn:active, .btn.active{outline:none!important;}
 #divPanelMind{ display: block;background: white;position: absolute;top: 32px;z-index: -1;left: 230px;visibility: hidden;}
 #divPanelMind .help{position: absolute; right: 40px; top: 20px;cursor: pointer;z-index:3;}
+#divPanelMind .tools .node-tools{ width: auto; font-size: 14px; margin-left: 10px;}
+#divPanelMind .tools .glyphicon-trash:before,
+#divPanelMind .tools .glyphicon-plus:before{font-size:20px; position: relative; top: 4px; margin-right: 6px;}
 #divPanelMind .tools{z-index: 3;position: absolute; margin-top: 20px; margin-left: 10px;}
 #divPanelMind .tools>span{color:gray;width: 30px; height: 26px; font-size: 20px; text-align: center; cursor: pointer;}
 #divPanelMind .tools>span:hover{color:black;}
