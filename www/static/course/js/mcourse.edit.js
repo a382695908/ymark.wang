@@ -31,7 +31,7 @@ $(function(){
 	  paths: {
 	  	'mjs' 	: '/static/m/js/' ,
 	    'fjs' 	: '/static/fun/'  ,
-	    'editor' 	: '/static/fun/editor/js',
+	    'editor' 	: '/static/fun/editor/',
 	  },
 	  // 设置别名，方便调用
 	  alias: {
@@ -45,7 +45,9 @@ $(function(){
 	    'plupload'          : 'fjs/upload/plupload.full.min.js',
 	    'tree' 				: 'fjs/tree/jstree.min.js',
 	    'treestyle'			: 'fjs/tree/default/style.min.css',
-	    'editorReturn' 		: 'editor/custom-menu.js'
+	    'editorReturn' 		: 'editor/js/custom-menu.js',
+	    'hlcss' 			: 'editor/atelier-forest-dark.css',
+	    'hljs' 				: 'editor/highlight.min.js'
 	  }
 	});
 	loadEditor();
@@ -200,11 +202,10 @@ function loadEditor(){
     	});
 	},
 	loadPlugin = function(){
-		seajs.use(['editorReturn'] ,function() {
+		seajs.use(['editorReturn' ,'hlcss' ,'hljs'] ,function() {
 			objEditor.create(); 
 			domEditor = $('#divEditor');
 			domEditor.show();
-			objEditor.$txt.html($('#tempContent').html());
 			offsetWidth();
 		});
 	},
@@ -227,7 +228,7 @@ function loadEditor(){
 	objEditor.config.customUploadInit = uploaderInit;  // 配置上传事件
 	objEditor.config.menus = ['menureturn', 'catalog', '|',
 		'source', 'bold', 'underline', 'italic', 'strikethrough', 'forecolor' ,'indent', 'eraser', '|',
-		'quote', 'fontsize', 'head', 'unorderlist', 'alignleft', 'aligncenter', 'alignright', '|',
+		'quote', 'head', 'unorderlist' ,'orderlist', '|',
 		'link', 'unlink', 'table', '|',
 		'img', 'insertcode',
 	];
@@ -450,6 +451,7 @@ function catalog(){
 				                    	objMind.loadMind(cid ,callback);
 				                    }
 				                if(objContent.getId() == cid) return;
+				                document.location.hash='#'+cid;
 				                // 先加载文章内容
 			                	if(extFun.getEditType() == '1'){load_article(load_mind); }
 			                	// 先加载MIND
@@ -513,24 +515,26 @@ function catalog(){
 								});
 			                }  
 			            }
-
 					}
 			    },
 			  	plugins : ["contextmenu", "search", "state", "types", "wholerow"] 
 			}).bind('loaded.jstree' ,function(){
-				var cid = domTree.jstree('get_json')[0].id;
+				var cid = document.location.hash;
+				if(cid){cid = cid.substring(1); }
+				else{cid = domTree.jstree('get_json')[0].id; }
 				objContent.loadArticle(cid ,function(){
 					setTimeout(function(){
 						objMind.loadMind(cid);	
-					},1000);
+					},500);
 				});
-			});
+			})
 		},
 		getWidth : function(){return domTree.width() + 20; }
 	}
 }
 
 function courseContent(){
+	var $content 	= $('#divEditor') ;
 	var id 			= null ,
 		title 		= null ,
 	    labels 		= null ,
@@ -573,6 +577,7 @@ function courseContent(){
 				recontent	= e.recontent;
 				saveStatus 	= 0;
 				objEditor.$txt.html(content);
+				$content.find('pre code').each(function(i, block) {hljs.highlightBlock(block); });
 				callback();
 			});
 		},
