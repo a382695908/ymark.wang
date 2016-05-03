@@ -56,10 +56,12 @@
 		  	'jsmindstyle'		: '/static/fun/jsmind/jsmind.css',
 		    'jsmind'   			: '/static/fun/jsmind/jsmind.js',
 		    'jsminddshot'		: '/static/fun/jsmind/jsmind.screenshot.js',
-		    'tree'	            : '/static/m/js/bootstrap-treeview.js'
+		    'tree'	            : '/static/m/js/bootstrap-treeview.js',
+		    'hlcss'	            : '/static/fun/editor/atelier-forest-dark.css',
+		    'hljs'	            : '/static/fun/editor/highlight.min.js'
 		  }
 		});
-		seajs.use(['tree' ,'jsmind' ,'jsmindstyle' ,'jsminddshot'] ,function() {
+		seajs.use(['tree' ,'jsmind' ,'jsmindstyle' ,'jsminddshot' ,'hlcss' ,'hljs'] ,function() {
 			objCatalogue 	= catalog();
 			objDiagram 		= diagram();
 			objContent 		= content();
@@ -166,6 +168,10 @@
         var loadInfo 	= function(data ,callback){
         	$title.html(data.title);
         	$content.html(data.content);
+        	//加入代码高亮
+        	$content.find('pre code').each(function(i, block) {hljs.highlightBlock(block); });
+			//所有的a标签，都是打开一个新页面
+			$content.find('a').each(function(){$(this).attr('target','_blank'); });
         	callback(data);
         }
 

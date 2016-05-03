@@ -299,6 +299,7 @@ input:disabled,textarea:disabled{color:#545454}
 .w-search .form-loading{display:none}
 .w-search.search-block{display:block}
 .think-editor-content{line-height:1.7em;font-size:1.14em}
+.think-editor-content a:hover{text-decoration: underline;}
 .think-editor-content>:first-child{margin-top:0!important}
 .think-editor-content>:last-child{margin-bottom:0!important}
 .think-editor-content h1{font-size:2.25em;line-height:1.2}
@@ -312,8 +313,8 @@ input:disabled,textarea:disabled{color:#545454}
 .think-editor-content ul{padding-left:28px}
 .think-editor-content ol{padding-left:28px}
 .think-editor-content h1,.think-editor-content h2,.think-editor-content h3,.think-editor-content h4,.think-editor-content h5,.think-editor-content h6,.think-editor-content p,.think-editor-content ul,.think-editor-content ol,.think-editor-content blockquote,.think-editor-content pre,.think-editor-content table{margin-bottom:14px}
-.think-editor-content code{display:inline-block;border-radius:4px;padding:0 .4em;background-color:#f7f7f7;word-break:break-all;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;white-space:pre;line-height:1.3}
-.think-editor-content pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border:1px solid #CAC9C9;border-radius:3px;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace}
+.think-editor-content code{color: #c7254e;display:inline-block;border-radius:4px;padding:0 .4em;background-color:#f9f2f4;word-break:break-all;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;white-space:pre;line-height:1.3}
+.think-editor-content pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:rgb(29, 23, 20);border-radius:3px;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace}
 .think-editor-content pre>code{display:inline;max-width:100%;padding:0;margin:0;overflow:initial;line-height:inherit;background-color:transparent;border:0;font-size:100%}
 .think-editor-content table{border-collapse:collapse;table-layout:fixed}
 .think-editor-content th{text-align:left}
