@@ -1,0 +1,256 @@
+{% extends "./layout.html" %}
+
+{% block import %}
+<link rel="stylesheet" href="/static/fun/upload/jquery-ui.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/fun/upload/jquery.ui.plupload.css" type="text/css" />
+<style type="text/css">
+.thumbnail {padding-top: 20px;}
+.thumbnail img{cursor: pointer;}
+.thumbnail .caption{text-align: center;}
+.form-group{margin:0px;}
+.plupload_container .plupload_header{display:none;}
+.plupload_view_thumbs .plupload_content{top:0px;}
+#uploader_start{display: none;}
+.msg-warning{font-size: 12px;margin-left: 20px;color: #B10808;display: none;}
+#divNoneData{margin: 15px;display: none;}
+</style>
+{% endblock %}
+
+{% block rightBtn %}
+<li><a href="javascript:;" id="btnAddCourse">
+	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加课程</a>
+</li>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+	<div class="alert alert-success alert-dismissible" id="divNoneData" role="alert">
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  <strong>Info!</strong> 没有数据
+	</div>
+	<div id="listView"> </div>
+</div>
+<div class="modal fade" id="modal_course_form" tabindex="-1" role="dialog" aria-labelledby="courseForm" data-backdrop='static'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="courseForm">课程表单</h4>
+      </div>
+      <div class="modal-body">
+       	<div class="form-group">
+		  <label class="control-label" for="courseName">课程名称</label>
+		  <input type="text" class="form-control" id="courseName">
+		</div>
+		<div class="form-group">
+		  <label class="control-label" for="courseSummary">简要介绍</label><span class="msg-warning">最好填写一下简要介绍！字数不要超过200字~</span>
+		  <input type="text" class="form-control" id="courseSummary">
+		</div>
+		封面：<br/>
+		<div class="form-group divcoverpics">
+			<div id="uploader"> <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p> </div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="btnSaveCourse">创建</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	var objForm 	= undefined ,
+		objList 	= undefined ;
+
+	var $modalForm = $('#modal_course_form');
+
+	seajs.use(['jquery-ui' ,'plupload'] ,function() {
+		seajs.use('plupload-ui' ,function () {
+			loadEvent();
+			objList.loadList();
+			setTimeout(objForm.loadUpload,500);
+		})
+	});
+
+	$(function(){
+		objList = courseList();
+		objForm = courseForm();
+	})
+
+	function loadEvent(){
+		$('#btnAddCourse').click(function(){
+			objForm.resetForm();
+	      	$modalForm.modal();
+	    });
+	    $('#btnSaveCourse').click(function(){
+	    	objForm.saveForm();
+	    });
+	}
+
+	function courseList(){
+		var $listview 	= $('#listView') ,
+
+			divNoneData = $('#divNoneData') ;
+
+		var dataList = [];
+
+		var loadData = function(){
+			divNoneData.hide();
+			$.query('/mcourse/list/all' ,{} ,function (e) {
+				if(e.errno > 0){ return; }
+				e = e.data ;
+				if(e.length <= 0){$listview.html(''); divNoneData.show(); return; }
+				dataList = e;
+				var html = [];
+				for(var i=0,len=e.length;i<len;i++){html.push(loadItem(e[i])); }
+				$listview.html(html.join(''));
+				$.material.ripples();
+				loadEvent();
+			});
+
+		},
+		loadItem 	= function (item) {
+			var img = item.coverpics;
+			if(img){ if(img.indexOf('/')>0){img='/upload/'+img.split('/')[0]; }else img='/upload/'+img;}
+			else{img='/static/img/none.png';}
+			return '<div class="col-sm-3 col-md-3">' +
+			'    <div class="thumbnail">' +
+			'      <img src="'+img+'" alt="..." onerror="noImg();">' +
+			'      <div class="caption">' +
+			'        <h3>'+item.name+'</h3>' +
+			'        <p key="'+item.uid+'"><a href="javascript:;" class="btn btn-default btn-delete" role="button">删除</a> <a href="javascript:;" class="btn btn-primary" role="button">修改课程</a>' +
+			'   <a href="/mcourse/'+item.uid+'" target="_blank" class="btn" role="button">编辑内容</a> '+
+			'      </p></div>' +
+			'    </div>' +
+			'</div>'
+		},
+		loadEvent 	= function(){
+			$listview.find('.btn-delete').click(function(){
+				var pkey = $(this).parent('p').attr('key');
+				layer.confirm('将会删除以下内容：课程表、课程目录表、课程内容表、课程分享表、试题表、纠错表；确认要删除吗？', {btn: ['就是要删除','还是取消吧'] }, function(){
+				  	if(!pkey){console.error('deleteNode id is empty'); return; }
+					$.query('/mcourse/info/'+pkey ,{},function(e){
+						if(e.errno > 0){console.error(e.errmsg); return; }
+						$.info(e.data);
+						setTimeout(function(){objList.loadList(); },200);
+					} ,'delete');
+				});
+			});
+
+			$listview.find('.btn-primary').click(function(){
+				var pkey = $(this).parent('p').attr('key');
+				objForm.resetForm(getInfo(pkey));
+				$modalForm.modal();
+			});
+		},
+		getInfo 	= function(uid){
+			var data = dataList;
+			for(var i=0,len=data.length;i<len;i++){
+				if(data[i]['uid'] == uid) return data[i];
+			}
+		}
+		return {
+			loadList 	: loadData
+		}
+	}
+
+	function courseForm(){
+	    var $formTitle  = $('#courseForm') ,
+	        $name       = $('#courseName') ,
+	        $summary    = $('#courseSummary') ,
+
+	        $msgSummary = $summary.prev('span.msg-warning') ,
+
+	        objUpload 	= $("#uploader") ;
+	 
+	    var uid         = undefined ,   // 当前操作表单课程的UID
+	    	fileArr		= [];
+
+	    $summary.blur(function () {
+	    	if(!$summary.val()){$msgSummary.show(); }
+	    	else{$msgSummary.hide(); }
+	    });
+
+	    var save = function(){
+	    	var param = {uid:uid ,name:$name.val() ,summary:$summary.val() ,coverpics:''} ;
+	    	if(fileArr.length > 0){param.coverpics = fileArr.join('/'); }
+			var url = '/mcourse/info/' ;
+            if(uid){url += uid;} else{url += 'add';param.uid='add';}
+			$.query(url ,param ,function (e) {
+				if(e.errno > 0){return; }
+				$modalForm.modal('hide');
+				$.info(e.data);
+				objList.loadList();
+			} ,uid ? 'put' : 'post');
+	    }
+
+
+	    return {
+	        /**
+	         * 重置表单
+	         * @param  {string} type undefined : 添加，否则，修改
+	         */
+	        resetForm   : function (data) {
+	          if(data && data.uid){ 
+	              uid = data.uid;
+	              $formTitle.text('修改课程');
+	              $name.val(data.name);
+	              $summary.val(data.summary);
+	              var coverpics = data.coverpics ;
+	              if(coverpics.indexOf('/')>0){coverpics.split('/');}
+	              else{coverpics=[coverpics];}
+	              fileArr = coverpics;
+	              $msgSummary.hide();
+	          }else{ //添加
+	          	  uid = '';
+	              $formTitle.text('添加课程');
+	              $name.val('');
+	              $summary.val('');
+	              $msgSummary.hide();
+	              fileArr = [];
+	          }
+	        },
+	        /**
+	         * 保存一个表单
+	         */
+	        saveForm  : function(){
+	            if(!$name.val()){$.error('请填写课题名称啊~少年'); return; }
+	            // 先上传图片
+		    	if(objUpload.plupload('getFiles').length > 0){
+		    		objUpload.plupload('start');
+		    	}else{
+		    		layer.confirm('没有上传封面，您确认要继续添加课程吗？', {btn: ['继续保存！','算了还是不添加了'] }, save);
+		    	}
+	        },
+	        /**
+	         * 加载上传组件
+	         */
+	        loadUpload 	: function () {
+	        	objUpload.plupload({
+					runtimes 		: 'html5,flash,silverlight,html4',
+					url  			: '/fun/upload/file',
+					max_file_count	: 5,
+					chunk_size 		: '3mb',
+					filters 		: {max_file_size : '10mb', mime_types: [{title : "Image files", extensions : "jpeg,jpg,png"} ] },
+					rename 			: false,
+					sortable 		: true,
+					dragdrop 		: false,
+					views 			: {list: false, thumbs: true, active: 'thumbs'},
+					init  : {
+						BeforeUpload : function(){
+							fileArr = [];
+						},
+						FileUploaded : function(up ,file ,info){
+							info = eval('('+info.response+')');
+							if(info.errno > 0){$.error(info.msg); }
+							fileArr.push(info.data.name);
+						},
+						UploadComplete: function(up, files) {save(); }
+					}
+				});
+	        }
+	    }
+	}
+</script>
+{% endblock %}
