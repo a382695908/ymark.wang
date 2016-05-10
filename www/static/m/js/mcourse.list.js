@@ -8,12 +8,12 @@ seajs.config({
 
     // 设置别名，方便调用
     alias: {
-        'jquery': 'js/jquery-2.1.3.min.js',
-        'layer': 'fjs/layer/layer.js',
+        'jquery': '//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js',
+        'layer': '//apps.bdimg.com/libs/layer/2.1/layer.js',
         'util': 'mjs/util.js',
         'bootgrid': 'mjs/jquery.bootgrid.min.js',
         'ionic': '/static/css/ionicons.min.css',
-        'jquery-ui': 'fjs/upload/jquery-ui.min.js',
+        'jquery-ui': '//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js',
         'plupload': 'fjs/upload/plupload.full.min.js',
         'plupload-ui': 'fjs/upload/jquery.ui.plupload.min.js',
     },
@@ -191,11 +191,13 @@ function CourseForm() {
             layerIndexForm = layer.open({
                 type: 1,
                 title: formtitle,
+                shift: 5,
+                shade: [0.3, '#828282'],
                 area: ['500px', '320px'], //宽高
                 content: panelForm,
                 closeBtn: 0,
                 shadeClose: false,
-                move: false,
+                // move: false,
             });
         },
         closeForm: function() {
@@ -227,23 +229,24 @@ function CourseList() {
             },
             formatters: {
                 "link": function(c, r) {
-                    return '<a href="/mcourse/' + r.uid + '" > ' + r.uid + ' </a>';
+                    return '<a class="grid-a-blue" href="/mcourse/' + r.uid + '" > ' + r.uid + ' </a>';
                 },
                 "options": function(c, r) {
                     var id = r.uid;
-                    return '<a class="grid-option" href="javascript:CLT.delete(\'' + id + '\')"><span class="grid-ionic ionic ion-ios-trash-outline"></span> 删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                        '<a class="grid-option" href="javascript:CLT.showEditForm(\'' + id + '\' ,\'' + r.name + '\')"><span class="grid-ionic ionic ion-ios-compose-outline"></span> 修改</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                        '<a class="grid-option" target="_blank" href="/course/' + id + '"><span class="grid-ionic ionic ion-eye"></span> 预览</a>';
+                    return '<a class="grid-option" target="_blank" href="/course/' + id + '"><span class="grid-ionic ionic ion-eye"></span> 预览</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '<a class="grid-option" href="#"><span class="grid-ionic ionic ion-eye"></span> 查看目录</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '<a class="grid-option" id="tp_' + id + '" href="javascript:CLT.tipMore(\'' + id + '\' ,\'' + r.name + '\')"><span class="grid-ionic ionic ion-more"></span></a>';
                 }
             }
         },
-        currentRow = null;
+        currentRow = null
 
     return {
         load: function() {
             objGrid.bootgrid(gridConfig).on("click.rs.jquery.bootgrid", function(e, c, r) {
                 currentRow = r;
             });
+            $('#btnAddCourse').show();
         },
         reload: function() {
             objGrid.bootgrid("reload");
@@ -269,6 +272,16 @@ function CourseList() {
         showEditForm: function(id, name) {
             CFM.resetForm(currentRow);
             CFM.showForm(name);
+        },
+        tipMore: function(id, name) {
+            var html = '<a class="grid-option" href="javascript:CLT.delete(\'' + id + '\')"><span class="grid-ionic ionic ion-ios-trash-outline"></span> 删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<a class="grid-option" href="javascript:CLT.showEditForm(\'' + id + '\' ,\'' + name + '\')"><span class="grid-ionic ionic ion-ios-compose-outline"></span> 修改</a>';
+            layer.tips(html, '#tp_' + id, {
+                skin: 'tp-options',
+                tips: [2, 'rgba(230, 230, 230, 0.73)'],
+                shadeClose: true,
+                time: 10000
+            });
         }
     }
 }

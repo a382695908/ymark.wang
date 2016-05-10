@@ -34,10 +34,11 @@ body{background: #F3F3F3;overflow: hidden;}
 .m-btngroup{margin-bottom: 20px;}
 
 /* 表头固定内容滚动的表格  */
-.m-grid{margin:0 0 20px;line-height:18px;}
+.m-grid{margin:-50px 0 20px 0;line-height:18px;}
 .m-grid .scroll{border:1px solid #ddd;border-top:0;overflow-y:auto;}
 .m-grid .grid-ionic{ font-size: 20px; position: relative; top: 2px;}
-.m-grid .grid-option{}
+.m-grid .grid-a-blue{color:#1919A3;}
+.m-grid .grid-a-blue:hover{color:blue;}
 .m-grid .grid-option:hover{color:blue;}
 .m-grid table{width:100%;table-layout:fixed;}
 .m-grid th,.m-grid td{padding:10px;max-height:38px;}
@@ -134,3 +135,7 @@ body{background: #F3F3F3;overflow: hidden;}
 .m-form .ipt a,.m-form .ipt a:hover{text-decoration:none;color:#3891eb;}
 .m-form .ipt p{height:22px;line-height:22px;color:#999;}
 .m-form .u-ipt{width:350px;}
+
+
+#btnAddCourse{display: none;}
+.tp-options.layui-layer-tips i.layui-layer-TipsR{border-top-color: rgba(230, 230, 230, 0.73)!important;border-bottom: 0!important;}
