@@ -16,11 +16,13 @@ seajs.config({
         'jquery-ui': '//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js',
         'plupload': 'fjs/upload/plupload.full.min.js',
         'plupload-ui': 'fjs/upload/jquery.ui.plupload.min.js',
+        'tree': 'fjs/tree/jstree.min.js',
+        'treestyle': 'fjs/tree/default/style.min.css',
     },
     preload: 'jquery'
 });
-var CLT = CFM = layer = null;
-seajs.use(['jquery', 'layer', 'util', 'ionic', 'bootgrid'], function() {
+var CLT = CFM = CTG = layer = null;
+seajs.use(['jquery', 'layer', 'util', 'ionic', 'bootgrid', 'tree', 'treestyle'], function() {
     var navheight = 45 + 15;
     var dimension = $.getDimension(),
         height = dimension.height;
@@ -32,14 +34,15 @@ seajs.use(['jquery', 'layer', 'util', 'ionic', 'bootgrid'], function() {
     var loadingIndex = undefined;
     $(document).ajaxComplete(function(e, req, set) {
         var res = req.responseJSON;
-        layer.close(loadingIndex);
+        // layer.close(loadingIndex);
+        if (!res) return;
         if (res.errno || res.errno > 0) {
             $.error(res.errmsg);
         }
     });
 
     $(document).ajaxError(function(e, req, set) {
-        layer.close(loadingIndex);
+        // layer.close(loadingIndex);
         console.log('ajaxError');
         console.log(req);
         console.log(set);
@@ -47,15 +50,16 @@ seajs.use(['jquery', 'layer', 'util', 'ionic', 'bootgrid'], function() {
     });
 
     $(document).ajaxSend(function(e, req, set) {
-        loadingIndex = layer.load('加载中', {
-            icon: 16,
-            shade: [0.3, '#fff']
-        });
+        // loadingIndex = layer.load('加载中', {
+        //     icon: 16,
+        //     shade: [0.3, '#fff']
+        // });
     });
 
     $('#gmn').height(height - navheight);
     CLT = CourseList();
     CFM = CourseForm();
+    CTG = CourseCatalog();
     CLT.load();
 
     $('#btnAddCourse').click(function() {
@@ -234,7 +238,7 @@ function CourseList() {
                 "options": function(c, r) {
                     var id = r.uid;
                     return '<a class="grid-option" target="_blank" href="/course/' + id + '"><span class="grid-ionic ionic ion-eye"></span> 预览</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                        '<a class="grid-option" href="#"><span class="grid-ionic ionic ion-eye"></span> 查看目录</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '<a class="grid-option" href="javascript:CTG.showCatalog(\'' + id + '\' ,\'' + r.name + '\')"><span class="grid-ionic ionic ion-ios-copy-outline"></span> 查看目录</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
                         '<a class="grid-option" id="tp_' + id + '" href="javascript:CLT.tipMore(\'' + id + '\' ,\'' + r.name + '\')"><span class="grid-ionic ionic ion-more"></span></a>';
                 }
             }
@@ -280,8 +284,301 @@ function CourseList() {
                 skin: 'tp-options',
                 tips: [2, 'rgba(230, 230, 230, 0.73)'],
                 shadeClose: true,
-                time: 10000
+                time: 5000
             });
+        }
+    }
+}
+
+function CourseCatalog() {
+    var layerIndexCatalog = null,
+
+        panelCatalog = $('#panelCourseCatalog'),
+        domCatalog = panelCatalog.children('#catalogTree'),
+
+        $catalogUpdCnt = $('#catalogUpdCnt'),
+        $catalogDelete = $('#catalogDelete'),
+        $catalogPrew = $('#catalogPrew'),
+
+        $panelForm = $('#catalogForm'),
+        $panelList = $('#catalogOrderList'),
+        $liall = $('#catalogul').children('li'),
+
+        selectPanelNow = 'Form',
+        isChanged = false,
+        treeConfig = {
+            core: {
+                animation: 0,
+                check_callback: true,
+                data: {}
+            },
+            types: {
+                "default": {
+                    "icon": "ionic ion-ios-paw"
+                }
+            },
+            plugins: ["state", "types", "wholerow"]
+        },
+        /**
+         * 表单的一些方法
+         * @return {[type]} [description]
+         */
+        catalogForm = (function() {
+            // var model = {id  ,nodeid ,deep ,title ,pid ,sort ,remark ,wimport ,wscore };
+            var $title = $panelForm.find('#ctgTitle'),
+                $remark = $panelForm.find('#ctgRemark'),
+                $wimport = $panelForm.find('#ctgWimport'),
+                $wscore = $panelForm.find('#ctgWscore'),
+                $fall = $panelForm.find('input'),
+
+                id = pid = nodeid = deep = cuid = null,
+
+                optType = 1; //1:添加，2:修改
+
+            var $btnclose = $('#catalog_btn_close'),
+                $btnsave = $('#catalog_btn_submit'),
+                $btnsavenew = $('#catalog_btn_submit_new');
+
+            $btnclose.click(function() {
+                layer.close(layindex_form);
+            });
+            $fall.change(function() {
+                isChanged = true;
+            });
+            $btnsave.click(function() {
+                isChanged = false;
+                // saveNode(function() {
+                //     layer.close(layindex_form);
+                // });
+            });
+
+            $btnsavenew.click(function() {
+                saveNode(function() {
+                    $title.val('');
+                    $remark.val('');
+                    var fd = nodeid.substring(0, nodeid.length - 2);
+                    var ld = parseInt(nodeid.substr(nodeid.length - 2));
+                    ld += 1;
+                    if (ld > 9) {
+                        nodeid = fd + '' + ld;
+                    } else {
+                        nodeid = fd + '0' + ld;
+                    }
+                    optType = 1;
+                    id = 0;
+                });
+            });
+
+            /**
+             * 获取子节点的节点值
+             */
+            var getNodeId = function(pid, pnid, brothers) {
+                    var ref = domCatalog.jstree('get_children_dom', pid),
+                        inst = jQuery.jstree.reference(ref);
+
+                    var maxId = 0, //获取最后两位的值
+                        bnode = '';
+
+                    for (var i = 0, len = brothers.length, item, inode, mid; i < len; i++) {
+                        item = inst.get_node(brothers[i]);
+                        inode = item.original.nodeid;
+                        mid = parseInt(inode.substr(inode.length - 2));
+                        if (mid > maxId) maxId = mid;
+                    }
+                    maxId += 1;
+                    if (maxId > 9) {
+                        return pnid + '' + maxId;
+                    } else {
+                        return pnid + '0' + maxId;
+                    }
+                },
+                /**
+                 * 保存一个节点
+                 * @param  {Function} callback [description]
+                 */
+                saveNode = function(callback) {
+                    var title = $title.val();
+                    if (!title) {
+                        $.error('节点名称可不能为空！~');
+                        return;
+                    }
+                    callback = callback || function() {};
+                    var param = {
+                        nodeid: nodeid,
+                        deep: $deep.text(),
+                        title: title,
+                        pid: pid,
+                        cuid: cuid,
+                        remark: $remark.val()
+                    }
+                    var url = '/mcourse/nexus/';
+                    if (optType == 1) {
+                        url += 'add';
+                    } else if (optType == 2) {
+                        url += id;
+                    } else {
+                        $.error('操作类型出错！');
+                        return;
+                    }
+                    $.query(url, param, function(e) {
+                        if (e.errno > 0) {
+                            $.error(e.errmsg);
+                            return;
+                        }
+                        $.info(e.data);
+                        callback();
+                        domCatalog.jstree('refresh');
+                    }, optType == 1 ? 'post' : 'put');
+                }
+
+            return {
+                /**
+                 * 根据父节点，加载子节点的相关信息
+                 */
+                loadChildNode: function(pnode, brothers) {
+                    optType = 1;
+                    // $ptitle.text(pnode.text);
+                    $deep.text(pnode.deep + 1);
+                    $title.val('');
+                    $remark.val('');
+                    pid = pnode.id;
+                    nodeid = getNodeId(pnode.id, pnode.nodeid, brothers);
+                    id = 0;
+                },
+                /**
+                 * 加载一个节点，主要是为了修改节点信息
+                 */
+                loadNode: function(node, callback) {
+                    callback = callback || function() {};
+                    $title.val(node.text);
+                    $remark.val(node.remark);
+                    $wimport.val(node.wimport);
+                    $wscore.val(node.wscore);
+                    id = node.id;
+                    pid = node.pid;
+                    nodeid = node.nodeid;
+                    cuid = node.cuid;
+                    optType = 1;
+                    callback();
+                }
+            }
+        })(),
+        catalogSort = (function() {
+            var objGrid = $('#catalogSortGrid'),
+
+                tempData = {};
+
+
+            return {
+                load: function() {
+                    // objGrid.bootgrid(gridConfig);
+                },
+                reload: function(data, callback) {
+                    callback = callback || function() {};
+                    if (!data.id) {
+                        $.error('id为空诶！');
+                        return;
+                    }
+                    var loadHtml = function(data) {
+                        if (data.length <= 0) {
+                            objGrid.html('<tr><td colspan="2" class="none">没有子节点...</td></tr>');
+                            return;
+                        }
+                        var html = [];
+                        for (var i = 0, len = data.length, item; i < len; i++) {
+                            item = data[i];
+                            html.push('<tr><td><a>' + item.name + '</a></td>');
+                            html.push('<td><a class="grid-option" title="向上移动" href="javascript:;"><span class="grid-ionic ionic ion-chevron-up"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;');
+                            html.push('<a class="grid-option" title="向下移动" href="javascript:;"><span class="grid-ionic ionic ion-chevron-down"></span></a></td></tr>');
+                        }
+                        objGrid.html(html.join(''));
+                    }
+                    var td = tempData[data.id];
+                    if (td) {
+                        loadHtml(td);
+                        return;
+                    }
+                    $.get('/mcourse/nexus/chdlist', {
+                        pid: data.id
+                    }, function(e) {
+                        e = e.data;
+                        tempData[data.id] = e;
+                        loadHtml(e);
+                    });
+                    setTimeout(callback, 200);
+                },
+            }
+        })();
+
+    domCatalog.jstree(treeConfig).bind('loaded.jstree', function() {
+        catalogSort.load();
+    }).on("select_node.jstree", function(e, data) {
+        var loadData = function() {
+            data = data.node.original;
+            $catalogUpdCnt.attr('href', '/mcourse/' + data.cuid + '#' + data.id);
+            $catalogPrew.attr('href', '/course/' + data.cuid + '#' + data.id);
+            if (selectPanelNow == 'Form') {
+                catalogForm.loadNode(data, function() {
+                    catalogSort.reload(data);
+                });
+            } else {
+                catalogSort.reload(data, function() {
+                    catalogForm.loadNode(data);
+                });
+            }
+        }
+        if (isChanged) {
+            layer.confirm('表单已经修改过了，是否保存表单之后再加载新的呢？', {
+                btn: ['保存后加载', '不保存就加载'] //按钮
+            }, function() {
+                catalogForm.saveNode(loadData);
+            }, function() {
+                loadData();
+                isChanged = false;
+            });
+        } else {
+            loadData();
+        }
+
+    }).on("refresh.jstree", function(e, data) {
+        domCatalog.jstree("open_all");
+    })
+    return {
+        showCatalog: function(id, title) {
+            layerIndexForm = layer.open({
+                type: 1,
+                title: '目录 - ' + title,
+                shift: 5,
+                shade: [0.3, '#828282'],
+                area: ['700px', '500px'], //宽高
+                content: panelCatalog,
+                closeBtn: 1,
+                shadeClose: false,
+            });
+
+            domCatalog.jstree(true).settings.core.data = {
+                url: function(node) {
+                    return '/mcourse/nexus/' + id;
+                },
+                data: function(node) {
+                    return {
+                        'id': node.id
+                    };
+                }
+            };
+            domCatalog.jstree(true).refresh();
+        },
+        showPanel: function(key, n) {
+            selectPanelNow = key;
+            $liall.removeClass('z-crt');
+            $liall.eq(n).addClass('z-crt');
+            if (key == 'Form') {
+                $panelForm.show();
+                $panelList.hide();
+            } else {
+                $panelForm.hide();
+                $panelList.show();
+            }
         }
     }
 }

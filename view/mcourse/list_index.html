@@ -39,9 +39,8 @@
 		        	<nav class="m-crumb m-crumb-arr">
 					    <ul class="f-cb">
 					        <li><a href="#">主页</a></li>
-					        <li><a href="#">面包屑，可多行</a></li>
-					        <li><a href="#">面包屑</a></li>
-					        <li>文字</li>
+					        <li><a href="#">所有课程</a></li>
+					        <li>课程列表页</li>
 					    </ul>
 					</nav>
 					<nav class="m-btngroup">
@@ -81,6 +80,72 @@
 	            <div class="formitm formitm-1"><button class="u-btn" onclick="CFM.saveForm();" type="button">保存</button> <button class="u-btn u-btn-c4" onclick="CFM.closeForm()" type="button">关闭</button></div>
 	        </fieldset>
 	    </form>
+	</div>
+	<div class="m-form g-dialog gc-ctg" id="panelCourseCatalog">
+		<div class="gc-ml catalog-tree" id="catalogTree"></div>
+	    <div class="gc-mr">
+	        <header class="m-hd">
+			    <h2 class="u-tt"><a id="catalogUpdCnt" target="_blank" href="#">修改内容</a></h2>
+			    <h2 class="u-tt"><a id="catalogDelete" href="javascript:;">删除</a></h2>
+			    <h2 class="u-tt"><a id="catalogPrew" target="_blank" href="#">预览</a></h2>
+			    <ul id="catalogul">
+			        <li class="z-crt"><a href="javascript:CTG.showPanel('Form', 0);">表单</a></li>
+			        <li><a href="javascript:CTG.showPanel('OrderList' ,1);">排序</a></li>
+			    </ul>
+			</header>
+			<div class="ctg-panel ctg-form" id="catalogForm">
+				<fieldset>
+		            <div class="formitm">
+		                <label class="lab">节点名称：</label>
+		                <div class="ipt">
+		                    <input type="text" class="u-ipt" id="ctgTitle"/>
+		                    <p>30字以内</p>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">备注：</label>
+		                <div class="ipt">
+		                	<textarea class="u-ipt u-textarea" id="ctgRemark" rows="5"></textarea>
+		                    <p>字数不要超过200字~</p>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">权重：</label>
+		                <div class="ipt">
+		                    <input type="text" class="u-ipt" id="ctgWimport"/>
+		                    <p>重要程度</p>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">所占分数：</label>
+		                <div class="ipt">
+		                    <input type="text" class="u-ipt" id="ctgWscore"/>
+		                    <p>总科目的此目录所占的分数</p>
+		                </div>
+		            </div>
+		            
+		            <div class="formitm formitm-1">
+		            	<button id="catalog_btn_new_child" class="u-btn" type="button">新建子节点</button>
+		            	<button id="catalog_btn_submit" class="u-btn" type="button">保存</button>
+		            	<button id="catalog_btn_submit_new" class="u-btn" type="button">保存并新建</button>
+		            </div>
+		        </fieldset>
+			</div>
+			<div class="ctg-panel ctg-list" id="catalogOrderList">
+				<table>
+			        <thead>
+			           <tr><th>节点名称</th><th></th></tr>
+			        </thead>
+			    </table>
+				<div class="scroll" >
+				    <table>
+			            <tbody id="catalogSortGrid">
+			            	<tr><td colspan="2" class="none">没有子节点...</td></tr>
+			            </tbody>
+			        </table>
+			    </div>
+			</div>
+	    </div>
 	</div>
 </div>
 <script src="/static/js/sea.js"></script>
