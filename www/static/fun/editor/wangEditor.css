@@ -819,7 +819,7 @@
 .hljs-chunk {
   color: #aaa;
 }
-.wangEditor-container .wangEditor-txt{background-color: rgb(252, 252, 251);font: 16px/1.8 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,'Hiragino Sans GB',sans-serif!important;}
+.wangEditor-container .wangEditor-txt{background-color: rgb(252, 252, 251);font: 14px/1.8 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,'Hiragino Sans GB',sans-serif!important;}
 .wangEditor-container .wangEditor-txt a{color: #259;}
 .wangEditor-container .wangEditor-txt pre{font-size: 14px; border: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.5); line-height: 1.5; font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New",monospace;}
 
@@ -920,3 +920,5 @@
 .xml .hljs-cdata {
   opacity: 0.5;
 }
+
+.wangEditor-container hr{margin-bottom:10px;}

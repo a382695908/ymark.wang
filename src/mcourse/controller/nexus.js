@@ -9,7 +9,6 @@ export default class extends Base {
 
     //获得列表树，返回一个格式化后的Tree
     async listAction() {
-        console.log(this.get());
         let uid = this.get().uid;
         if (!uid) return this.fail('UID为空！');
         let model_catalog = this.model('coursecatalog');

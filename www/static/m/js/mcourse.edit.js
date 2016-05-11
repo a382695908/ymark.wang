@@ -240,17 +240,17 @@ function loadEditor() {
 	objEditor.config.customUpload = true; // 配置自定义上传
 	objEditor.config.customUploadInit = uploaderInit; // 配置上传事件
 	objEditor.config.menus = ['menureturn', 'catalog', '|',
-		'source', 'bold', 'underline', 'italic', 'strikethrough', 'forecolor', 'indent', 'eraser', '|',
-		'quote', 'head', 'unorderlist', 'orderlist', '|',
+		'bold', 'underline', 'italic', 'strikethrough', 'forecolor', 'indent', '|',
+		'quote', 'head' ,'code', 'unorderlist', 'orderlist', '|',
 		'link', 'unlink', 'table', '|',
-		'img', 'insertcode',
+		'img', 'insertcode','eraser'
 	];
 	objEditor.onchange = function() {
 		objContent.setSaveStatus(1);
 	}
 	loadPlugin();
 	$btnShowMind.click(function() {
-		objEditor.disable();
+		objEditor.disableMenusExcept(['menureturn', 'catalog']);
 		$btnShowCnt.removeClass('active');
 		$(this).addClass('active');
 		$panelMind.css('visibility', 'visible').css('z-index', 99);
@@ -584,11 +584,14 @@ function catalog() {
 				} else {
 					cid = domTree.jstree('get_json')[0].id;
 				}
+				domTree.jstree("open_all");
 				objContent.loadArticle(cid, function() {
 					setTimeout(function() {
 						objMind.loadMind(cid);
 					}, 500);
 				});
+			}).on("refresh.jstree", function(e, data) {
+				domTree.jstree("open_all");
 			})
 		},
 		getWidth: function() {
