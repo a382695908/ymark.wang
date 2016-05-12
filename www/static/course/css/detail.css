@@ -367,7 +367,7 @@ html pre.prettyprint:hover .m-copy-code{visibility:visible;left:auto;right:0;top
 .m-article .article-head .item{cursor:pointer;color:#999;font-size:16px;float:left}
 .m-article .article-head .item .icon{vertical-align:top;margin-top:6px;display:inline-block;width:18px;height:18px;text-align:center;line-height:18px;margin-right:4px}
 .m-article .article-head .item .text{font-weight:200}
-.m-article .article-wrap #divcontent{display:block;max-width:980px;margin-left:auto!important;margin-right:auto!important}
+.m-article .article-wrap #divcontent{display:block;max-width:980px;margin-left:auto!important;margin-right:auto!important;font: 14px/1.8 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,'Hiragino Sans GB',sans-serif!important;}
 .m-article .article-view{position:relative;padding-bottom:6px}
 .m-article .article-view .view-body{min-height:90px;}
 #divstruct{ position: fixed; left: 280px;background:white;z-index: -1;top: 100px; width: 1639px; height: 507px; overflow: auto;visibility: hidden;}

@@ -5,9 +5,10 @@
             window.define('wangEditor', ["jquery"], factory);
         } else if (window.define.cmd) {
             // CMD模式
-            window.define(function(require, exports, module) {
-                return factory;
-            });
+            // window.define(function(require, exports, module) {
+            //     return factory;
+            // });
+            factory(window.jQuery);
         } else {
             // 全局模式
             factory(window.jQuery);
@@ -493,6 +494,9 @@
                 if (!commandName) {
                     return;
                 }
+                // console.log(commandName);
+                // console.log(commandValue);
+                // commandName = 'italic';
                 if (editor.queryCommandSupported(commandName)) {
                     // 默认命令
                     document.execCommand(commandName, false, commandValue);
@@ -1063,7 +1067,7 @@
                     var commandName;
                     var commandValue;
                     var selected = self.selected;
-                    console.log('1066:clickEvent'); 
+                    console.log('1066:clickEvent');
 
                     if (selected) {
                         commandName = self.commandNameSelected;
@@ -1981,15 +1985,19 @@
             var resultHtml = ''; //存储最终的结果
             var $txt = self.$txt;
             var legalTags = editor.config.legalTags;
-            var legalTagArr = legalTags.split(',') ,
+            var legalTagArr = legalTags.split(','),
                 // 如果删除当前节点后，父节点为空，则删除父节点，直到编辑器的内容为空
-                deletePNode = function($ele){
+                deletePNode = function($ele) {
                     var html = $ele.html();
-                    if(html){html = html.trim();}
+                    if (html) {
+                        html = html.trim();
+                    }
                     console.log(html);
-                    if(!html){
+                    if (!html) {
                         // console.log(html);
-                        if($ele.hasClass('wangEditor-txt')){return;}
+                        if ($ele.hasClass('wangEditor-txt')) {
+                            return;
+                        }
                         // console.log(editor.$txt.html());
                         var $pele = $ele.parent();
                         $ele.remove();
@@ -1997,8 +2005,8 @@
                     }
                 }
             $txt.on('paste', function(e) {
-                var current = editor.getRangeElem() ,
-                    currentNodeType = current.nodeName ;
+                var current = editor.getRangeElem(),
+                    currentNodeType = current.nodeName;
                 if (currentNodeType === 'TD' || currentNodeType === 'TH') {
                     // 在表格的单元格中粘贴，忽略所有内容。否则会出现异常情况
                     return;
@@ -2011,23 +2019,28 @@
                     // 判断选区中是否存在内容，如果有内容，则先删除内容
                     if (!editor.isRangeEmpty()) {
                         //选择的为全部
-                        if($current.hasClass('wangEditor-txt')){
+                        if ($current.hasClass('wangEditor-txt')) {
                             $current.html('');
-                        }else{
+                        } else {
                             console.log('not all');
                             var _html = $current.html();
                             // 如果选取为部分块，而且选择的块的内容为一整块，则移除这一块
-                            if(!_html || editor.getRangeText() == _html){
+                            if (!_html || editor.getRangeText() == _html) {
                                 $current.html('');
                                 deletePNode($current);
                             }
                         }
                     }
                     // 粘贴时，如果选择的标签为STRONG，LI，H1，H2，H3，H4，H5则应该粘贴纯文本
-                    var pasteFilterNodes = editor.config.pasteFilterNodes ,  isFN = false ;
-                    for(var i=0,len=pasteFilterNodes.length;i<len;i++){
-                        if(isFN) { break; }
-                        if(currentNodeType == pasteFilterNodes[i]){isFN = true;}
+                    var pasteFilterNodes = editor.config.pasteFilterNodes,
+                        isFN = false;
+                    for (var i = 0, len = pasteFilterNodes.length; i < len; i++) {
+                        if (isFN) {
+                            break;
+                        }
+                        if (currentNodeType == pasteFilterNodes[i]) {
+                            isFN = true;
+                        }
                     }
                     // 
                     // 判断光标所在行，是否在li ,ol ,ul中，如果是的话，将粘贴的块级元素去掉，变成行内样式
@@ -2512,7 +2525,7 @@
             undo: 'Undo',
             redo: 'Redo',
             fullscreen: 'Full screnn',
-            code : 'Code'
+            code: 'Code'
         };
     });
     // 全局配置
@@ -2596,7 +2609,7 @@
         // 是否过滤粘贴内容
         E.config.pasteFilter = true;
         E.config.pasteRegex = /style=".*?"|class=".*?"|id=".*?"/ig;
-        E.config.pasteFilterNodes = ['STRONG','LI','H1','H2','H3','H4','H5'];   //粘贴时，如果标签的类型符合，则只粘贴纯本文
+        E.config.pasteFilterNodes = ['STRONG', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5']; //粘贴时，如果标签的类型符合，则只粘贴纯本文
     });
     // 全局UI
     _e(function(E, $) {
@@ -2789,6 +2802,7 @@
             // 定义选中状态下的click事件
             menu.clickEventSelected = function(e) {
                 var isRangeEmpty = editor.isRangeEmpty();
+                console.log('2underline');
                 if (!isRangeEmpty) {
                     // 如果选区有内容，则执行基础命令
                     editor.command(e, 'Underline');
@@ -3205,7 +3219,7 @@
 
             // 定义选中状态下的click事件
             menu.clickEventSelected = function(e) {
-                editor.command(e, 'formatBlock'  ,'p');
+                editor.command(e, 'formatBlock', 'p');
             };
             // 增加到editor对象中
             editor.menus[menuId] = menu;
@@ -3226,20 +3240,18 @@
                 id: menuId,
                 title: lang.code,
                 commandName: 'insertHTML',
-                commandValue: '<code>'
             });
-            menu.clickEvent = function(e){
-                var rangeText = editor.getRangeText();
-                if (!rangeText) {
-                    e.preventDefault();
-                    return;
+            menu.clickEvent = function(e) {
+                    var rangeText = editor.getRangeText();
+                    if (!rangeText) {
+                        e.preventDefault();
+                        return;
+                    }
+                    editor.command(e, 'insertHTML', '<code>' + rangeText + '</code>');
                 }
-                editor.command(e, 'insertHTML'  ,'<code>'+rangeText+'</code>');
-            }
-            // 定义选中状态下的click事件
+                // 定义选中状态下的click事件
             menu.clickEventSelected = function(e) {
-                console.log('2');
-                editor.command(e, 'formatBlock'  ,'p');
+                editor.command(e, 'formatBlock', 'p');
             };
             // 增加到editor对象中
             editor.menus[menuId] = menu;
@@ -3259,7 +3271,8 @@
                 editor: editor,
                 id: menuId,
                 title: lang.unorderlist,
-                commandName: 'InsertUnorderedList'
+                commandName: 'InsertUnorderedList',
+                commandValue: false
             });
             // 增加到editor对象中
             editor.menus[menuId] = menu;
@@ -3279,7 +3292,8 @@
                 editor: editor,
                 id: menuId,
                 title: lang.orderlist,
-                commandName: 'InsertOrderedList'
+                commandName: 'InsertOrderedList',
+                commandValue: false
             });
             // 增加到editor对象中
             editor.menus[menuId] = menu;
@@ -3586,9 +3600,9 @@
         });
     });
     // eraser 菜单
-    _e(function (E, $) {
+    _e(function(E, $) {
 
-        E.createMenu(function (check) {
+        E.createMenu(function(check) {
             var menuId = 'eraser';
             if (!check(menuId)) {
                 return;
@@ -3605,7 +3619,7 @@
             });
 
             // 定义点击事件
-            menu.clickEvent = function (e) {
+            menu.clickEvent = function(e) {
                 var isRangeEmpty = editor.isRangeEmpty();
                 // 清空样式应该包括：
                 // 1.清空hn的标签，h1,h2,h3,h4,h5，用p>strong标签包住

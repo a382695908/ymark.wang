@@ -40,6 +40,9 @@ export default [
 		delete: "mcourse/coursecontent/delete?id=:1",
 		put: "mcourse/coursecontent/save?id=:1"
 	}],
+	[/^mcourse\/cm\/(index)/, {
+		get: "mcourse/coursemind/index"
+	}],
 	[/^mcourse\/cm\/(\S*)$/, { //course mind
 		get: "mcourse/coursemind/detail?id=:1",
 		post: "mcourse/coursemind/save?cuid=:1",

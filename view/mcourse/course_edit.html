@@ -1,91 +1,81 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> YMAK - BLOG </title>
-		<meta charset="UTF-8"/>
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<meta name="author" content="ymark"/>
-		<!-- Favicons -->
-		<link rel="icon" href="/static/img/favicon.ico" />
+		<title>YMAK - BLOG</title>
+
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="ymark">
+		<meta name="keywords" content=""/>
+		<meta name="description" content=""/>
+		<link rel="stylesheet" href="/static/m/css/ymark.base.css"/>
+		<link rel="stylesheet" href="/static/fun/editor/wangEditor.css" type="text/css" />
+		<link rel="stylesheet" href="/static/m/css/mcourse.edit.content.css"/>
+
+		<link rel="shortcut icon" href="/static/img/favicon.ico"/>
+		<link rel="apple-touch-icon" href="/static/img/favicon.ico"/>
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
-		<link rel="stylesheet" href="/static/css/bootstrap.edit.min.css" type="text/css" />
-		<link rel="stylesheet" href="/static/fun/editor/wangEditor.css" type="text/css" />
-		<link rel="stylesheet" href="/static/m/css/mcourse.edit.css" type="text/css" />
 	</head>
 
 	<body>
-		<div id="divEditor"></div>
 		<input type="hidden" id="uid" value="{{ controller.uid }}" />
-		<div id="divCatalogForm">
-			<form>
-				<div class="form-group">
-				    <label>父节点：</label> <span id="catalog_ptitle"></span>
-				</div>
-				<div class="form-group">
-				    <label>深度：</label> <span id="catalog_deep">1</span>
-				</div>
-			  <div class="form-group">
-			    <label for="catalog_title">节点名称</label>
-			    <input type="text" class="form-control" id="catalog_title">
-			  </div>
-			  <div class="form-group">
-			    <label for="catalog_remark">备注</label>
-			    <textarea class="form-control" id="catalog_remark" rows="3"></textarea>
-			  </div>
-			  <button type="button" class="btn btn-warning" id="catalog_btn_close">关闭</button>
-			  <button type="button" class="btn btn-info" id="catalog_btn_submit">提交</button>
-			  <button type="button" class="btn btn-primary" id="catalog_btn_submit_new">保存并新建</button>
-			</form>
+		<input type="hidden" id="cid" value="" />
+		<div class="g-hd">
+			<a href="javascript:CW.toggleCatalog();" class="btn ionic ion-navicon">&nbsp;&nbsp;目录</a><a href="javascript:;" read="0" id="btnContentSaveQuick" class="btn ionic ion-ios-download-outline">&nbsp;&nbsp;快速保存</a><a href="#" class="btn ionic ion-upload">&nbsp;&nbsp;完整保存</a>
 		</div>
-		<div id="divBtnGroup">
-			<button type="button" class="btn btn-primary" read="0" id="btnContentSaveQuick">快速保存</button>
-			<button type="button" class="btn btn-info"  id="btnContentSave">保存</button>
+		<div class="g-hd g-right">
+			<a href="javascript:;" id="btnPreview" target="_blank" class="btn ionic ion-upload">&nbsp;&nbsp;预览</a>
 		</div>
-		<div id="divBtnTab">
-			<button type="button" class="btn" id="btnShowMind">知识点结构图</button>
-			<button type="button" class="btn active" id="btnShowCnt">文章内容</button>
+		<div class="g-sd"> <div id="catalogTree"></div> </div>
+		<div class="g-mn" id="panelEditor"> 
+			<div id="divEditor"></div>
 		</div>
-		<div id="divPanelMind">
-			<div class="tools">
-				<!-- <span id="mindToolsDownload" class="glyphicon glyphicon-cloud-download" aria-hidden="true" title="下载图片"></span> -->
-				<span id="mindToolsNewCNode" class="node-tools glyphicon glyphicon-plus" aria-hidden="true" title="新建子节点">新建子节点</span>
-				<span id="mindToolsDelNode" class="node-tools glyphicon glyphicon-trash" aria-hidden="true" title="删除节点">删除节点</span>
+		<div class="g-mn" id="panelMind">
+		    <iframe scrolling="auto" frameborder="0" allowtransparency="true" id="iframeMind" src="/mcourse/cm/index" frameborder="0" style="height: 100%;width:100%;"></iframe>
+		</div>
+		<div class="g-ft">
+		    
+		</div>
+		<div class="g-dialog" id="divCatalogForm">
+			<div class="m-form">
+			    <form name="" action="#" method="get">
+			        <fieldset>
+			        	<div class="formitm">
+			                <label class="lab">父节点：</label>
+			                <div class="ipt" id="catalog_ptitle"></div>
+			                <label class="lab">深度：</label>
+			                <div class="ipt" id="catalog_deep"></div>
+			            </div>
+			            <div class="formitm">
+			                <label class="lab">节点名称：</label>
+			                <div class="ipt">
+			                    <input type="text" class="u-ipt" id="catalog_title"/>
+			                </div>
+			            </div>
+			            <div class="formitm">
+			                <label class="lab">备注：</label>
+			                <div class="ipt">
+			                	<textarea class="u-ipt" id="catalog_remark" rows="3"></textarea>
+			                    <p>尽量不要超过100字~</p>
+			                </div>
+			            </div>
+			            <div class="formitm formitm-1">
+			            	<button class="u-btn" type="button" id="catalog_btn_submit">提交</button>
+			            	<button class="u-btn" type="button" id="catalog_btn_submit_new">保存并新建</button>
+			            	<button class="u-btn u-btn-c4" type="button" id="catalog_btn_close">关闭</button>
+			            </div>
+			        </fieldset>
+			    </form>
 			</div>
-			<div class="help" id="mindHelp"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></div>
 		</div>
-		<div id="divPanelMindHelp">
-			<h5><span class="help-discribe">添加子节点</span><span>[ Insert ]</span></h5>
-		   	<h5><span class="help-discribe">添加同级节点</span><span>[ Enter ]</span></h5>
-		   	<h5><span class="help-discribe">编辑节点</span><span>[ F2 ]</span></h5>
-		   	<h5><span class="help-discribe">删除节点</span><span>[ Delete ]</span></h5>
-		   	<h5><span class="help-discribe">合并/打开节点</span><span>[ Space ]</span></h5>
-		   	<h5><span class="help-discribe">选择左侧节点</span><span>[ Left ]</span></h5>
-		   	<h5><span class="help-discribe">选择上侧节点</span><span>[ Up ]</span></h5>
-		   	<h5><span class="help-discribe">选择右侧节点</span><span>[ Right ]</span></h5>
-		   	<h5><span class="help-discribe">选择下侧节点</span><span>[ Down ]</span></h5>
-		</div>
-		<div id="divPanelArticleForm">
-			<form>
-			  <div class="form-group">
-			    <label for="catalog_title">标题：</label>
-			    <input type="email" class="form-control" id="article_title">
-			  </div>
-			  <div class="form-group">
-			    <label for="catalog_remark">标签：</label>
-			    <textarea class="form-control" id="article_labels" rows="3"></textarea>
-			  </div>
-			  <button type="button" class="btn btn-warning" id="article_btn_close">关闭</button>
-			  <button type="button" class="btn btn-info" id="article_btn_submit">保存</button>
-			</form>
-		</div>
-		<script src="/static/js/jquery-2.1.3.min.js"></script>
-		<script src="/static/fun/editor/wangEditor.js"></script>
 		<script src="/static/js/sea.js"></script>
-		<script src="/static/m/js/mcourse.edit.js"></script>
+		<script src="/static/js/pace.min.js"></script>
+		<script src="/static/m/js/mcourse.edit.content.js"></script>
 	</body>
 </html>

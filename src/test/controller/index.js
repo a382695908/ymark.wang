@@ -5,4 +5,8 @@ export default class extends Base {
   editorAction() {
     return this.display('editor');
   }
+
+  mindAction() {
+    return this.display('mind');
+  }
 }
