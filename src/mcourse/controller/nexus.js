@@ -1,6 +1,7 @@
 'use strict';
 
 import Base from './base.js';
+import treeUtil from './treeutil.js';
 let DateFormat = require('dateformat');
 export default class extends Base {
     async indexAction() {
@@ -16,68 +17,7 @@ export default class extends Base {
             cuid: uid
         }).order('sort').select();
         if (!list || list.length <= 0) return this.success({});
-        let list_len = list.length;
-        /**
-         * 得到父节点为ID的节点
-         * @param  {[type]} startIndex [开始遍历的索引]
-         */
-        let getChilds = function(startIndex, pid) {
-                let item = undefined,
-                    node = undefined,
-                    childs = undefined,
-                    res = [];
-                for (let i = startIndex; i < list_len; i++) {
-                    item = list[i];
-                    if (item.pid == pid) {
-                        node = {
-                            id: item.id,
-                            nodeid: item.nodeid,
-                            cuid: item.cuid,
-                            deep: item.deep,
-                            text: item.title,
-                            pid: item.pid,
-                            sort: item.sort,
-                            remark: item.remark,
-                            wimport: item.wimport,
-                            wscore: item.wscore
-                        };
-                        childs = getChilds(0, item.id);
-                        if (childs.length > 0) node.children = childs;
-                        res.push(node);
-                    }
-                }
-                return res;
-            },
-            getTreeList = function(data) {
-                let pid = undefined,
-                    node = undefined,
-                    childs = undefined,
-                    res = [];
-
-                data.map((k, v) => {
-                    pid = k.pid;
-                    if (pid == '0') {
-                        node = {
-                            id: k.id,
-                            nodeid: k.nodeid,
-                            cuid: k.cuid,
-                            deep: k.deep,
-                            text: k.title,
-                            pid: k.pid,
-                            sort: k.sort,
-                            remark: k.remark,
-                            wimport: k.wimport,
-                            wscore: k.wscore
-                        };
-                        childs = getChilds(0, k.id);
-                        if (childs.length > 0) node.children = childs;
-                        res.push(node);
-                    }
-                });
-                return res;
-            }
-
-        return this.json(getTreeList(list));
+        return this.json(treeUtil.getCatalogTree(list));
     }
 
     //根据父节点，获得所有的子节点
@@ -161,8 +101,8 @@ export default class extends Base {
                     adduser: userId
                 });
                 await model_coursemind.add({
-                    nid: '1',
-                    pnid: 0,
+                    nid: 'root',
+                    pnid: '0',
                     title: param.title,
                     cuid: param.cuid,
                     cid: catalogId,

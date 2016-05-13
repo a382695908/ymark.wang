@@ -40,8 +40,8 @@ export default [
 		delete: "mcourse/coursecontent/delete?id=:1",
 		put: "mcourse/coursecontent/save?id=:1"
 	}],
-	[/^mcourse\/cm\/(index)/, {
-		get: "mcourse/coursemind/index"
+	[/^mcourse\/cm\/index\/(\S*)\/(\S*)$/, {
+		get: "mcourse/coursemind/index?uid=:1&id=:2"
 	}],
 	[/^mcourse\/cm\/(\S*)$/, { //course mind
 		get: "mcourse/coursemind/detail?id=:1",

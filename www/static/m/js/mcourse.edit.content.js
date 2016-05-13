@@ -25,7 +25,15 @@ seajs.config({
 	},
 	preload: 'jquery'
 });
-var CW = CCG = CCT = layer = objEditor = quid = null;
+/**
+ * CW : CourseWindow
+ * CCG : CourseCatalog
+ * CCT : CourseContent
+ * objEditor : 编辑器对象
+ * quid : 课程的UID
+ * MindObj : Mind的Iframe所需要的一些参数
+ */
+var CW = CCG = CCT = layer = objEditor = quid = MindObj = null;
 
 var
 /**
@@ -241,6 +249,7 @@ function loadEditor() {
 function CWindow() {
 	var $panelEditor = $('#panelEditor'),
 		$panelMind = $('#panelMind'),
+		$iframeMind = $('#iframeMind'),
 
 		isShowCatalog = true; //true:已显示
 
@@ -268,6 +277,9 @@ function CWindow() {
 				zIndex: -1,
 				visibility: 'hidden'
 			});
+		},
+		refreshMind: function(_id) {
+			$iframeMind.attr('src', '/mcourse/cm/index/' + quid + '/' + _id);
 		},
 		/**
 		 * 显示或隐藏目录
@@ -567,8 +579,19 @@ function CCatalog() {
 						"editMind": {
 							"label": "编辑结构图",
 							"action": function(data) {
+								var inst = jQuery.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference).original;
 								CW.showMind();
-
+								if ($cuid.val() == obj.id) {
+									return;
+								}
+								$cuid.val(obj.id);
+								window.MindObj = {
+									cuid: quid,
+									id: obj.id,
+									text: obj.text
+								};
+								CW.refreshMind(obj.id);
 							}
 						},
 						"editContent": {
@@ -608,8 +631,6 @@ function CCatalog() {
 							"action": function(data) {
 								var inst = jQuery.jstree.reference(data.reference),
 									obj = inst.get_node(data.reference);
-								console.log(obj.original);
-								console.log(obj.children);
 								objForm.loadChildNode(obj.original, obj.children);
 								layindex_form = layer.open({
 									type: 1,
@@ -685,9 +706,14 @@ function CCatalog() {
 					cid = domTree.jstree('get_json')[0].id;
 				}
 				domTree.jstree("open_all");
-				CCT.loadArticle(cid);
+				// CCT.loadArticle(cid);
 				$cuid.val(cid);
 				document.location.hash = '#' + cid;
+				window.MindObj = {
+					cuid: quid,
+					id: cid
+				};
+				CW.refreshMind(cid);
 			}).on("refresh.jstree", function(e, data) {
 				domTree.jstree("open_all");
 			})

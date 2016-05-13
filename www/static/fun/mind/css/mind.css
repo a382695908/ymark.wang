@@ -63,7 +63,7 @@ body{margin:0px; padding:0px;font-family:微软雅黑, Arial;color:#333;font-siz
 .drop_button{padding-right:13px;}
 #canvas_container{overflow-y:auto;overflow-x:auto;}
 #canvas{position:relative;-webkit-user-select:none;-moz-user-select:none;user-select:none;}
-#saving_tip{display:inline-block;float:left;margin-left:20px;line-height:28px;color:#999;margin-top:7px;}
+#saving_tip{display:inline-block;float:left;margin-left:20px;line-height:32px;color:#999;}
 /**二级主题容器*/
 .tp_container{z-index:1;}
 .tp_box{padding:1px;border:2px solid transparent;cursor:default;border-radius:6px;position:relative;}

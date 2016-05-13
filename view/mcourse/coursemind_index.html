@@ -25,9 +25,14 @@
 
 	<body>
 		<canvas id="support_canvas" style="display: none;"></canvas>
-	  	<script type="text/javascript">if (!document.getElementById("support_canvas").getContext) {
-	      window.location.href = "/diagraming/not_support";
-	    }</script>
+	  	<script type="text/javascript">
+	  		if(window.top==window.self){//不存在父页面
+	  			window.location.href = '/error';
+	  		}
+	  		if (!document.getElementById("support_canvas").getContext) {
+	      		window.location.href = "/diagraming/not_support";
+	    	}
+	    </script>
 	    <div id="header_bar">
 		    <div class="header_block">
 		      <div class="header_devider" style="margin-left: 0px"></div>
@@ -42,13 +47,7 @@
 		      <div id="header_relationship" class="header_action relationship disabled" title="RelationShip"></div>
 		      <div id="header_brush" class="header_action brush disabled" title="格式刷 [Ctrl + b]"></div>
 		    </div>
-		    <div id="saving_tip"></div>
-		    <div id="slider_tip" class="header_block slider_tip">
-		      <div>记得尝试下主题的连线功能啊~</div>
-		      <div>不知道从何下手？ 打开右侧的帮助看看吧！！</div>
-		      <div>你可以尝试点击右侧的 主题名 称来换换风格</div>
-		      <div>修改中心主题之后，会自动修改左上角的标题哦</div>
-		      <div>按住Alt键，可以用鼠标来拖动画布哦</div></div>
+		    <div id="saving_tip">12</div>
 		    <div class="header_share_container">
 		      <a id="header_classic" class="item_block">默认风格</a>
 		      <div class="header_right_btn">
@@ -1060,7 +1059,7 @@
         <div id="export_ok" class="designer_button">确定</div>&nbsp;
         <div id="export_close" class="designer_button normal" onclick="">取消</div></div>
     </div>
-    <div id="svg_dialog" style="width:100%;height:100%;position:fixed;top:0;left:0;visibility:hidden;"></div>
+    <div id="svg_dialog" style="width:100%;height:100%;position:fixed;top:0;left:0;visibility:hidden;"> </div>
   </div>
 		<script type="text/javascript">
 			var role = "owner";
@@ -1074,397 +1073,89 @@
 			var userName = "YMARK";
 			var isUsedMind = "";
 			var tutorial = false;
+      var REGX_HTML_DECODE = /&\w{1,};|&#\d{1,};/g;
+      var HTML_DECODE = {
+            "&lt;"  : "<", 
+            "&gt;"  : ">", 
+            "&amp;" : "&", 
+            "&nbsp;": " ", 
+            "&quot;": "\"", 
+            "&copy;": "©"
+      };
+      var _data = decodeHtml("{{ controller.treeJson }}");
+      if(!_data) { _data = [];}
+      else{_data = eval('('+_data+')')};
+      console.log(_data[0].children);
+      _data = [
+            {
+                "id": "0b0685c41540e64dc8ee",
+                "title": "可使用的功能",
+                "children": [],
+                "parent": "root",
+                "collapsed": false
+            },
+            {
+                "id": "20d2da4c60e67147085c",
+                "title": "利用的技术",
+                "children": [],
+                "parent": "root",
+                "collapsed": true
+            },
+            {
+                "id": "ac76defa0c7ac0f18e9d",
+                "title": "表设计",
+                "tag": "",
+                "parent": "root",
+                "children": [],
+                "note": "以table design.dsn文件为主",
+                "collapsed": false
+            },
+            {
+                "id": "01e99338e769ea67d91e",
+                "title": "原则",
+                "children": [],
+                "parent": "root",
+                "collapsed": true
+            },
+            {
+                "id": "c1f7a20c29b20310f12b",
+                "title": "需要注意的地方",
+                "children": [],
+                "parent": "root",
+                "collapsed": true
+            }
+        ]
+      console.log(_data);
 			var definition = {
-				"id": "root",
-				"title": "ymark-course-设计",
-				"structure": "mind_right",
-				"background": "rgb(255,255,255)",
-				"children": [{
-					"id": "0b0685c41540e64dc8ee",
-					"title": "可使用的功能",
-					"children": [{
-						"id": "3c2abcf597058d54d2d6",
-						"title": "录入人",
-						"children": [{
-							"id": "38c621f1ee6375e544c4",
-							"title": "书籍/教材",
-							"children": [{
-								"id": "2eef089ae3e3e31ec996",
-								"title": "可以录入书籍的目录",
-								"children": [],
-								"parent": "38c621f1ee6375e544c4",
-								"collapsed": false
-							}, {
-								"id": "2c1d48507e83109393f8",
-								"title": "可录入整本书的结构，组成",
-								"children": [{
-									"id": "fa06ff63e1b7f27be825",
-									"title": "及重点权重",
-									"children": [],
-									"parent": "2c1d48507e83109393f8",
-									"collapsed": false
-								}, {
-									"id": "bd6561a37a257a59e9d8",
-									"title": "及考试分数分布",
-									"children": [],
-									"parent": "2c1d48507e83109393f8",
-									"collapsed": false
-								}],
-								"parent": "38c621f1ee6375e544c4",
-								"collapsed": false
-							}, {
-								"id": "91edb0226858bbdb3138",
-								"title": "可录入重点知识分布",
-								"children": [],
-								"parent": "38c621f1ee6375e544c4",
-								"collapsed": false
-							}, {
-								"id": "e687f19165b51104ac81",
-								"title": "可录入知识点的结构",
-								"children": [],
-								"parent": "38c621f1ee6375e544c4",
-								"collapsed": false
-							}, {
-								"id": "aa1c26afe7fe229b8b9a",
-								"title": "可录入章节的结构图",
-								"children": [],
-								"parent": "38c621f1ee6375e544c4",
-								"collapsed": false
-							}, {
-								"id": "5683d64dfe1a3a1c2b87",
-								"title": "可录入章节的内容",
-								"children": [],
-								"parent": "38c621f1ee6375e544c4",
-								"collapsed": false
-							}, {
-								"id": "0b5ecf697b752355f1b4",
-								"title": "还可以录入比如：高等数学知识点总结",
-								"link": {
-									"value": "http://wenku.baidu.com/link?url=_it--7ADNZqNDGGALN6AaKuFLsNdfsYpn0r5mfum9_8fLrMIwtuqbUjzUdGQ4Sd3svTei0Tu9w3TkLVi9uAEMO5UsYW8varW6zBcsEjBhYu",
-									"type": "url"
-								},
-								"parent": "38c621f1ee6375e544c4",
-								"children": [],
-								"collapsed": false
-							}],
-							"parent": "3c2abcf597058d54d2d6",
-							"collapsed": false
-						}, {
-							"id": "e531a439a58ba2832570",
-							"title": "试题",
-							"children": [{
-								"id": "47e9400c60f03bf55f28",
-								"title": "可录入试题，并关联章节",
-								"parent": "e531a439a58ba2832570",
-								"children": [],
-								"collapsed": false
-							}, {
-								"id": "e0635957d64b3d3289a2",
-								"title": "试题需要有参考来源",
-								"parent": "e531a439a58ba2832570",
-								"children": [],
-								"collapsed": false
-							}],
-							"parent": "3c2abcf597058d54d2d6",
-							"collapsed": true
-						}, {
-							"id": "7315366db07f0859f0c7",
-							"title": "纠错",
-							"children": [{
-								"id": "ff6ec2af2d0e9cc59bdd",
-								"title": "可查看纠错列表",
-								"children": [],
-								"parent": "7315366db07f0859f0c7",
-								"collapsed": false
-							}, {
-								"id": "c3b287c6b9b8b4066e75",
-								"title": "可完成/关闭一个问题",
-								"children": [],
-								"parent": "7315366db07f0859f0c7",
-								"collapsed": false
-							}],
-							"parent": "3c2abcf597058d54d2d6",
-							"collapsed": false
-						}],
-						"parent": "0b0685c41540e64dc8ee",
-						"collapsed": true
-					}, {
-						"id": "eba3ba6f0db84523f6d5",
-						"title": "浏览人/使用人/学习者",
-						"children": [{
-							"id": "68ab901e80e6801504e5",
-							"title": "可查看教程",
-							"parent": "eba3ba6f0db84523f6d5",
-							"children": [],
-							"collapsed": false
-						}, {
-							"id": "ed3ec933272ff2ba12b3",
-							"title": "单击某一章节时，可查看这个节点所绑定的内容/结构图等",
-							"parent": "eba3ba6f0db84523f6d5",
-							"children": [],
-							"collapsed": false
-						}, {
-							"id": "4c15202f2f25ba5cba1b",
-							"title": "单击某一章节时，可查看次章节下所有的试题",
-							"parent": "eba3ba6f0db84523f6d5",
-							"children": [],
-							"collapsed": false
-						}, {
-							"id": "fe7ad06d16d4f46a13d8",
-							"title": "可以评论",
-							"parent": "eba3ba6f0db84523f6d5",
-							"children": [],
-							"collapsed": false
-						}, {
-							"id": "dfa4d38d5aeaef8d5e67",
-							"title": "可以纠错，上传错误问题",
-							"parent": "eba3ba6f0db84523f6d5",
-							"children": [],
-							"collapsed": false
-						}],
-						"parent": "0b0685c41540e64dc8ee",
-						"collapsed": true
-					}],
-					"parent": "root",
-					"collapsed": false
-				}, {
-					"id": "20d2da4c60e67147085c",
-					"title": "利用的技术",
-					"children": [{
-						"id": "35b8ec4c1f6f224b86e0",
-						"title": "结构图的显示：jsmind",
-						"link": {
-							"value": "https://github.com/hizzgdev/jsmind/blob/master/docs/zh/1.usage.md",
-							"type": "url"
-						},
-						"parent": "20d2da4c60e67147085c",
-						"children": [],
-						"collapsed": false
-					}, {
-						"id": "34e1c3c9a4ea33ffb08c",
-						"title": "内容录入：Editor.md",
-						"link": {
-							"value": "https://pandao.github.io/editor.md/examples/index.html",
-							"type": "url"
-						},
-						"children": [],
-						"parent": "20d2da4c60e67147085c",
-						"note": "https://markable.in/\n\nhttp://dillinger.io/",
-						"collapsed": false
-					}, {
-						"id": "a4119eaee3e2a2c3b7ae",
-						"title": "后台框架：material ",
-						"link": {
-							"value": "http://fezvrasta.github.io/bootstrap-material-design/bootstrap-elements.html",
-							"type": "url"
-						},
-						"children": [],
-						"parent": "20d2da4c60e67147085c",
-						"collapsed": false
-					}],
-					"parent": "root",
-					"collapsed": true
-				}, {
-					"id": "ac76defa0c7ac0f18e9d",
-					"title": "表设计",
-					"tag": "",
-					"parent": "root",
-					"children": [{
-						"id": "faca233085ff4e7285d9",
-						"title": "课程模块",
-						"parent": "ac76defa0c7ac0f18e9d",
-						"children": [{
-							"id": "f30cc85fbb462a667dbe",
-							"title": "课程表",
-							"tag": "",
-							"parent": "faca233085ff4e7285d9",
-							"children": [],
-							"note": "课程UID（UID）\n课程名称\n封面（存图片的，多张图片用逗号隔开）\n简要介绍\n关联的资料的路径（一个课程可以绑定一本所参考的教材，这里存的是教材的路径）\n创建人\n创建时间\n状态（0：未上线，1：已上线，2：已下线）\n最后更新时间\n",
-							"collapsed": false
-						}, {
-							"id": "eed31245195ab74e98e6",
-							"title": "课程目录表",
-							"parent": "faca233085ff4e7285d9",
-							"children": [],
-							"note": "ID\n节点的ID，此节点的ID，是含有规则的字符串\n课程ID\n标题\n父ID\n排序字段\n备注\n所占权重（就是重要程度）\n所占总分数（可以为分数）",
-							"collapsed": false
-						}, {
-							"id": "6c80942526f67c11fa6f",
-							"title": "课程内容表",
-							"children": [],
-							"parent": "faca233085ff4e7285d9",
-							"note": "ID\n标题（默认为所关联的目录的标题）\n关联的课程UID\n关联的课程目录的ID\n标签（关联标签表，多个标签用逗号隔开）\n摘要（大概200字左右）\n状态（0：未完成，1：正在编辑，2：已完成，3：已审核通过）\n内容（TEXT）\n添加时间\n最后修改时间\n添加人\n浏览量\n试题的数量\n分享的数量\n参考资料（可为一个文字，一段链接，n张图片，用逗号隔开）",
-							"collapsed": false
-						}, {
-							"id": "cb15a818422fd53a1b85",
-							"title": "课程分享表",
-							"children": [],
-							"parent": "faca233085ff4e7285d9",
-							"note": "ID\n分享人ID\n分享人（名称）\n分享的内容的ID\n分享的类型（1：整本课程，2：一篇文章）\n分享时间",
-							"collapsed": false
-						}],
-						"collapsed": false
-					}, {
-						"id": "f20f40ecf2604e4eaa96",
-						"title": "试题模块",
-						"parent": "ac76defa0c7ac0f18e9d",
-						"children": [{
-							"id": "f01bb369318c1ab66307",
-							"title": "试题表",
-							"parent": "f20f40ecf2604e4eaa96",
-							"children": [],
-							"note": "试题ID\n关联的课程目录的ID\n\n试题内容（当为图片的时候，可以为多张，用逗号隔开）\n\n试题类型（1：文字，2：图片）\n试题状态（0：未上线，1：已上线，2：已通过）\n\n试题来源（可为一段文字，一个链接）",
-							"collapsed": false
-						}],
-						"collapsed": false
-					}, {
-						"id": "d203efd4ca0cd25552e5",
-						"title": "评论模块",
-						"parent": "ac76defa0c7ac0f18e9d",
-						"children": [{
-							"id": "16d3cfa0b1da74c65066",
-							"title": "纠错表（问题表）",
-							"parent": "d203efd4ca0cd25552e5",
-							"children": [],
-							"note": "可以关联某个内容，也可以关联某个试题\n\n\n问题ID\n关联的类型（1：内容表，2：试题表）\n关联的字段ID\n纠错内容\n发现时间\n发现人（可为空）\n错误解决状态（0：未解决，1：正在解决中，2：已解决，3：已关闭）\n\n",
-							"collapsed": false
-						}, {
-							"id": "38c2dcacb58a2dfd483e",
-							"title": "评论表",
-							"parent": "d203efd4ca0cd25552e5",
-							"children": [],
-							"note": "评论ID\n关联的内容表的ID\n关联的评论的上一级的ID（父ID）\n评论的内容\n评论的时间\n评论人（不可为空）\n赞同的数量\n",
-							"collapsed": false
-						}, {
-							"id": "b90b27a188e44f486699",
-							"title": "评论赞同表",
-							"children": [],
-							"parent": "d203efd4ca0cd25552e5",
-							"note": "ID\n评论ID\n赞同人\n赞同时间",
-							"collapsed": false
-						}],
-						"collapsed": false
-					}, {
-						"id": "4ffd2b1f68ef3c8f8ab4",
-						"title": "用户模块",
-						"parent": "ac76defa0c7ac0f18e9d",
-						"children": [{
-							"id": "a5b4bf38e46f64b2b1b4",
-							"title": "用户表",
-							"parent": "4ffd2b1f68ef3c8f8ab4",
-							"children": [],
-							"note": "希望用户表，可以根据QQ进行登录\n",
-							"collapsed": false
-						}, {
-							"id": "0f0bbb39756fd198686c",
-							"title": "用户时间状态表",
-							"parent": "4ffd2b1f68ef3c8f8ab4",
-							"children": [],
-							"note": "记录登录时间的表",
-							"collapsed": false
-						}],
-						"collapsed": false
-					}, {
-						"id": "05de58accc5304738ad2",
-						"title": "标签表",
-						"children": [],
-						"parent": "ac76defa0c7ac0f18e9d",
-						"note": "标签的ID\n标签标题\n标签创建人\n标签创建时间\n热度\n\n",
-						"collapsed": false
-					}],
-					"note": "以table design.dsn文件为主",
-					"collapsed": false
-				}, {
-					"id": "01e99338e769ea67d91e",
-					"title": "原则",
-					"children": [{
-						"id": "3471ea76e2bdde164fd5",
-						"title": "重点不是内容；而是书籍的结构，知识点的结构、关系；内容是次要的",
-						"children": [],
-						"parent": "01e99338e769ea67d91e",
-						"collapsed": false
-					}, {
-						"id": "d78e3aab89f99b266eb2",
-						"title": "内容必须要参考依据，需要注明参考来源",
-						"parent": "01e99338e769ea67d91e",
-						"children": [],
-						"collapsed": false
-					}, {
-						"id": "13cdbd3edee926291023",
-						"title": "表设计的时候，如果是对外暴露的，ID则为UID，比如课程的ID，否则自增长列就行，比如内容",
-						"children": [],
-						"parent": "01e99338e769ea67d91e",
-						"collapsed": false
-					}],
-					"parent": "root",
-					"collapsed": true
-				}, {
-					"id": "c1f7a20c29b20310f12b",
-					"title": "需要注意的地方",
-					"children": [{
-						"id": "54ed0af8a6bb122c132b",
-						"title": "创建课程的时候",
-						"children": [{
-							"id": "35150cb50b2e7facd896",
-							"title": "并创建了",
-							"children": [],
-							"parent": "54ed0af8a6bb122c132b",
-							"collapsed": false
-						}],
-						"parent": "c1f7a20c29b20310f12b",
-						"collapsed": false
-					}, {
-						"id": "93e7f55df642d3d8ce8b",
-						"title": "试题可以是一张图片，可以是一段文字，可以是一个问题（单选多选填空选择等）【可扩展】",
-						"style": {
-							"bgColor": "rgb(153,255,153)"
-						},
-						"children": [],
-						"parent": "c1f7a20c29b20310f12b",
-						"collapsed": false
-					}, {
-						"id": "d82e56a4b91f745a9330",
-						"title": "刷新文章的时候，判断cookie中是否有已阅读这条信息，如果没有，则向数据库中的这个文章的阅读量加1，再向cookie中写入",
-						"style": {
-							"bgColor": "rgb(153,255,153)"
-						},
-						"children": [],
-						"parent": "c1f7a20c29b20310f12b",
-						"collapsed": false
-					}, {
-						"id": "c18d78075d6f40b77b24",
-						"title": "单击赞同评论的时候，判断是否存在，不存在，则向赞同表中插入一条数据，并想评论表+1",
-						"style": {
-							"bgColor": "rgb(153,255,153)"
-						},
-						"parent": "c1f7a20c29b20310f12b",
-						"children": [],
-						"collapsed": false
-					}, {
-						"id": "bc1395a6eaa8c7c53794",
-						"title": "添加试题的时候，绑定文章，则向内容表试题数+1",
-						"style": {
-							"bgColor": "rgb(153,255,153)"
-						},
-						"parent": "c1f7a20c29b20310f12b",
-						"children": [],
-						"collapsed": false
-					}, {
-						"id": "f08dfd1711a656276e06",
-						"title": "分享的时候，同上",
-						"style": {
-							"bgColor": "rgb(153,255,153)"
-						},
-						"parent": "c1f7a20c29b20310f12b",
-						"children": [],
-						"collapsed": false
-					}],
-					"parent": "root",
-					"collapsed": true
-				}],
-				"classic": "defaultClassic"
-			}
+        "id": "root",
+        "title": "ymark-course-设计",
+        "structure": "mind_right",
+        "background": "rgb(255,255,255)",
+        "children": _data,
+        "classic": "defaultClassic"
+  }
 			var chartVersion = 291;
+
+      function decodeHtml(s){
+        return (typeof s != "string") ? s :
+            s.replace(REGX_HTML_DECODE,
+                function($0){
+                    var c = HTML_DECODE[$0]; // 尝试查表
+                    if(c === undefined){
+                        // Maybe is Entity Number
+                        var m = $0.match(/\d{1,}/);
+                        if(m){
+                            var cc = m[0];
+                            cc = (cc === 0xA0) ? 0x20 : cc;
+                            c = String.fromCharCode(cc);
+                        }else{
+                            // Not Entity Number
+                            c = $0;
+                        }
+                    }
+                    return c;
+                });
+        };
 		</script>
 		<script src="/static/js/sea.js"></script>
 		<script src="/static/m/js/mcourse.edit.mind.js"></script>

@@ -15,7 +15,6 @@ seajs.config({
 	},
 	preload: 'jquery'
 });
-
 var CLB = {
 	send: function(e) {
 		console.log(e);

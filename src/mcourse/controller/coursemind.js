@@ -1,10 +1,23 @@
 'use strict';
 
 import Base from './base.js';
+import treeUtil from './treeutil.js';
 let DateFormat = require('dateformat');
 export default class extends Base {
-    indexAction() {
-        return this.display();
+    async indexAction() {
+        let param = this.get();
+        let cuid = param.uid,
+            cid = param.id;
+
+        if (!cuid || !cid) return this.fail('参数错误！');
+        let model = this.model('coursemind');
+        let list = await model.where({
+            cuid: cuid,
+            cid: cid
+        }).select();
+        var data = treeUtil.getMindTree(list);
+        this.treeJson = JSON.stringify(data);
+        return this.display('index');
     }
     async detailAction() {
         let param = this.get();
