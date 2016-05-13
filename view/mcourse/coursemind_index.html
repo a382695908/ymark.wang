@@ -1064,13 +1064,6 @@
 		<script type="text/javascript">
 			var role = "owner";
 			var dateFormat = "yyyy-MM-dd";
-			var userId = "5714daa4e4b009e627fcf053";
-			var chartId = "57159836e4b0d89bd25709a7";
-			var folderId = "root";
-			var teamId = "";
-			var time = "1462760845249";
-			var cstatus = "private";
-			var userName = "YMARK";
 			var isUsedMind = "";
 			var tutorial = false;
       var REGX_HTML_DECODE = /&\w{1,};|&#\d{1,};/g;
@@ -1083,78 +1076,36 @@
             "&copy;": "©"
       };
       var _data = decodeHtml("{{ controller.treeJson }}");
-      if(!_data) { _data = [];}
-      else{_data = eval('('+_data+')')};
-      console.log(_data[0].children);
-      _data = [
-            {
-                "id": "0b0685c41540e64dc8ee",
-                "title": "可使用的功能",
-                "children": [],
-                "parent": "root",
-                "collapsed": false
-            },
-            {
-                "id": "20d2da4c60e67147085c",
-                "title": "利用的技术",
-                "children": [],
-                "parent": "root",
-                "collapsed": true
-            },
-            {
-                "id": "ac76defa0c7ac0f18e9d",
-                "title": "表设计",
-                "tag": "",
-                "parent": "root",
-                "children": [],
-                "note": "以table design.dsn文件为主",
-                "collapsed": false
-            },
-            {
-                "id": "01e99338e769ea67d91e",
-                "title": "原则",
-                "children": [],
-                "parent": "root",
-                "collapsed": true
-            },
-            {
-                "id": "c1f7a20c29b20310f12b",
-                "title": "需要注意的地方",
-                "children": [],
-                "parent": "root",
-                "collapsed": true
-            }
-        ]
-      console.log(_data);
-			var definition = {
-        "id": "root",
-        "title": "ymark-course-设计",
-        "structure": "mind_right",
-        "background": "rgb(255,255,255)",
-        "children": _data,
-        "classic": "defaultClassic"
-  }
-			var chartVersion = 291;
-
+      if(!_data) { _data = [{}];}
+      else{
+        _data = eval('('+_data+')');
+        if(_data.length <= 0) {_data = [{}];}
+        else{
+          _data[0].structure = "mind_right";
+          _data[0].background = "rgb(255,255,255)";
+          _data[0].classic = "defaultClassic";
+        }
+      };
+      
+			var definition = _data[0];
       function decodeHtml(s){
         return (typeof s != "string") ? s :
-            s.replace(REGX_HTML_DECODE,
-                function($0){
-                    var c = HTML_DECODE[$0]; // 尝试查表
-                    if(c === undefined){
-                        // Maybe is Entity Number
-                        var m = $0.match(/\d{1,}/);
-                        if(m){
-                            var cc = m[0];
-                            cc = (cc === 0xA0) ? 0x20 : cc;
-                            c = String.fromCharCode(cc);
-                        }else{
-                            // Not Entity Number
-                            c = $0;
-                        }
+            s.replace(REGX_HTML_DECODE, function($0){
+                var c = HTML_DECODE[$0]; // 尝试查表
+                if(c === undefined){
+                    // Maybe is Entity Number
+                    var m = $0.match(/\d{1,}/);
+                    if(m){
+                        var cc = m[0];
+                        cc = (cc === 0xA0) ? 0x20 : cc;
+                        c = String.fromCharCode(cc);
+                    }else{
+                        // Not Entity Number
+                        c = $0;
                     }
-                    return c;
-                });
+                }
+                return c;
+            });
         };
 		</script>
 		<script src="/static/js/sea.js"></script>
