@@ -21,7 +21,7 @@ html{_height:auto;_padding:100px 0 50px;}
 .g-right{right: 0px; left: inherit; width: auto; background: initial; border: 0px;}
 .g-hd.g-right .btn{float:right;}
 .g-hd.g-right .btn:hover{color:black;background:none;}
-#panelMind{z-index:-1;visibility: hidden;}
+#panelEditor{z-index:-1;visibility: hidden;}
 #catalogTree{margin-top:35px;}
 #catalogTree.jstree-default .jstree-icon:empty{font-size: 16px; color: #3D813D;}
 #catalog_remark{height:70px;}
@@ -86,7 +86,7 @@ html{_height:auto;_padding:100px 0 50px;}
 #divEditor pre>code{display:inline;max-width:100%;padding:0;margin:0;overflow:initial;line-height:inherit;background-color:transparent;border:0;font-size:100%}
 #divEditor table{border-collapse:collapse;table-layout:fixed}
 #divEditor th{text-align:left}
-#divEditor th,.wangEditor-container td{border:1px solid #888;padding:3px 12px}
+#divEditor th,.wangEditor-container td{border:1px solid #888;padding:3px 5.7px;}
 #divEditor tr:hover td{background-color:#f1f1f1}
 #divEditor tr:first-child td:first-child{border-top-left-radius:3px}
 #divEditor tr:first-child td:last-child{border-top-right-radius:3px}
@@ -102,3 +102,6 @@ html{_height:auto;_padding:100px 0 50px;}
 #divEditor blockquote.success{background-color:#f3f8f3;border-color:#50af51;color:#50af51}
 #divEditor blockquote>:last-child{margin-bottom:0}
 #divEditor .markdown-toc-list ul:only-child{padding-left:0;margin-bottom:0}
+
+.wangEditor-drop-panel{margin-top: -26px;}
+.wangEditor-drop-panel textarea{padding:0px;}

@@ -4,7 +4,6 @@ import Base from './base.js';
 let DateFormat = require('dateformat');
 export default class extends Base {
     indexAction() {
-        console.log('2');
         return this.display();
     }
     async detailAction() {
