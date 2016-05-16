@@ -390,3 +390,6 @@ body{margin:0px; padding:0px;font-family:微软雅黑, Arial;color:#333;font-siz
 .collabration-user-oprating{border:1px solid red;}
 .iframe_html{display:block;width:305px;height:140px;margin-top:5px;margin-bottom:3px;font-size:12px;}
 .embed_size input{width:60px;}
+
+#dock_btn_task ,#btn_mind_pos{display: none!important;}
+#dock_left_mind_type li:nth-child(3),#dock_left_mind_type li:nth-child(4){display:none;}

@@ -62,7 +62,7 @@ html{_height:auto;_padding:100px 0 50px;}
 
 .wangEditor-menu-container{ position: fixed; top: 0px; left: 250px;border-bottom: 1px solid #E3E3E3;}
 .wangEditor-container{height:100%;border:0px;}
-.wangEditor-container .wangEditor-txt{margin-top:35px;}
+.wangEditor-container .wangEditor-txt{margin-top:50px;}
 .wangEditor-container .wangEditor-upload-progress{top:-3px!important;}
 .wangEditor-container li{list-style-type: inherit;}
 
@@ -105,3 +105,5 @@ html{_height:auto;_padding:100px 0 50px;}
 
 .wangEditor-drop-panel{margin-top: -26px;}
 .wangEditor-drop-panel textarea{padding:0px;}
+
+#btnSave.disable{color: #D2D2D2!important;}

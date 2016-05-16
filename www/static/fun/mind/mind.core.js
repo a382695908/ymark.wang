@@ -3955,14 +3955,7 @@ function Designer(a) {
 				if (this.isUndo) {
 					this.undoStack.push(this.messages)
 				}
-				if (chartId != "") {
-					var c = {
-						action: "command",
-						messages: this.messages,
-						name: userName
-					};
-					CLB.send(c)
-				}
+				CLB.send(this.messages)
 				this.messages = []
 			}
 		},

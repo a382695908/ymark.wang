@@ -36,7 +36,7 @@
 	    <div id="header_bar">
 		    <div class="header_block">
 		      <div class="header_devider" style="margin-left: 0px"></div>
-		      <div class="header_title">ymark-course-设计</div>
+		      <div class="header_title">{{ controller.catalogtitle }}</div>
 		    </div>
 		    <div class="header_block">
 		      <a id="head_undo" title="撤销 [Ctrl+Z]" class="header_action disabled undo"></a>
@@ -47,7 +47,7 @@
 		      <div id="header_relationship" class="header_action relationship disabled" title="RelationShip"></div>
 		      <div id="header_brush" class="header_action brush disabled" title="格式刷 [Ctrl + b]"></div>
 		    </div>
-		    <div id="saving_tip">12</div>
+		    <div id="saving_tip"></div>
 		    <div class="header_share_container">
 		      <a id="header_classic" class="item_block">默认风格</a>
 		      <div class="header_right_btn">
@@ -363,8 +363,8 @@
     <div class="dock_content">
       <input id="dock_tag" placeholder="编辑标签" type="text" class="input_text remark"></div>
     <div class="dock_title">
-      <span class="title">备注 （支持Markdown语法）</span>
-      <a target="_blank" href="http://www.markdown.cn/#overview">语法说明</a></div>
+      <span class="title">备注</span>
+    </div>
     <div class="dock_content" style="padding-bottom:8px;">
       <textarea id="dock_note" placeholder="编辑备注" class="input_text remark" style="height: 400px;"></textarea>
     </div>
@@ -1063,6 +1063,8 @@
   </div>
 		<script type="text/javascript">
 			var role = "owner";
+      var courseUid = "{{ controller.cuid }}" ;
+      var catalogId = "{{ controller.cid }}";
 			var dateFormat = "yyyy-MM-dd";
 			var isUsedMind = "";
 			var tutorial = false;
@@ -1081,9 +1083,9 @@
         _data = eval('('+_data+')');
         if(_data.length <= 0) {_data = [{}];}
         else{
-          _data[0].structure = "mind_right";
-          _data[0].background = "rgb(255,255,255)";
-          _data[0].classic = "defaultClassic";
+          _data[0].structure = "{{ controller.structure }}";
+          _data[0].background = "{{ controller.classic_bg }}";
+          _data[0].classic = "{{ controller.classic_classic }}";
         }
       };
       

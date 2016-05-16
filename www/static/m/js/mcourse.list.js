@@ -214,6 +214,7 @@ function CourseList() {
     var objGrid = $("#grid-data"),
         rowCount = 15,
         current = 1,
+        layerIndexTip = null,
         gridConfig = {
             columnSelection: false,
             ajax: true,
@@ -269,6 +270,7 @@ function CourseList() {
                         return;
                     }
                     $.info(e.data);
+                    layer.close(layerIndexTip);
                     CLT.reload();
                 }, 'delete');
             });
@@ -280,7 +282,7 @@ function CourseList() {
         tipMore: function(id, name) {
             var html = '<a class="grid-option" href="javascript:CLT.delete(\'' + id + '\')"><span class="grid-ionic ionic ion-ios-trash-outline"></span> 删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<a class="grid-option" href="javascript:CLT.showEditForm(\'' + id + '\' ,\'' + name + '\')"><span class="grid-ionic ionic ion-ios-compose-outline"></span> 修改</a>';
-            layer.tips(html, '#tp_' + id, {
+            layerIndexTip = layer.tips(html, '#tp_' + id, {
                 skin: 'tp-options',
                 tips: [2, 'rgba(230, 230, 230, 0.73)'],
                 shadeClose: true,

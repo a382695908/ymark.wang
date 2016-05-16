@@ -31,9 +31,11 @@ seajs.config({
  * CCT : CourseContent
  * objEditor : 编辑器对象
  * quid : 课程的UID
- * MindObj : Mind的Iframe所需要的一些参数
  */
-var CW = CCG = CCT = layer = objEditor = quid = MindObj = null;
+var CW = CCG = CCT = layer = objEditor = quid = null;
+
+var frameConfig = null;
+
 
 var
 /**
@@ -89,15 +91,15 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 		var callback = function(e) {
 			if (e.errno > 0) {
 				$.error(e.errmsg);
-				extFun.setBtnTyping(self, '保存失败...', 'ion-close-round');
+				extFun.setBtnTyping(self, '保存失败', 'ion-close-round');
 			} else {
-				extFun.setBtnTyping(self, '保存完成...', 'ion-checkmark-round');
+				extFun.setBtnTyping(self, '保存完成', 'ion-checkmark-round');
 			}
 			setTimeout(function() {
 				self.attr('read', '0');
 				btnSaveStatus = 0;
 				extFun.setBtnTyping(self, '快速保存', 'ion-ios-download-outline');
-			}, 5000);
+			}, 3000);
 		}
 		if (extFun.getEditType() == '1') { //内容
 			CCT.quickSave(function(e) {
@@ -105,6 +107,13 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 				callback(e);
 			});
 		} else {
+			if (frameConfig) {
+				frameConfig.onQuickSave(function() {
+					callback({
+						errno: 0
+					});
+				});
+			}
 			// objMind.quickSave(function(e) {
 			// 	objMind.setSaveStatus(0);
 			// 	callback(e);
@@ -118,8 +127,14 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 		window.open('/course/' + quid + '#' + $('#cid').val());
 	})
 
-	$('#btnContentSave').click(function() {
+	$('#btnSave').click(function() {
 		var self = $(this);
+		if (self.hasClass('disable')) {
+			return;
+		}
+		console.log('saveing.kjka...all');
+		return;
+
 		if (btnSaveStatus == 1 || self.attr('read') == '1') {
 			return;
 		} //避免连续操作
@@ -582,16 +597,14 @@ function CCatalog() {
 								var inst = jQuery.jstree.reference(data.reference),
 									obj = inst.get_node(data.reference).original;
 								CW.showMind();
+								$('#btnSave').addClass('disable');
 								if ($cuid.val() == obj.id) {
 									return;
 								}
 								$cuid.val(obj.id);
-								window.MindObj = {
-									cuid: quid,
-									id: obj.id,
-									text: obj.text
-								};
+								document.location.hash = '#' + obj.id;
 								CW.refreshMind(obj.id);
+
 							}
 						},
 						"editContent": {
@@ -601,6 +614,7 @@ function CCatalog() {
 								var inst = jQuery.jstree.reference(data.reference),
 									obj = inst.get_node(data.reference),
 									cid = obj.id;
+								$('#btnSave').removeClass('disable');
 								if (CCT.getId() == cid) return;
 								if (CCT.getSaveStatus() == 1) {
 									layer.confirm('文章还没有被保存！要不要保存文章后再加载？', {
@@ -624,6 +638,7 @@ function CCatalog() {
 								}
 								$cuid.val(cid);
 								document.location.hash = '#' + cid;
+
 							}
 						},
 						"addNode": {
@@ -709,10 +724,6 @@ function CCatalog() {
 				// CCT.loadArticle(cid);
 				$cuid.val(cid);
 				document.location.hash = '#' + cid;
-				window.MindObj = {
-					cuid: quid,
-					id: cid
-				};
 				CW.refreshMind(cid);
 			}).on("refresh.jstree", function(e, data) {
 				domTree.jstree("open_all");

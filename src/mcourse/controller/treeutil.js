@@ -65,7 +65,6 @@ export default {
     return res;
   },
   getMindTree: function(data) {
-    console.log(data);
     if (!data || data.length <= 0) return [];
     let list_len = data.length;
     let pnid = undefined,
@@ -85,7 +84,10 @@ export default {
             title: item.title,
             parent: item.pnid,
             note: item.remark,
-            collapsed: (item.expanded == '1' ? true : false)
+            collapsed: (item.expanded == '1' ? true : false),
+            style: (item.style ? JSON.parse(item.style) : ''),
+            icons: (item.icons ? JSON.parse(item.icons) : ''),
+            link: (item.url ? JSON.parse(item.url) : '')
           };
           _childs = getChilds(0, item.nid);
           node.children = _childs;
@@ -103,7 +105,10 @@ export default {
           title: k.title,
           parent: k.pnid,
           note: k.remark,
-          collapsed: (k.expanded == '1' ? true : false)
+          collapsed: (k.expanded == '1' ? true : false),
+          style: (k.style ? JSON.parse(k.style) : ''),
+          icons: (k.icons ? JSON.parse(k.icons) : ''),
+          link: (k.url ? JSON.parse(k.url) : '')
         };
         node.children = getChilds(0, k.nid);
         res.push(node);
