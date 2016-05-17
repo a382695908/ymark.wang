@@ -159,6 +159,7 @@ var CLB = {
 				var os = e.content.updates;
 				for (var i = 0, len = os.length; i < len; i++) {
 					_temp = os[i];
+					delete _temp.children;
 					self.cache.upd.push(_temp);
 				}
 			} else if (opttype == 'remove') {
