@@ -110,7 +110,7 @@ export default class extends Base {
             let rootsql = '';
             upds.map((k) => {
                 if (k.id == 'root') {
-                    rootsql = "UPDATE `coursemind` SET `title`='" + k.title + "',`expanded`=" + (k.collapsed ? '1' : '0') + ",`style`='" + (k.style ? JSON.stringify(k.style) : '') + "',`icons`='" + (k.icons ? JSON.stringify(k.icons) : '') + "',`url`='" + (k.link ? JSON.stringify(k.link) : '') + "',`remark`='" + (k.note ? k.note : '') + "' WHERE ( `nid` = 'root' and cuid='" + cuid + "' );";
+                    rootsql = "UPDATE `coursemind` SET `title`='" + k.title + "',`expanded`=" + (k.collapsed ? '1' : '0') + ",`style`='" + (k.style ? JSON.stringify(k.style) : '') + "',`icons`='" + (k.icons ? JSON.stringify(k.icons) : '') + "',`url`='" + (k.link ? JSON.stringify(k.link) : '') + "',`remark`='" + (k.note ? k.note : '') + "' WHERE ( `nid` = 'root' and cuid='" + cuid + "' and cid='" + catalogId + "' );";
                 } else {
                     newList.push({
                         nid: k.id,
