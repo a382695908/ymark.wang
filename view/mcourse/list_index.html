@@ -1,256 +1,155 @@
-{% extends "./layout.html" %}
-
-{% block import %}
-<link rel="stylesheet" href="/static/fun/upload/jquery-ui.min.css" type="text/css" />
-<link rel="stylesheet" href="/static/fun/upload/jquery.ui.plupload.css" type="text/css" />
-<style type="text/css">
-.thumbnail {padding-top: 20px;}
-.thumbnail img{cursor: pointer;}
-.thumbnail .caption{text-align: center;}
-.form-group{margin:0px;}
-.plupload_container .plupload_header{display:none;}
-.plupload_view_thumbs .plupload_content{top:0px;}
-#uploader_start{display: none;}
-.msg-warning{font-size: 12px;margin-left: 20px;color: #B10808;display: none;}
-#divNoneData{margin: 15px;display: none;}
-</style>
-{% endblock %}
-
-{% block rightBtn %}
-<li><a href="javascript:;" id="btnAddCourse">
-	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加课程</a>
-</li>
-{% endblock %}
-
-
-{% block content %}
-<div class="row">
-	<div class="alert alert-success alert-dismissible" id="divNoneData" role="alert">
-	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  <strong>Info!</strong> 没有数据
-	</div>
-	<div id="listView"> </div>
-</div>
-<div class="modal fade" id="modal_course_form" tabindex="-1" role="dialog" aria-labelledby="courseForm" data-backdrop='static'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="courseForm">课程表单</h4>
-      </div>
-      <div class="modal-body">
-       	<div class="form-group">
-		  <label class="control-label" for="courseName">课程名称</label>
-		  <input type="text" class="form-control" id="courseName">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Ymark</title>
+	<meta name="keywords" content=""/>
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width"/>
+	<link rel="stylesheet" href="/static/m/css/ymark.base.css"/>
+	<link rel="stylesheet" href="/static/m/css/mcourse.list.css"/>
+	<link rel="shortcut icon" href="/static/img/favicon.ico"/>
+	<link rel="apple-touch-icon" href="/static/img/favicon.ico"/>
+</head>
+<body>
+<div class="g-doc">
+    <div class="g-hd">
+		<div class="m-nav">
+		    <ul>
+		        <li class="first"><a href="#">易马克</a></li>
+		        <!-- <li><a href="#">栏目1</a></li>
+		        <li><a href="#">栏目2</a></li>
+		        <li><a href="#">栏目3</a></li> -->
+		    </ul>
+		    <span class="corner corner-l"></span><span class="corner corner-r"></span>
 		</div>
-		<div class="form-group">
-		  <label class="control-label" for="courseSummary">简要介绍</label><span class="msg-warning">最好填写一下简要介绍！字数不要超过200字~</span>
-		  <input type="text" class="form-control" id="courseSummary">
-		</div>
-		封面：<br/>
-		<div class="form-group divcoverpics">
-			<div id="uploader"> <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p> </div>
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary" id="btnSaveCourse">创建</button>
-      </div>
     </div>
-  </div>
+    <div class="g-bd">
+        <div class="g-bd1 f-cb">
+		    <div class="g-sd1">
+		        <menu class="u-menu">
+				    <li class="active"><a href="#">我的课程</a></li>
+				    <li><a href="#">问题库</a></li>
+				    <li><a href="#">反馈库</a></li>
+				    <li><a href="#">配置</a></li>
+				</menu>
+		    </div>
+		    <div class="g-mn1">
+		        <div class="g-mn1c" id="gmn">
+		        	<nav class="m-crumb m-crumb-arr">
+					    <ul class="f-cb">
+					        <li><a href="#">主页</a></li>
+					        <li><a href="#">所有课程</a></li>
+					        <li>课程列表页</li>
+					    </ul>
+					</nav>
+					<nav class="m-btngroup">
+						<button type="button" class="u-btn" id="btnAddCourse"> <span class="ionic ion-plus"></span> 新建课程 </button>
+					</nav>
+		            <div class="m-grid">
+		            	<table id="grid-data">
+						    <thead>
+						        <tr>
+						            <th data-column-id="uid" data-formatter="link">序列</th>
+						            <th data-column-id="name">标题</th>
+						            <th data-column-id="options" data-formatter="options"></th>
+						        </tr>
+						    </thead>
+						</table>
+					</div>
+		        </div>
+		    </div>
+		</div>
+    </div>
+    <div class="m-form g-dialog" id="panelCourseForm">
+	    <form name="" action="#" method="get">
+	        <fieldset>
+	            <div class="formitm">
+	                <label class="lab">课程名称：</label>
+	                <div class="ipt">
+	                    <input type="text" class="u-ipt" id="courseName"/>
+	                </div>
+	            </div>
+	            <div class="formitm">
+	                <label class="lab">简要介绍：</label>
+	                <div class="ipt">
+	                	<textarea class="u-ipt u-textarea" id="courseSummary" rows="5"></textarea>
+	                    <p>字数不要超过200字~</p>
+	                </div>
+	            </div>
+	            <div class="formitm formitm-1"><button class="u-btn" onclick="CFM.saveForm();" type="button">保存</button> <button class="u-btn u-btn-c4" onclick="CFM.closeForm()" type="button">关闭</button></div>
+	        </fieldset>
+	    </form>
+	</div>
+	<div class="m-form g-dialog gc-ctg" id="panelCourseCatalog">
+		<div class="gc-ml catalog-tree" id="catalogTree"></div>
+	    <div class="gc-mr">
+	        <header class="m-hd">
+			    <h2 class="u-tt"><a id="catalogUpdCnt" target="_blank" href="#">修改内容</a></h2>
+			    <h2 class="u-tt"><a id="catalogDelete" href="javascript:;">删除</a></h2>
+			    <h2 class="u-tt"><a id="catalogPrew" target="_blank" href="#">预览</a></h2>
+			    <ul id="catalogul">
+			        <li class="z-crt"><a href="javascript:CTG.showPanel('Form', 0);">表单</a></li>
+			        <li><a href="javascript:CTG.showPanel('OrderList' ,1);">排序</a></li>
+			    </ul>
+			</header>
+			<div class="ctg-panel ctg-form" id="catalogForm">
+				<fieldset>
+		            <div class="formitm">
+		                <label class="lab">节点名称：</label>
+		                <div class="ipt">
+		                    <input type="text" class="u-ipt" id="ctgTitle"/>
+		                    <p>30字以内</p>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">备注：</label>
+		                <div class="ipt">
+		                	<textarea class="u-ipt u-textarea" id="ctgRemark" rows="5"></textarea>
+		                    <p>字数不要超过200字~</p>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">权重：</label>
+		                <div class="ipt">
+		                    <input type="text" class="u-ipt" id="ctgWimport"/>
+		                    <p>重要程度</p>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">所占分数：</label>
+		                <div class="ipt">
+		                    <input type="text" class="u-ipt" id="ctgWscore"/>
+		                    <p>总科目的此目录所占的分数</p>
+		                </div>
+		            </div>
+		            
+		            <div class="formitm formitm-1">
+		            	<button id="catalog_btn_new_child" class="u-btn" type="button">新建子节点</button>
+		            	<button id="catalog_btn_submit" class="u-btn" type="button">保存</button>
+		            	<button id="catalog_btn_submit_new" class="u-btn" type="button">保存并新建</button>
+		            </div>
+		        </fieldset>
+			</div>
+			<div class="ctg-panel ctg-list" id="catalogOrderList">
+				<table>
+			        <thead>
+			           <tr><th>节点名称</th><th></th></tr>
+			        </thead>
+			    </table>
+				<div class="scroll" >
+				    <table>
+			            <tbody id="catalogSortGrid">
+			            	<tr><td colspan="2" class="none">没有子节点...</td></tr>
+			            </tbody>
+			        </table>
+			    </div>
+			</div>
+	    </div>
+	</div>
 </div>
-<script type="text/javascript">
-	var objForm 	= undefined ,
-		objList 	= undefined ;
-
-	var $modalForm = $('#modal_course_form');
-
-	seajs.use(['jquery-ui' ,'plupload'] ,function() {
-		seajs.use('plupload-ui' ,function () {
-			loadEvent();
-			objList.loadList();
-			setTimeout(objForm.loadUpload,500);
-		})
-	});
-
-	$(function(){
-		objList = courseList();
-		objForm = courseForm();
-	})
-
-	function loadEvent(){
-		$('#btnAddCourse').click(function(){
-			objForm.resetForm();
-	      	$modalForm.modal();
-	    });
-	    $('#btnSaveCourse').click(function(){
-	    	objForm.saveForm();
-	    });
-	}
-
-	function courseList(){
-		var $listview 	= $('#listView') ,
-
-			divNoneData = $('#divNoneData') ;
-
-		var dataList = [];
-
-		var loadData = function(){
-			divNoneData.hide();
-			$.query('/mcourse/list/all' ,{} ,function (e) {
-				if(e.errno > 0){ return; }
-				e = e.data ;
-				if(e.length <= 0){$listview.html(''); divNoneData.show(); return; }
-				dataList = e;
-				var html = [];
-				for(var i=0,len=e.length;i<len;i++){html.push(loadItem(e[i])); }
-				$listview.html(html.join(''));
-				$.material.ripples();
-				loadEvent();
-			});
-
-		},
-		loadItem 	= function (item) {
-			var img = item.coverpics;
-			if(img){ if(img.indexOf('/')>0){img='/upload/'+img.split('/')[0]; }else img='/upload/'+img;}
-			else{img='/static/img/none.png';}
-			return '<div class="col-sm-3 col-md-3">' +
-			'    <div class="thumbnail">' +
-			'      <img src="'+img+'" alt="..." onerror="noImg();">' +
-			'      <div class="caption">' +
-			'        <h3>'+item.name+'</h3>' +
-			'        <p key="'+item.uid+'"><a href="javascript:;" class="btn btn-default btn-delete" role="button">删除</a> <a href="javascript:;" class="btn btn-primary" role="button">修改课程</a>' +
-			'   <a href="/mcourse/'+item.uid+'" target="_blank" class="btn" role="button">编辑内容</a> '+
-			'      </p></div>' +
-			'    </div>' +
-			'</div>'
-		},
-		loadEvent 	= function(){
-			$listview.find('.btn-delete').click(function(){
-				var pkey = $(this).parent('p').attr('key');
-				layer.confirm('将会删除以下内容：课程表、课程目录表、课程内容表、课程分享表、试题表、纠错表；确认要删除吗？', {btn: ['就是要删除','还是取消吧'] }, function(){
-				  	if(!pkey){console.error('deleteNode id is empty'); return; }
-					$.query('/mcourse/info/'+pkey ,{},function(e){
-						if(e.errno > 0){console.error(e.errmsg); return; }
-						$.info(e.data);
-						setTimeout(function(){objList.loadList(); },200);
-					} ,'delete');
-				});
-			});
-
-			$listview.find('.btn-primary').click(function(){
-				var pkey = $(this).parent('p').attr('key');
-				objForm.resetForm(getInfo(pkey));
-				$modalForm.modal();
-			});
-		},
-		getInfo 	= function(uid){
-			var data = dataList;
-			for(var i=0,len=data.length;i<len;i++){
-				if(data[i]['uid'] == uid) return data[i];
-			}
-		}
-		return {
-			loadList 	: loadData
-		}
-	}
-
-	function courseForm(){
-	    var $formTitle  = $('#courseForm') ,
-	        $name       = $('#courseName') ,
-	        $summary    = $('#courseSummary') ,
-
-	        $msgSummary = $summary.prev('span.msg-warning') ,
-
-	        objUpload 	= $("#uploader") ;
-	 
-	    var uid         = undefined ,   // 当前操作表单课程的UID
-	    	fileArr		= [];
-
-	    $summary.blur(function () {
-	    	if(!$summary.val()){$msgSummary.show(); }
-	    	else{$msgSummary.hide(); }
-	    });
-
-	    var save = function(){
-	    	var param = {uid:uid ,name:$name.val() ,summary:$summary.val() ,coverpics:''} ;
-	    	if(fileArr.length > 0){param.coverpics = fileArr.join('/'); }
-			var url = '/mcourse/info/' ;
-            if(uid){url += uid;} else{url += 'add';param.uid='add';}
-			$.query(url ,param ,function (e) {
-				if(e.errno > 0){return; }
-				$modalForm.modal('hide');
-				$.info(e.data);
-				objList.loadList();
-			} ,uid ? 'put' : 'post');
-	    }
-
-
-	    return {
-	        /**
-	         * 重置表单
-	         * @param  {string} type undefined : 添加，否则，修改
-	         */
-	        resetForm   : function (data) {
-	          if(data && data.uid){ 
-	              uid = data.uid;
-	              $formTitle.text('修改课程');
-	              $name.val(data.name);
-	              $summary.val(data.summary);
-	              var coverpics = data.coverpics ;
-	              if(coverpics.indexOf('/')>0){coverpics.split('/');}
-	              else{coverpics=[coverpics];}
-	              fileArr = coverpics;
-	              $msgSummary.hide();
-	          }else{ //添加
-	          	  uid = '';
-	              $formTitle.text('添加课程');
-	              $name.val('');
-	              $summary.val('');
-	              $msgSummary.hide();
-	              fileArr = [];
-	          }
-	        },
-	        /**
-	         * 保存一个表单
-	         */
-	        saveForm  : function(){
-	            if(!$name.val()){$.error('请填写课题名称啊~少年'); return; }
-	            // 先上传图片
-		    	if(objUpload.plupload('getFiles').length > 0){
-		    		objUpload.plupload('start');
-		    	}else{
-		    		layer.confirm('没有上传封面，您确认要继续添加课程吗？', {btn: ['继续保存！','算了还是不添加了'] }, save);
-		    	}
-	        },
-	        /**
-	         * 加载上传组件
-	         */
-	        loadUpload 	: function () {
-	        	objUpload.plupload({
-					runtimes 		: 'html5,flash,silverlight,html4',
-					url  			: '/fun/upload/file',
-					max_file_count	: 5,
-					chunk_size 		: '3mb',
-					filters 		: {max_file_size : '10mb', mime_types: [{title : "Image files", extensions : "jpeg,jpg,png"} ] },
-					rename 			: false,
-					sortable 		: true,
-					dragdrop 		: false,
-					views 			: {list: false, thumbs: true, active: 'thumbs'},
-					init  : {
-						BeforeUpload : function(){
-							fileArr = [];
-						},
-						FileUploaded : function(up ,file ,info){
-							info = eval('('+info.response+')');
-							if(info.errno > 0){$.error(info.msg); }
-							fileArr.push(info.data.name);
-						},
-						UploadComplete: function(up, files) {save(); }
-					}
-				});
-	        }
-	    }
-	}
-</script>
-{% endblock %}
+<script src="/static/js/sea.js"></script>
+<script src="/static/js/pace.min.js"></script>
+<script src="/static/m/js/mcourse.list.js"></script>
+</body>
+</html>

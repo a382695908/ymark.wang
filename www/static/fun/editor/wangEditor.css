@@ -20,7 +20,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  line-height: 1;
 }
 .wangEditor-container img {
   border: none;
@@ -213,7 +212,6 @@
 .wangEditor-container .wangEditor-txt h3,
 .wangEditor-container .wangEditor-txt h4,
 .wangEditor-container .wangEditor-txt h5 {
-  margin: 10px 0;
   line-height: 1.8;
 }
 .wangEditor-container .wangEditor-txt ul,
@@ -821,3 +819,106 @@
 .hljs-chunk {
   color: #aaa;
 }
+.wangEditor-container .wangEditor-txt{background-color: rgb(252, 252, 251);font: 14px/1.8 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,'Hiragino Sans GB',sans-serif!important;}
+.wangEditor-container .wangEditor-txt a{color: #259;}
+.wangEditor-container .wangEditor-txt pre{font-size: 14px; border: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.5); line-height: 1.5; font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New",monospace;}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #444;
+  -webkit-text-size-adjust: none;
+}
+
+.hljs-keyword,
+.hljs-literal,
+.hljs-change,
+.hljs-winutils,
+.hljs-flow,
+.nginx .hljs-title,
+.tex .hljs-special {
+  color: white;
+}
+
+.hljs,
+.hljs-subst {
+  color: #ddd;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-type,
+.ini .hljs-title,
+.hljs-tag .hljs-value,
+.css .hljs-rule .hljs-value,
+.hljs-preprocessor,
+.hljs-pragma,
+.ruby .hljs-symbol,
+.ruby .hljs-symbol .hljs-string,
+.ruby .hljs-class .hljs-parent,
+.hljs-built_in,
+.django .hljs-template_tag,
+.django .hljs-variable,
+.smalltalk .hljs-class,
+.ruby .hljs-string,
+.django .hljs-filter .hljs-argument,
+.smalltalk .hljs-localvars,
+.smalltalk .hljs-array,
+.hljs-attr_selector,
+.hljs-pseudo,
+.hljs-addition,
+.hljs-stream,
+.hljs-envvar,
+.apache .hljs-tag,
+.apache .hljs-cbracket,
+.tex .hljs-command,
+.hljs-prompt,
+.coffeescript .hljs-attribute,
+.hljs-name {
+  color: #d88;
+}
+
+.hljs-comment,
+.hljs-annotation,
+.hljs-decorator,
+.hljs-pi,
+.hljs-doctype,
+.hljs-deletion,
+.hljs-shebang,
+.apache .hljs-sqbracket,
+.tex .hljs-formula {
+  color: #777;
+}
+
+.hljs-keyword,
+.hljs-literal,
+.hljs-title,
+.css .hljs-id,
+.hljs-doctag,
+.hljs-type,
+.vbscript .hljs-built_in,
+.rsl .hljs-built_in,
+.smalltalk .hljs-class,
+.diff .hljs-header,
+.hljs-chunk,
+.hljs-winutils,
+.bash .hljs-variable,
+.apache .hljs-tag,
+.tex .hljs-special,
+.hljs-request,
+.hljs-status {
+  font-weight: bold;
+}
+
+.coffeescript .javascript,
+.javascript .xml,
+.tex .hljs-formula,
+.xml .javascript,
+.xml .vbscript,
+.xml .css,
+.xml .hljs-cdata {
+  opacity: 0.5;
+}
+
+.wangEditor-container hr{margin-bottom:10px;}

@@ -8,7 +8,7 @@ export default class extends Base {
     }
 
     async detailAction(){
-        let cid     = this.get().id;
+        let param   = this.get() ;
         let list    = await this.model('coursecontent').field([
                 'id',
                 'title',
@@ -17,14 +17,14 @@ export default class extends Base {
                 'summary',
                 'lasttime',
                 'recontent',
-            ]).where({cid:cid}).select();
+            ]).where({cid:param.id ,cuid:param.uid}).select();
         return this.success(list[0]);
     }
 
     async saveAction(){
         let id     = this.get().id;
         let method  = this.http.method;
-        if(method!='POST' && method!='PUT' && !id) return this.success('提交错误');
+        if(method!='POST' && method!='PUT' && !id) return this.fail('提交错误');
 
         let param   = this.post();
         let savetype= param.savetype ,
@@ -43,10 +43,6 @@ export default class extends Base {
 
         }
 
-
-        console.log(param);
-        console.log('--->');
-        console.log(id)
         return this.success('c');
     }
 }

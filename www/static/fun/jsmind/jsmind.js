@@ -1203,17 +1203,17 @@
                 logger.error('data.load error');
                 return;
             }else{
-                logger.debug('data.load ok');
+                // logger.debug('data.load ok');
             }
 
             this.view.load();
-            logger.debug('view.load ok');
+            // logger.debug('view.load ok');
 
             this.layout.layout();
-            logger.debug('layout.layout ok');
+            // logger.debug('layout.layout ok');
 
             this.view.show(true);
-            logger.debug('view.show ok');
+            // logger.debug('view.show ok');
 
             this.invoke_event_handle(jm.event_type.show,{data:[mind]});
         },
@@ -1481,11 +1481,11 @@
 
     jm.data_provider.prototype={
         init:function(){
-            logger.debug('data.init');
+            // logger.debug('data.init');
         },
 
         reset:function(){
-            logger.debug('data.reset');
+            // logger.debug('data.reset');
         },
 
         load:function(mind_data){
@@ -1541,14 +1541,14 @@
 
     jm.layout_provider.prototype={
         init:function(){
-            logger.debug('layout.init');
+            // logger.debug('layout.init');
         },
         reset:function(){
-            logger.debug('layout.reset');
+            // logger.debug('layout.reset');
             this.bounds = {n:0,s:0,w:0,e:0};
         },
         layout:function(){
-            logger.debug('layout.layout');
+            // logger.debug('layout.layout');
             this.layout_direction();
             this.layout_offset();
         },
@@ -1958,7 +1958,7 @@
 
     jm.view_provider.prototype={
         init:function(){
-            logger.debug('view.init');
+            // logger.debug('view.init');
 
             this.container = $g(this.opts.container);
             if(!this.container){
@@ -2011,7 +2011,7 @@
         },
 
         reset:function(){
-            logger.debug('view.reset');
+            // logger.debug('view.reset');
             this.selected_node = null;
             this.clear_lines();
             this.clear_nodes();
@@ -2028,7 +2028,7 @@
         },
 
         load:function(){
-            logger.debug('view.load');
+            // logger.debug('view.load');
             this.init_nodes();
         },
 
@@ -2240,7 +2240,7 @@
         },
 
         show:function(keep_center){
-            logger.debug('view.show');
+            // logger.debug('view.show');
             this.expand_size();
             this._show();
             if(!!keep_center){
