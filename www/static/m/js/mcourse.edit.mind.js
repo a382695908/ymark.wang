@@ -6,7 +6,6 @@ seajs.config({
 	// 设置别名，方便调用
 	alias: {
 		'jquery': 'mind/jquery.js',
-		// 'layer': '//apps.bdimg.com/libs/layer/2.1/layer.js',
 		'clb': 'mind/collaboration.js',
 		'core': 'mind/mind.core.js',
 		'ui': 'mind/mind.ui.js',
@@ -18,10 +17,9 @@ seajs.config({
 window.parent.frameConfig = {
 	onQuickSave: function(callback) {
 		// 快速保存时调用的方法
-		console.log('qqqssbbcc');
 		callback = callback || function() {};
 		if (!CLB.isSaving) {
-			CLB.submit();
+			CLB.submit(callback);
 		} else {
 			var _int = setInterval(function() {
 				CLB.submit(function() {
@@ -126,7 +124,9 @@ var CLB = {
 				window.clearInterval(self._interval);
 				var cache = self.cache;
 				self.submit(function() {
-					$('#saving_tip').text('');
+					setTimeout(function() {
+						$('#saving_tip').text('');
+					}, 2000);
 				});
 				return;
 			}
@@ -172,7 +172,7 @@ var CLB = {
 				return;
 			}
 		}
-		console.log(self.cache);
+		// console.log(self.cache);
 		if (self.surplusTime == 0) {
 			self.submit();
 		}

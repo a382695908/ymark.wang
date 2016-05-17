@@ -21,7 +21,7 @@ html{_height:auto;_padding:100px 0 50px;}
 .g-right{right: 0px; left: inherit; width: auto; background: initial; border: 0px;}
 .g-hd.g-right .btn{float:right;}
 .g-hd.g-right .btn:hover{color:black;background:none;}
-#panelEditor{z-index:-1;visibility: hidden;}
+#panelEditor{z-index:-1;visibility: hidden;background-color: rgb(252, 252, 251);}
 #catalogTree{margin-top:35px;}
 #catalogTree.jstree-default .jstree-icon:empty{font-size: 16px; color: #3D813D;}
 #catalog_remark{height:70px;}

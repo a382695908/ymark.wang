@@ -36,12 +36,14 @@ var CW = CCG = CCT = layer = objEditor = quid = null;
 
 var frameConfig = null;
 
-
-var
 /**
  * 一些常用的方法，和对象没有关系
  */
-	extFun = {
+var extFun = {
+	interval: 10, //最短时间间隔提交一次Ajax，单位：秒
+	surplusTime: 5, //还有surplus秒就可以执行保存
+	isSaving: false, //是否正在保存
+	_interval: null, //计时器对象
 	/**
 	 * 获取当前正在编辑的类型；
 	 * @return {[type]} 0:知识点结构图，1:文章内容
@@ -57,6 +59,43 @@ var
 		dom.html('&nbsp;&nbsp;' + text);
 		dom.removeAttr('class');
 		dom.addClass(icon).addClass('btn').addClass('ionic');
+	},
+	/**
+	 * 自动保存的方法
+	 * @return {[type]} [description]
+	 */
+	saveAuto: function() {
+		var self = this,
+			$btnSaveQuick = $('#btnContentSaveQuick');
+		self._interval = setInterval(function() {
+			if (self.surplusTime <= 0) {
+				if (CCT.getSaveStatus() == '1' && $btnSaveQuick.attr('read') == '0') {
+					self.isSaving = true;
+					$btnSaveQuick.attr('read', '1');
+					self.setBtnTyping($btnSaveQuick, '保存中...', 'ion-load-c');
+					CCT.quickSave(function(e) {
+						CCT.setSaveStatus(0);
+						if (e.errno > 0) {
+							$.error(e.errmsg);
+							self.setBtnTyping($btnSaveQuick, '保存失败', 'ion-close-round');
+						} else {
+							self.surplusTime = self.interval;
+							self.setBtnTyping($btnSaveQuick, '保存完成', 'ion-checkmark-round');
+						}
+						setTimeout(function() {
+							self.isSaving = false;
+							$btnSaveQuick.attr('read', '0');
+							self.setBtnTyping($btnSaveQuick, '快速保存', 'ion-ios-download-outline');
+						}, 3000);
+					});
+				} else {
+					self.surplusTime = self.interval;
+				}
+				return;
+			}
+			self.surplusTime -= 1;
+		}, 1000);
+
 	}
 }
 
@@ -82,9 +121,10 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 	// 快速保存
 	$('#btnContentSaveQuick').click(function() {
 		var self = $(this);
-		if (btnSaveStatus == 1 || self.attr('read') == '1') {
+		if (btnSaveStatus == 1 || self.attr('read') == '1' || extFun.isSaving || CCT.getSaveStatus() == '0') {
 			return;
 		} //避免连续操作
+		window.clearInterval(extFun._interval);
 		btnSaveStatus = 1;
 		self.attr('read', '1');
 		extFun.setBtnTyping(self, '保存中...', 'ion-load-c');
@@ -93,6 +133,8 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 				$.error(e.errmsg);
 				extFun.setBtnTyping(self, '保存失败', 'ion-close-round');
 			} else {
+				extFun.surplusTime = extFun.interval;
+				extFun.saveAuto();
 				extFun.setBtnTyping(self, '保存完成', 'ion-checkmark-round');
 			}
 			setTimeout(function() {
@@ -114,10 +156,6 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 					});
 				});
 			}
-			// objMind.quickSave(function(e) {
-			// 	objMind.setSaveStatus(0);
-			// 	callback(e);
-			// });
 		}
 		btnSaveStatus = 0;
 		self.attr('read', '0');
@@ -129,30 +167,9 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 
 	$('#btnSave').click(function() {
 		var self = $(this);
-		if (self.hasClass('disable')) {
-			return;
-		}
-		console.log('saveing.kjka...all');
-		return;
-
-		if (btnSaveStatus == 1 || self.attr('read') == '1') {
+		if (btnSaveStatus == 1 || self.attr('read') == '1' || extFun.isSaving || self.hasClass('disable')) {
 			return;
 		} //避免连续操作
-		btnSaveStatus = 1;
-		self.attr('read', '1');
-		var callback = function(e) {
-			if (e.errno != 0) {
-				$.error(e.errmsg);
-				self.html('&nbsp;&nbsp;保存失败');
-			} else {
-				self.html('&nbsp;&nbsp;保存完成');
-			}
-			setTimeout(function() {
-				self.attr('read', '0');
-				btnSaveStatus = 0;
-				self.html('&nbsp;&nbsp;保存');
-			}, 5000);
-		}
 		if (extFun.getEditType() == '1') { //内容
 			layindex_form = layer.open({
 				type: 1,
@@ -160,18 +177,10 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 				shift: 5,
 				content: $panelArticleForm
 			});
-			callback({
-				errno: 0
-			});
-		} else {
-			self.html('&nbsp;&nbsp;保存中...');
-			objMind.quickSave(function(e) {
-				objMind.setSaveStatus(0);
-				callback(e);
-			});
 		}
 	});
 });
+
 
 function loadEditor() {
 	var awidth = aheight = 0;
@@ -382,6 +391,10 @@ function CContent() {
 		 * 调用快速保存的方法
 		 */
 		quickSave: function(callback) {
+			// console.log('exec quick saving');
+			// callback({
+			// 	errno: 0
+			// });
 			saveQuick(callback);
 		},
 		/**
@@ -598,6 +611,7 @@ function CCatalog() {
 									obj = inst.get_node(data.reference).original;
 								CW.showMind();
 								$('#btnSave').addClass('disable');
+								window.clearInterval(extFun._interval);
 								if ($cuid.val() == obj.id) {
 									return;
 								}
@@ -615,6 +629,7 @@ function CCatalog() {
 									obj = inst.get_node(data.reference),
 									cid = obj.id;
 								$('#btnSave').removeClass('disable');
+								extFun.saveAuto();
 								if (CCT.getId() == cid) return;
 								if (CCT.getSaveStatus() == 1) {
 									layer.confirm('文章还没有被保存！要不要保存文章后再加载？', {

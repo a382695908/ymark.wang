@@ -1897,7 +1897,7 @@
                 var targetElem = editor.getLegalTags(rangeElem);
                 var $targetElem;
                 var $pElem;
-                console.log(targetElem)
+                // console.log(targetElem)
                 if (!targetElem) {
                     // 没找到合法标签，就去查找 div
                     targetElem = editor.getSelfOrParentByName(rangeElem, 'div');
