@@ -121,9 +121,15 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 	// 快速保存
 	$('#btnContentSaveQuick').click(function() {
 		var self = $(this);
-		if (btnSaveStatus == 1 || self.attr('read') == '1' || extFun.isSaving || CCT.getSaveStatus() == '0') {
+		if (btnSaveStatus == 1 || self.attr('read') == '1' || extFun.isSaving) {
 			return;
 		} //避免连续操作
+		var showType = extFun.getEditType();
+		if (showType == '1') {
+			if (CCT.getSaveStatus() == '0') {
+				return;
+			}
+		}
 		window.clearInterval(extFun._interval);
 		btnSaveStatus = 1;
 		self.attr('read', '1');
@@ -143,7 +149,8 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 				extFun.setBtnTyping(self, '快速保存', 'ion-ios-download-outline');
 			}, 3000);
 		}
-		if (extFun.getEditType() == '1') { //内容
+		console.log(extFun.getEditType());
+		if (showType == '1') { //内容
 			CCT.quickSave(function(e) {
 				CCT.setSaveStatus(0);
 				callback(e);
@@ -618,7 +625,6 @@ function CCatalog() {
 								$cuid.val(obj.id);
 								document.location.hash = '#' + obj.id;
 								CW.refreshMind(obj.id);
-
 							}
 						},
 						"editContent": {

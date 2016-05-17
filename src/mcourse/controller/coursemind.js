@@ -39,7 +39,6 @@ export default class extends Base {
             this.classic_bg = "rgb(255,255,255)";
             this.classic_classic = "defaultClassic";
         }
-
         return this.display('index');
     }
     async detailAction() {

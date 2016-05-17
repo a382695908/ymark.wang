@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>易马克 - 信息系统项目管理师考试教程</title>
+		<title>易马克 - {{ controller.model.name }}</title>
 		<!-- Meta, title, CSS, favicons, etc. -->
 		<meta charset="UTF-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,78 +18,37 @@
 		<![endif]-->
 	</head>
 	<body>
-		<div class="m-manual manual-reader font-size-1 font-theme-0 manual-active manual-mode-view">
-		    <div class="manual-head">
-		        <div class="left"> <a class="manual-title" href="/" title="返回"> <b class="text">{{ controller.model.name }}</b> </a> </div>
-		        <input type="hidden" id="courseuid" value="{{ controller.model.uid }}"/>
-		    </div>
-		    <div class="manual-body">
-		        <div class="manual-left">
-		            <div class="manual-tab" style="bottom: 35px;">
-		                <div class="tab-navg">
-		                    <span data-mode="view" class="navg-item active"><i class="icon icon-menu"></i><b class="text">目录</b></span>
-		                    <span data-mode="search" class="navg-item"><i class="icon icon-search"></i><b class="text">搜索</b></span>
-		                    <!-- <span data-mode="collect" class="navg-item"><i class="icon icon-heart"></i><b class="text">收藏</b></span> -->
-		                </div>
-		                <div class="tab-wrap">
-		                    <div class="tab-item manual-catalog active" id="divcatalogue"></div>
-		                    <div class="tab-item manual-search">
-		                        <div class="search-inner">
-		                            <div class="search-form">
-		                                <form class="w-search" onsubmit="return false;" method="post" autocomplete="off">
-		                                    <label class="w-text text-m text-full search-enter"><input class="text-input" type="text" name="keyword" placeholder="请输入搜索关键词..."></label>
-		                                    <input type="hidden" name="book_id" value="10249">
-		                                    <button class="search-btn icon-search" type="submit"></button>
-		                                <span class="form-loading">提交中...</span></form>
-		                            </div>
-		                            <div class="search-result">
-		                                <div class="search-empty"><i class="image"></i><b class="text">暂无相关搜索结果！</b></div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		        <div class="manual-right" id="panelRight">
-		            <div class="m-article">
-		                <div class="article-head">
-		                    <div class="head-tool">
-		                    </div>
-		                    <div class="head-util">
-
-		                    <div class="item w-drop drop-hover">
-		                    	<span id="spanShowTypeMind" class="drop-show ">
-			                        <span class="glyphicon glyphicon-scissors" aria-hidden="true"></span>
-			                        <b class="text"> 知识点结构图 </b>
-			                    </span>
-		                      	<span id="spanShowTypeCont" class="drop-show active">
-		                        	<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
-		                        	<b class="text"> 文章内容 </b>
-		                      	</span>
-		                    </div>
-		                    </div>
-		                    <h1 id="info_title">{{ controller.model.name }}</h1>
-		                </div>
-		                <div class="article-wrap">
-		                    <div class="article-view">
-		                        <div class="view-body think-editor-content" id="divcontent"> </div>
-		                        <!-- <div class="view-foot">
-		                            <div class="article-jump">
-		                                <span class="jump-up" style="display: block;">上一篇：<a href="#">下载</a></span>
-		                                <span class="jump-down" style="display: block;">下一篇：<a href="#">生成编辑器（使用ID）</a></span>
-		                            </div>
-		                            <a class="view-backtop"><i class="icon-arrow-up2"></i></a>
-		                        </div> -->
-		                    </div>
-		                </div>
-		            <div class="think-loading loading-ripple"><span class="loading-inner"><i class="loading-image"></i><b class="loading-text"></b></span></div></div>
-		        </div>
-		    <div class="manual-progress"></div></div>
-		    <div class="manual-mask"></div>
-		    <div id="divstruct"></div>
+		<div class="g-hd">
+			<div class="logo">
+				<a href="/course/"><img src="/static/img/logo.png" /></a>
+			</div>
+    		<div class="title">{{ controller.model.name }}</div>
 		</div>
+		<div class="g-sd">
+		    <header class="m-hd m-hd-fw m-hd-ra">
+			    <ul>
+			        <li class="z-crt"><a href="#">目录</a></li>
+			        <li><a href="#">收藏</a></li>
+			        <li><a href="#">搜索</a></li>
+			    </ul>
+			</header>
+			<div id="catalogtree"></div>
+		</div>
+		<div class="g-mn">
+			<h2 class="u-tt u-tt-xl" id="info_title"></h2>
+			<div id="divFrame">
+		    	<iframe scrolling="auto" allowtransparency="true" id="iframeMind" style="width:100%;height:100%;" frameborder="0"></iframe>
+		    </div>
+		    <div id="divcontent" class="think-editor-content"></div>
+		    
+		</div>
+		<div class="g-ft">
+		    Copyright © 2016 YMARK. All Rights Reserved.
+		</div>
+		<script type="text/javascript">
+	    	var courseuid = "{{ controller.cuid }}";
+	    </script>
 		<script type="text/javascript" src="/static/js/pace.min.js"></script>
-		<script type="text/javascript" src="/static/js/jquery-2.1.3.min.js"></script>
 		<script src="/static/js/sea.js"></script>
 	    <script src="/static/course/js/detail.js"></script>
 	</body>

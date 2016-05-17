@@ -1,16 +1,53 @@
 'use strict';
 
 import Base from './base.js';
-
+import treeUtil from '../../mcourse/controller/treeutil.js';
 export default class extends Base {
   /**
    * index action
    * @return {Promise} []
    */
   async indexAction() {
-    let list = await this.model('course').field('uid,name,coverpics,summary,lasttime').order('addtime desc').select();
+    let list = await this.model('course').field('uid,name,coverpics,summary,lasttime').select();
     this.list = list;
-    return this.display();
+    return this.display('index');
+  }
+
+  async mindindexAction() {
+    let param = this.get();
+    let cuid = param.uid,
+      cid = param.id;
+    if (!cuid || !cid) return this.fail('参数错误！');
+    let model = this.model('coursemind');
+    let model_catalog = this.model('coursecatalog');
+    let list = await model.where({
+      cuid: cuid,
+      cid: cid
+    }).select();
+
+    let cataloglist = await model_catalog.where({
+      cuid: cuid,
+      id: cid
+    }).select();
+    let catalogmodel = cataloglist[0];
+    let data = treeUtil.getMindTree(list);
+
+    // 设置一些全局变量
+    this.treeJson = JSON.stringify(data); //脑图数的数据
+    this.cuid = cuid; //课程的UID
+    this.cid = cid; //目录的UID
+    this.structure = catalogmodel.structure || 'mind'; //脑图显示的结构类型
+    this.catalogtitle = catalogmodel.title; //脑图的标题
+    let classic = catalogmodel.classic; //脑图的风格
+    if (classic) {
+      classic = JSON.parse(classic);
+      this.classic_bg = classic.bg;
+      this.classic_classic = classic.classic;
+    } else {
+      this.classic_bg = "rgb(255,255,255)";
+      this.classic_classic = "defaultClassic";
+    }
+    return this.display('mind');
   }
 
   async detailAction() {
@@ -18,6 +55,7 @@ export default class extends Base {
     let list = await this.model('course').where({
       uid: uid
     }).field('uid,name,coverpics,summary,lasttime').limit(0, 1).select();
+    this.cuid = uid; //课程的UID
     this.model = list[0];
     return this.display('detail_list');
   }

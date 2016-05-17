@@ -2973,33 +2973,6 @@ function Designer(a) {
 				}
 				if (B.note) {
 					var d = $("<div note_tpid='" + B.id + "' class='tp_extend_item note'><span></span></div>").appendTo(F);
-					// d.bind("click", function(Y) {
-					// 	console.log('mouseover');
-					// 	var X = $(this);
-					// 	var Z = X.attr("note_tpid");
-					// 	var w = b.model.getTopic(Z).note;
-					// 	// var j = window.markdownit();
-					// 	// var h = j.render(w);
-					// 	var h = '';
-					// 	var W = $("#note_view_box");
-					// 	if (W.length == 0) {
-					// 		W = $("<div id='note_view_box'></div>").appendTo("body")
-					// 	}
-					// 	var p = $("<div id='note_view_box_temp'></div>").appendTo("body");
-					// 	p.html(h);
-					// 	W.css({
-					// 		height: p.height(),
-					// 		width: p.width() + 25,
-					// 		zIndex: "9999999999"
-					// 	});
-					// 	p.remove();
-					// 	W.html(h).hide();
-					// 	W.dropdown({
-					// 		target: X,
-					// 		position: "center",
-					// 		fade: true
-					// 	})
-					// }).bind("mouseleave", function(h) {});
 					if (b.config.readonly == false) {
 						d.bind("click.show",
 							function(h) {
@@ -3008,6 +2981,31 @@ function Designer(a) {
 								b.events.push("showDockNote", "note");
 								h.stopPropagation()
 							})
+					} else {
+						d.bind("click.show", function(Y) {
+							var X = $(this);
+							var Z = X.attr("note_tpid");
+							var w = b.model.getTopic(Z).note;
+							var h = w;
+							var W = $("#note_view_box");
+							if (W.length == 0) {
+								W = $("<div id='note_view_box'></div>").appendTo("body")
+							}
+							var p = $("<div id='note_view_box_temp'></div>").appendTo("body");
+							p.html(h);
+							W.css({
+								height: p.height(),
+								width: p.width() + 25,
+								zIndex: "9999999999"
+							});
+							p.remove();
+							W.html(h).hide();
+							W.dropdown({
+								target: X,
+								position: "center",
+								fade: true
+							})
+						}).bind("mouseleave", function(h) {});
 					}
 				}
 				if (B.link && B.link.value) {
@@ -4191,7 +4189,7 @@ function Designer(a) {
 		if (b.config.readonly != true) {
 			$(window).bind("resize.layout",
 				function() {
-					$("#canvas_container").height($(window).height() - (b.config.showHead == false ? 0 : 32))
+					$("#canvas_container").height($(window).height() - (b.config.showHead == false ? 0 : (window.canvasOffsetHeight || 0)))
 				});
 			$(window).bind("selectstart",
 				function() {
