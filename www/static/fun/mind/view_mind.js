@@ -39,7 +39,7 @@ $(function() {
 		}
 		var d = maxY - minY;
 		if (d < b.height()) {
-			c.css("top", (b.height() - maxY - minY) / 2)
+			c.css("top", (b.height() - maxY - minY) / 2 - 110)
 		} else {
 			c.css("top", -minY + 50)
 		}

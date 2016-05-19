@@ -13,11 +13,33 @@ export default class extends Base {
         let uid = this.get().uid;
         if (!uid) return this.fail('UID为空！');
         let model_catalog = this.model('coursecatalog');
-        let list = await model_catalog.order('id').where({
+        let list = await model_catalog.where({
             cuid: uid
-        }).order('sort').select();
+        }).order('pid,sort').select();
         if (!list || list.length <= 0) return this.success({});
-        return this.json(treeUtil.getCatalogTree(list));
+        return this.json({
+            json: treeUtil.getCatalogTree(list),
+            list: list
+        });
+    }
+
+    savesortAction() {
+        let uid = this.get().uid;
+        let param = this.post();
+        let updlist = JSON.parse(param.data);
+        let sqlList = [],
+            _tmp = null;
+        for (let item in updlist) {
+            _tmp = updlist[item];
+            sqlList.push({
+                pid: _tmp.pid,
+                sort: _tmp.sort,
+                id: item
+            });
+        }
+        let model = this.model('coursecatalog');
+        model.updateMany(sqlList);
+        return this.success('保存成功');
     }
 
     //根据父节点，获得所有的子节点
@@ -28,8 +50,6 @@ export default class extends Base {
             rowCount = params.rowCount || 10;
 
         if (!pid) return this.fail('参数出错！');
-
-
 
         let model = this.model('coursecatalog');
         let list = await model.field([
@@ -90,6 +110,16 @@ export default class extends Base {
                     model_coursemind = this.model('coursemind');
                 let time = DateFormat(new Date(), "yyyy-mm-dd hh:MM:ss"),
                     userId = this.getUserId();
+                // 先获取在他之前有几个兄弟节点，然后sort + 1
+                let maxSort = await model_catalog.where({
+                    pid: param.pid
+                }).max('sort');
+                if (maxSort == null) {
+                    maxSort = 1;
+                } else {
+                    maxSort += 1;
+                }
+                row.sort = maxSort;
                 let catalogId = await model_catalog.add(row);
                 let contentId = await model_coursecontent.add({
                     title: param.title,

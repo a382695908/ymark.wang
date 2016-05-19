@@ -55,6 +55,7 @@ export default class extends Base {
         }).order('nid').select();
         return this.success(list);
     }
+
     async saveAction() {
         let cuid = this.get().cuid;
         let param = this.post(),

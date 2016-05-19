@@ -764,7 +764,7 @@ function Designer(a) {
 				}
 			},
 			niupizhi: {
-				background: "url(/themes/default/images/diagraming/mind/classic/niupizhi.png) repeat",
+				background: "url(/static/fun/mind/img/niupizhi.png) repeat",
 				commonStyle: {
 					family: "微软雅黑",
 					fontSize: 25,
@@ -937,6 +937,9 @@ function Designer(a) {
 			if (c + g.outerWidth() > $(window).width()) {
 				f = c - g.outerWidth()
 			}
+			console.log('--->');
+			console.log(e);
+			console.log(window.canvasOffsetTop);
 			g.css({
 				left: f,
 				top: e
@@ -2810,63 +2813,58 @@ function Designer(a) {
 				return
 			}
 			var c = $(".tp_box[id]");
-			c.unbind("dblclick").bind("dblclick",
-				function(f) {
-					var d = $(this);
-					b.op.editText(d)
-				});
-			c.unbind("mousedown.drag").bind("mousedown.drag",
-				function(i) {
-					var g = $(this);
-					if (g.attr("id") == b.model.topic.id) {
-						var h = b.canvas.parent();
-						var f = h.scrollTop();
-						var d = h.scrollLeft();
-						b.canvas.bind("mousemove.dragcanvas",
-							function(j) {
-								if (Math.abs(j.pageX - i.pageX) > 6 || Math.abs(j.pageY - i.pageY) > 6) {
-									var e = j.pageX - i.pageX;
-									var k = j.pageY - i.pageY;
-									h.scrollLeft(d - e);
-									h.scrollTop(f - k)
-								}
-							});
-						$(document).unbind("mouseup.drag_canvas").bind("mouseup.drag_canvas",
-							function(e) {
-								b.canvas.unbind("mousemove.dragcanvas")
-							})
-					} else {
-						b.canvas.unbind("mousemove.drag");
-						b.op.topicDraggable(g, i)
-					}
-				});
-			c.off("click.select").on("click.select",
-				function(g) {
-					b.contextMenu.close();
-					var d = $(this);
-					var h = d.attr("id");
-					if (b.model.brushStyles != null) {
-						b.model.pasteTopicStyle(h, b.model.brushStyles)
-					}
-					if (b.canvas.find(".connection_point").length > 0) {
-						b.connection.unSelectConnection()
-					}
-					b.events.push("updateHeader");
-					if (g.ctrlKey) {
-						var f = b.utils.getSelected();
-						if (b.utils.isSelected(h)) {
-							b.utils.removeFromArray(f, h)
-						} else {
-							f.push(h)
+			c.unbind("dblclick").bind("dblclick", function(f) {
+				var d = $(this);
+				b.op.editText(d)
+			});
+			c.unbind("mousedown.drag").bind("mousedown.drag", function(i) {
+				var g = $(this);
+				if (g.attr("id") == b.model.topic.id) {
+					var h = b.canvas.parent();
+					var f = h.scrollTop();
+					var d = h.scrollLeft();
+					b.canvas.bind("mousemove.dragcanvas", function(j) {
+						if (Math.abs(j.pageX - i.pageX) > 6 || Math.abs(j.pageY - i.pageY) > 6) {
+							var e = j.pageX - i.pageX;
+							var k = j.pageY - i.pageY;
+							h.scrollLeft(d - e);
+							h.scrollTop(f - k)
 						}
-						b.utils.select(f)
+					});
+					$(document).unbind("mouseup.drag_canvas").bind("mouseup.drag_canvas", function(e) {
+						b.canvas.unbind("mousemove.dragcanvas")
+					})
+				} else {
+					b.canvas.unbind("mousemove.drag");
+					b.op.topicDraggable(g, i)
+				}
+			});
+			c.off("click.select").on("click.select", function(g) {
+				b.contextMenu.close();
+				var d = $(this);
+				var h = d.attr("id");
+				if (b.model.brushStyles != null) {
+					b.model.pasteTopicStyle(h, b.model.brushStyles)
+				}
+				if (b.canvas.find(".connection_point").length > 0) {
+					b.connection.unSelectConnection()
+				}
+				b.events.push("updateHeader");
+				if (g.ctrlKey) {
+					var f = b.utils.getSelected();
+					if (b.utils.isSelected(h)) {
+						b.utils.removeFromArray(f, h)
 					} else {
-						if (b.utils.getSelected().indexOf(h) < 0) {
-							b.utils.select(h)
-						}
+						f.push(h)
 					}
-					g.stopPropagation()
-				});
+					b.utils.select(f)
+				} else {
+					if (b.utils.getSelected().indexOf(h) < 0) {
+						b.utils.select(h)
+					}
+				}
+				g.stopPropagation()
+			});
 			c.off("mouseup.select").on("mouseup.select",
 				function(f) {
 					var d = $(this);
@@ -4187,134 +4185,121 @@ function Designer(a) {
 		b.model.persistenceList.root = this.utils.copy(this.model.topic);
 		b.canvas = $("#canvas");
 		if (b.config.readonly != true) {
-			$(window).bind("resize.layout",
-				function() {
-					$("#canvas_container").height($(window).height() - (b.config.showHead == false ? 0 : (window.canvasOffsetHeight || 0)))
-				});
-			$(window).bind("selectstart",
-				function() {
-					return false
-				});
+			$(window).bind("resize.layout", function() {
+				$("#canvas_container").height($(window).height() - (b.config.showHead == false ? 0 : (window.canvasOffsetHeight || 0)));
+			});
+			$(window).bind("selectstart", function() {
+				return false
+			});
 			$(window).trigger("resize.layout")
 		}
-		b.canvas.css({
-			width: b.config.canvasWidth + "px",
-			height: b.config.canvasHeight + "px"
-		});
+
 		if (b.config.readonly != true) {
 			$("#canvas_container").scrollTop((b.config.canvasHeight - $("#canvas_container").height()) / 2 + 25);
 			$("#canvas_container").scrollLeft((b.config.canvasWidth - $("#canvas_container").width()) / 2)
 		}
 		if (role == "viewer") {
-			b.config.readonly = true
+			b.config.readonly = true;
 		}
 		this.open(definition);
 		this.op.bindBackground();
 		if (b.config.readonly) {
-			return
+			return;
 		}
 		setTimeout(function() {
-				b.utils.select(b.model.topic.id)
-			},
-			300);
+			b.utils.select(b.model.topic.id)
+		}, 300);
 		this.hotkey.init();
 		this.contextMenu.init();
-		b.canvas.bind("mousedown",
-			function(j) {
-				b.contextMenu.close();
-				if (b.canvas.find(".connection_point").length > 0) {
-					b.connection.unSelectConnection()
+		b.canvas.bind("mousedown", function(j) {
+			b.contextMenu.close();
+			if (b.canvas.find(".connection_point").length > 0) {
+				b.connection.unSelectConnection()
+			}
+			if (j.altKey) {
+				var h = b.canvas.parent();
+				var g = h.scrollTop();
+				var f = h.scrollLeft();
+				b.canvas.bind("mousemove.dragcanvas", function(m) {
+					var l = m.pageX - j.pageX;
+					var n = m.pageY - j.pageY;
+					h.scrollLeft(f - l);
+					h.scrollTop(g - n)
+				});
+				$(document).unbind("mouseup.drag_canvas").bind("mouseup.drag_canvas", function(l) {
+					b.canvas.unbind("mousemove.dragcanvas")
+				})
+			} else {
+				var k = $(j.target);
+				var i = k.parents(".tp_box");
+				if (i.length > 0) {
+					return
 				}
-				if (j.altKey) {
-					var h = b.canvas.parent();
-					var g = h.scrollTop();
-					var f = h.scrollLeft();
-					b.canvas.bind("mousemove.dragcanvas",
-						function(m) {
-							var l = m.pageX - j.pageX;
-							var n = m.pageY - j.pageY;
-							h.scrollLeft(f - l);
-							h.scrollTop(g - n)
-						});
-					$(document).unbind("mouseup.drag_canvas").bind("mouseup.drag_canvas",
-						function(l) {
-							b.canvas.unbind("mousemove.dragcanvas")
-						})
-				} else {
-					var k = $(j.target);
-					var i = k.parents(".tp_box");
-					if (i.length > 0) {
-						return
+				var e = null;
+				var d = b.utils.getRelativePos(j.pageX, j.pageY, b.canvas);
+				b.canvas.bind("mousemove.multiselect", function(m) {
+					if (e == null) {
+						e = $("<div id='selecting_box'></div>").appendTo(b.canvas)
 					}
-					var e = null;
-					var d = b.utils.getRelativePos(j.pageX, j.pageY, b.canvas);
-					b.canvas.bind("mousemove.multiselect",
-						function(m) {
-							if (e == null) {
-								e = $("<div id='selecting_box'></div>").appendTo(b.canvas)
-							}
-							var l = b.utils.getRelativePos(m.pageX, m.pageY, b.canvas);
-							var n = {
-								left: l.x,
-								top: l.y
-							};
-							if (l.x > d.x) {
-								n.left = d.x
-							}
-							if (l.y > d.y) {
-								n.top = d.y
-							}
-							n.width = Math.abs(l.x - d.x);
-							n.height = Math.abs(l.y - d.y);
-							e.css(n)
-						});
-					$(document).unbind("mouseup.multiselect").bind("mouseup.multiselect",
-						function(n) {
-							if (e != null) {
-								var l = {
-									x: e.offset().left,
-									y: e.offset().top,
-									w: e.width(),
-									h: e.height()
-								};
-								var o = b.utils.getTopicsByRange(l);
-								if (n.ctrlKey) {
-									var m = b.utils.getSelected();
-									b.utils.mergeArray(o, m)
-								}
-								b.utils.select(o);
-								e.remove()
-							}
-							$(document).unbind("mouseup.multiselect");
-							b.canvas.unbind("mousemove.multiselect")
-						})
-				}
-			}).unbind("click").bind("click",
-			function(e) {
-				var f = $(e.target);
-				var d = f.parents(".tp_box");
-				if (d.length == 0) {
-					b.utils.unselect()
-				}
-				if (b.model.brushStyles != null) {
-					b.model.brushStyles = null;
-					b.events.push("brushTopic")
-				}
-			}).off("mousemove.op").on("mousemove.op",
-			function(f) {
-				var g = b.utils.getRelativePos(f.pageX, f.pageY, b.canvas);
-				var d = b.connection.getConnectionByPoint(g.x, g.y);
-				if (d.inline > 0) {
-					var e = d.lines[0];
-					b.canvas.css("cursor", "pointer");
-					b.connection.initConnectionClick(e.attr("id"));
-					b.connection.isInLine = true
-				} else {
-					b.canvas.css("cursor", "default");
-					b.canvas.off("mousedown.connection");
-					b.connection.isInLine = false
-				}
-			})
+					var l = b.utils.getRelativePos(m.pageX, m.pageY, b.canvas);
+					var n = {
+						left: l.x,
+						top: l.y
+					};
+					if (l.x > d.x) {
+						n.left = d.x
+					}
+					if (l.y > d.y) {
+						n.top = d.y
+					}
+					n.width = Math.abs(l.x - d.x);
+					n.height = Math.abs(l.y - d.y);
+					e.css(n)
+				});
+				$(document).unbind("mouseup.multiselect").bind("mouseup.multiselect", function(n) {
+					if (e != null) {
+						var l = {
+							x: e.offset().left,
+							y: e.offset().top,
+							w: e.width(),
+							h: e.height()
+						};
+						var o = b.utils.getTopicsByRange(l);
+						if (n.ctrlKey) {
+							var m = b.utils.getSelected();
+							b.utils.mergeArray(o, m)
+						}
+						b.utils.select(o);
+						e.remove()
+					}
+					$(document).unbind("mouseup.multiselect");
+					b.canvas.unbind("mousemove.multiselect")
+				})
+			}
+		}).unbind("click").bind("click", function(e) {
+			var f = $(e.target);
+			var d = f.parents(".tp_box");
+			if (d.length == 0) {
+				b.utils.unselect()
+			}
+			if (b.model.brushStyles != null) {
+				b.model.brushStyles = null;
+				b.events.push("brushTopic")
+			}
+		}).off("mousemove.op").on("mousemove.op", function(f) {
+			var g = b.utils.getRelativePos(f.pageX, f.pageY, b.canvas);
+			var d = b.connection.getConnectionByPoint(g.x, g.y);
+			if (d.inline > 0) {
+				var e = d.lines[0];
+				b.canvas.css("cursor", "pointer");
+				b.connection.initConnectionClick(e.attr("id"));
+				b.connection.isInLine = true
+			} else {
+				b.canvas.css("cursor", "default");
+				b.canvas.off("mousedown.connection");
+				b.connection.isInLine = false
+			}
+		})
 	};
 	this.initialize.apply(this, arguments, a)
 };

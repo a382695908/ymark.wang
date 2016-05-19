@@ -25,6 +25,9 @@ export default [
 		delete: "mcourse/course/delete?id=:1",
 		put: "mcourse/course/save?id=:1"
 	}],
+	[/^mcourse\/nexus\/sort\/(\S*)$/, {
+		post: "mcourse/nexus/savesort?uid=:1"
+	}],
 	[/^mcourse\/nexus\/(((?!chdlist).)*)$/, {
 		get: "mcourse/nexus/list?uid=:1",
 		post: "mcourse/nexus/save?id=:1",
@@ -43,6 +46,7 @@ export default [
 	[/^mcourse\/cm\/index\/(\S*)\/(\S*)$/, {
 		get: "mcourse/coursemind/index?uid=:1&id=:2"
 	}],
+
 	[/^mcourse\/cm\/(\S*)$/, { //course mind
 		get: "mcourse/coursemind/detail?id=:1",
 		post: "mcourse/coursemind/save?cuid=:1",

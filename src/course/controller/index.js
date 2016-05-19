@@ -68,9 +68,9 @@ export default class extends Base {
     let uid = this.get().uid;
     if (!uid) return this.fail('UID为空！');
     let model_catalog = this.model('coursecatalog');
-    let list = await model_catalog.order('id').where({
+    let list = await model_catalog.where({
       cuid: uid
-    }).select();
+    }).order('pid,sort').select();
     if (!list || list.length <= 0) return this.success({});
     let list_len = list.length;
     /**

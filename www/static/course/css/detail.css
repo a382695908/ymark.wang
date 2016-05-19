@@ -33,11 +33,11 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;}
 html{_height:auto;_padding:100px 0 50px;}
 .g-hd,.g-sd,.g-mn,.g-ft{position:absolute;left:0;}
 .g-hd,.g-ft{width:100%;}
-.g-sd,.g-mn{top:50px;bottom:30px;_height:100%;overflow:auto;}
+.g-sd,.g-mn{top:50px;bottom:0px;_height:100%;overflow:auto;}
 .g-hd{top:0;height:50px;border-bottom:1px solid #E6E6E6;background: #3498db;background-image: -webkit-linear-gradient(top, #3498db, #2980b9);background-image: -moz-linear-gradient(top, #3498db, #2980b9);background-image: -ms-linear-gradient(top, #3498db, #2980b9);background-image: -o-linear-gradient(top, #3498db, #2980b9);background-image: linear-gradient(to bottom, #3498db, #2980b9);}
 .g-sd{width:249px;border-right:1px solid #E6E6E6;}
 .g-mn{_position:relative;left:250px;right:0;_top:0;_left:0;_margin-left:250px;border-top:1px solid #E6E6E6;}
-.g-ft{bottom:0;height:30px;border-top:1px solid #E6E6E6;text-align: center;line-height:30px;background: #ffffff; background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0); background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0); background-image: -ms-linear-gradient(top, #ffffff, #f0f0f0); background-image: -o-linear-gradient(top, #ffffff, #f0f0f0); background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);}
+.g-ft{bottom:0;height:0px;border-top:1px solid #E6E6E6;text-align: center;line-height:30px;background: #ffffff; background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0); background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0); background-image: -ms-linear-gradient(top, #ffffff, #f0f0f0); background-image: -o-linear-gradient(top, #ffffff, #f0f0f0); background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);}
 
 /* 含标题和Tab的模块头部-默认不定宽 */
 .m-hd{height:30px;line-height:30px;padding:1px 0 0;border-bottom:1px solid #ddd;}

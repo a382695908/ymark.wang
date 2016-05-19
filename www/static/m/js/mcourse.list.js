@@ -21,7 +21,15 @@ seajs.config({
     },
     preload: 'jquery'
 });
-var CLT = CFM = CTG = layer = null;
+/**
+ * CLT = CourseList
+ * CFM = CourseForm
+ * CTG = CourseCatalog
+ * CGF = CatalogForm
+ * CGS = CatalogSort
+ * @type {[type]}
+ */
+var CLT = CFM = CTG = CGF = CGS = layer = null;
 seajs.use(['jquery', 'layer', 'util', 'ionic', 'bootgrid', 'tree', 'treestyle'], function() {
     var navheight = 45 + 15;
     var dimension = $.getDimension(),
@@ -319,7 +327,7 @@ function CourseCatalog() {
                     "icon": "ionic ion-ios-paw"
                 }
             },
-            plugins: ["state", "types", "wholerow"]
+            plugins: ["state", "dnd", "types", "wholerow"]
         },
         /**
          * 表单的一些方法
@@ -541,7 +549,6 @@ function CourseCatalog() {
         } else {
             loadData();
         }
-
     }).on("refresh.jstree", function(e, data) {
         domCatalog.jstree("open_all");
     })
@@ -583,4 +590,12 @@ function CourseCatalog() {
             }
         }
     }
+}
+
+function CatalogForm() {
+
+}
+
+function CatalogSort() {
+
 }
