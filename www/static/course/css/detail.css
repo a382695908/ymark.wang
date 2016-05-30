@@ -25,7 +25,6 @@ h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
 del,ins,u,s,a,a:hover{text-decoration:none;}
 body,textarea,input,button,select,keygen,legend{font:12px/1.14 arial,\5b8b\4f53;color:#333;outline:0;}
 body{background:#fff;}
-a,a:hover{color:#333;}
 
 
 /* 全屏自适应布局  */
@@ -40,7 +39,7 @@ html{_height:auto;_padding:100px 0 50px;}
 .g-ft{bottom:0;height:0px;border-top:1px solid #E6E6E6;text-align: center;line-height:30px;background: #ffffff; background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0); background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0); background-image: -ms-linear-gradient(top, #ffffff, #f0f0f0); background-image: -o-linear-gradient(top, #ffffff, #f0f0f0); background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);}
 
 /* 含标题和Tab的模块头部-默认不定宽 */
-.m-hd{height:30px;line-height:30px;padding:1px 0 0;border-bottom:1px solid #ddd;}
+.m-hd{height:25px;line-height:25px;padding:10px 0 0;border-bottom:1px solid #ddd;}
 .m-hd h2,.m-hd ul,.m-hd li{float:left;}
 .m-hd h2{margin:0 20px 0 0;font-size:16px;}
 .m-hd li{position:relative;margin:-1px 0 0 2px;}
@@ -65,7 +64,7 @@ html{_height:auto;_padding:100px 0 50px;}
 .m-hd-sm li a{padding:0 10px;font-size:12px;}
 /* tab定宽 */
 .m-hd-fw li{width:60px;}
-.m-hd-fw li a{padding:0;}
+.m-hd-fw li a{padding:0;font-size: 12px;}
 /* tab直角 */
 .m-hd-ra,.m-hd-ra li a,.m-hd-ra li:first-child a,.m-hd-ra li:last-child a{border-radius:0;}
 
@@ -355,7 +354,7 @@ html{_height:auto;_padding:100px 0 50px;}
 .think-editor-content pre>code{display:inline;max-width:100%;padding:0;margin:0;overflow:initial;line-height:inherit;background-color:transparent;border:0;font-size:100%}
 .think-editor-content table{border-collapse:collapse;table-layout:fixed}
 .think-editor-content th{text-align:left}
-.think-editor-content th,.think-editor-c8ontent td{border:1px solid #888;padding:3px 12px}
+.think-editor-content th,.think-editor-content td{border:1px solid #E1E1E1;padding:3px 12px}
 .think-editor-content tr:hover td{background-color:#f1f1f1}
 .think-editor-content tr:first-child td:first-child{border-top-left-radius:3px}
 .think-editor-content tr:first-child td:last-child{border-top-right-radius:3px}
@@ -393,5 +392,5 @@ html pre.prettyprint:hover .m-copy-code{visibility:visible;left:auto;right:0;top
 /* 很大 */
 .u-tt-xl{font-size:18px;}
 .g-hd .logo{float:left;width:140px;}
-.g-hd .logo img{height: 40px; margin-left: 20px; margin-top: 4px;}
-.g-hd .title{float:left;font:22px/2.4 normal , microsoft yahei;color:#EFEFEF;}
+.g-hd .logo img{height: 37px; margin-left: 20px; margin-top: 7px;}
+.g-hd .title{float:left;font:20px/2.4 normal , microsoft yahei;color:#EFEFEF;}
