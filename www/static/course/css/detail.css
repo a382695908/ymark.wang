@@ -346,8 +346,9 @@ html{_height:auto;_padding:100px 0 50px;}
 .think-editor-content h6{font-size:1em;color:#777}
 .think-editor-content br{display:block;margin:.2em}
 .think-editor-content hr{border:0;border-bottom:1px solid #ddd}
-.think-editor-content ul{padding-left:28px}
-.think-editor-content ol{padding-left:28px}
+.think-editor-content ul,.think-editor-content ol{padding-left:28px}
+.think-editor-content ul li{list-style-type: disc;}
+.think-editor-content ol li{list-style-type: decimal;}
 .think-editor-content h1,.think-editor-content h2,.think-editor-content h3,.think-editor-content h4,.think-editor-content h5,.think-editor-content h6,.think-editor-content p,.think-editor-content ul,.think-editor-content ol,.think-editor-content blockquote,.think-editor-content pre,.think-editor-content table{margin-bottom:12px}
 .think-editor-content code{color: #c7254e;display:inline-block;border-radius:4px;padding:0 .4em;background-color:#f9f2f4;word-break:break-all;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;white-space:pre;line-height:1.3}
 .think-editor-content pre{ padding: 16px; overflow: auto; font-size: 85%; line-height: 1.45; background-color: rgba(205, 206, 216, 0.32); border-radius: 0; font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace; border-left: 4px solid #AF9797;}
