@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -18,18 +17,18 @@
 		<meta name="keywords" content="" />
 		
 		<noscript>
-			<link rel="stylesheet" href="/static/course/css/skel.css" />
-			<link rel="stylesheet" href="/static/course/css/style.css" />
-			<link rel="stylesheet" href="/static/course/css/style-xlarge.css" />
+			<link rel="stylesheet" href="http://static.ymark.wang/static/course/css/skel.css" />
+			<link rel="stylesheet" href="http://static.ymark.wang/static/course/css/style.css" />
+			<link rel="stylesheet" href="http://static.ymark.wang/static/course/css/style-xlarge.css" />
 		</noscript>
-		<!--[if lte IE 8]><link rel="stylesheet" href="/static/course/css/ie/v8.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="http://static.ymark.wang/static/course/css/ie/v8.css" /><![endif]-->
 	</head>
 	<body id="top" style="display: none;">
-		<!--[if lte IE 8]><script src="/static/course/css/ie/html5shiv.js"></script><![endif]-->
+		<!--[if lte IE 8]><script src="http://static.ymark.wang/static/course/css/ie/html5shiv.js"></script><![endif]-->
 		<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="/static/js/pace.min.js"></script>
-		<script src="/static/course/js/skel.min.js"></script>
-		<script src="/static/course/js/init.js"></script>
+		<script src="http://static.ymark.wang/static/js/pace.min.js"></script>
+		<script src="http://static.ymark.wang/static/course/js/skel.min.js"></script>
+		<script src="http://static.ymark.wang/static/course/js/init.js"></script>
 		<!-- Header -->
 		<header id="header">
 			<h1><strong>YMARK - COURSE</strong></h1>
@@ -51,7 +50,7 @@
 					{% for item in controller.list %}
 					<article class="6u 12u$(3) work-item" pics="{{ item.coverpics }}">
 						<a href="/course/{{ item.uid }}" class="image fit thumb">
-							<img src="/upload/{{ item.coverpics }}" onerror="noImg();" alt="" />
+							<img src="http://static.ymark.wang/upload/{{ item.coverpics }}" onerror="noImg();" alt="" />
 						</a>
 						<h3><a href="/course/{{ item.uid }}" >{{ item.name }}</a></h3>
 						<!-- <p>{{ item.summary }}</p> -->
