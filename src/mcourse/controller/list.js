@@ -28,7 +28,8 @@ export default class extends Base {
       'uid',
       'name',
       'summary',
-      'coverpics'
+      'coverpics',
+      'lasttime'
     ]).where(where).page(current, rowCount).select();
 
     let count = await model.count('uid');

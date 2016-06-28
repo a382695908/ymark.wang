@@ -19,29 +19,29 @@
 		containers: '100%',
 		breakpoints: {
 			global: {
-				href: '/static/course/css/style.css',
+				href: BASEURL+'/static/course/css/style.css',
 				grid: {
 					gutters: ['2.5em', 0]
 				}
 			},
 			xlarge: {
 				media: '(max-width: 1800px)',
-				href: '/static/course/css/style-xlarge.css'
+				href: BASEURL+'/static/course/css/style-xlarge.css'
 			},
 			large: {
 				media: '(max-width: 1280px)',
-				href: '/static/course/css/style-large.css',
+				href: BASEURL+'/static/course/css/style-large.css',
 				grid: {
 					gutters: ['2em', 0]
 				}
 			},
 			medium: {
 				media: '(max-width: 980px)',
-				href: '/static/course/css/style-medium.css'
+				href: BASEURL+'/static/course/css/style-medium.css'
 			},
 			small: {
 				media: '(max-width: 736px)',
-				href: '/static/course/css/style-small.css',
+				href: BASEURL+'/static/course/css/style-small.css',
 				grid: {
 					gutters: ['1.5em', 0],
 					zoom: 2
@@ -52,7 +52,7 @@
 			},
 			xsmall: {
 				media: '(max-width: 480px)',
-				href: '/static/course/css/style-xsmall.css',
+				href: BASEURL+'/static/course/css/style-xsmall.css',
 				grid: {
 					zoom: 3
 				}
@@ -201,6 +201,6 @@
 
 function noImg() {
 	var img = event.srcElement;
-	img.src = "/static/course/images/thumbs/03.jpg";
+	img.src = BASEURL+"/static/course/images/thumbs/03.jpg";
 	img.onerror = null; //控制不要一直跳动
 }

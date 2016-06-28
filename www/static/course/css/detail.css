@@ -380,7 +380,7 @@ html pre.prettyprint:hover .m-copy-code{visibility:visible;left:auto;right:0;top
 .treeview{margin-top: 5px;}
 .treeview li.node-catalogtree{padding:8px 5px;}
 
-#info_title{text-align: center;padding: 10px 0px;}
+#info_title{text-align: center;padding: 10px 0px;border-bottom:1px solid #E7E7E7;}
 #divFrame{height:0px;}
 /*#divcontent{border-top: 1px solid #E9E9E9;}*/
 .u-tt{font-family:'microsoft yahei',sans-serif;}
@@ -394,4 +394,4 @@ html pre.prettyprint:hover .m-copy-code{visibility:visible;left:auto;right:0;top
 .u-tt-xl{font-size:18px;}
 .g-hd .logo{float:left;width:140px;}
 .g-hd .logo img{height: 37px; margin-left: 20px; margin-top: 7px;}
-.g-hd .title{float:left;font:20px/2.4 normal , microsoft yahei;color:#EFEFEF;}
+.g-hd .title{float:left;font:20px/2.4 normal , microsoft yahei;color:#EFEFEF;padding-left:15px;}

@@ -16,17 +16,18 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		
-		<link rel="stylesheet" href="http://static.ymark.wang/static/course/css/skel.css" />
-		<link rel="stylesheet" href="http://static.ymark.wang/static/course/css/style.css" />
-		<link rel="stylesheet" href="http://static.ymark.wang/static/course/css/style-xlarge.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="http://static.ymark.wang/static/course/css/ie/v8.css" /><![endif]-->
+		<link rel="stylesheet" href="{{controller.STATICURL}}/static/course/css/skel.css" />
+		<link rel="stylesheet" href="{{controller.STATICURL}}/static/course/css/style.css" />
+		<link rel="stylesheet" href="{{controller.STATICURL}}/static/course/css/style-xlarge.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="{{controller.STATICURL}}/static/course/css/ie/v8.css" /><![endif]-->
 	</head>
 	<body id="top" style="display: none;">
-		<!--[if lte IE 8]><script src="http://static.ymark.wang/static/course/css/ie/html5shiv.js"></script><![endif]-->
+		<script type="text/javascript">var BASEURL='{{controller.STATICURL}}';</script>
+		<!--[if lte IE 8]><script src="{{controller.STATICURL}}/static/course/css/ie/html5shiv.js"></script><![endif]-->
 		<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="http://static.ymark.wang/static/js/pace.min.js"></script>
-		<script src="http://static.ymark.wang/static/course/js/skel.min.js"></script>
-		<script src="http://static.ymark.wang/static/course/js/init.js"></script>
+		<script src="{{controller.STATICURL}}/static/js/pace.min.js"></script>
+		<script src="{{controller.STATICURL}}/static/course/js/skel.min.js"></script>
+		<script src="{{controller.STATICURL}}/static/course/js/init.js"></script>
 		<!-- Header -->
 		<header id="header">
 			<h1><strong>YMARK - COURSE</strong></h1>
@@ -39,7 +40,7 @@
 				<header class="major">
 					<h2>易马克 - 课程专题</h2>
 				</header>
-				<p>分享你的知识结构、学习方法</p>
+				<p>分享你的知识结构、学习方法{{controller.STATICURL}}22</p>
 			</section>
 			<!-- Two -->
 			<section id="two">
@@ -48,10 +49,9 @@
 					{% for item in controller.list %}
 					<article class="6u 12u$(3) work-item" pics="{{ item.coverpics }}">
 						<a href="/course/{{ item.uid }}" class="image fit thumb">
-							<img src="http://static.ymark.wang/upload/{{ item.coverpics }}" onerror="noImg();" alt="" />
+							<img src="{{controller.STATICURL}}/upload/{{ item.coverpics }}" onerror="noImg();" alt="" />
 						</a>
 						<h3><a href="/course/{{ item.uid }}" >{{ item.name }}</a></h3>
-						<!-- <p>{{ item.summary }}</p> -->
 					</article>
 					{% endfor %}
 				</div>

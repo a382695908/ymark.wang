@@ -7,10 +7,10 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="ymark">
-		<link rel="stylesheet" type="text/css" href="http://static.ymark.wang/static/css/pace.css">
-		<link rel="stylesheet" type="text/css" href="http://static.ymark.wang/static/course/css/detail.css">
+		<link rel="stylesheet" type="text/css" href="{{controller.STATICURL}}/static/css/pace.css">
+		<link rel="stylesheet" type="text/css" href="{{controller.STATICURL}}/static/course/css/detail.css">
 		<!-- Favicons -->
-		<link rel="icon" href="http://static.ymark.wang/static/img/favicon.ico">
+		<link rel="icon" href="{{controller.STATICURL}}/static/img/favicon.ico">
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -18,20 +18,11 @@
 		<![endif]-->
 	</head>
 	<body>
+		<script type="text/javascript">var BASEURL='{{controller.STATICURL}}';</script>
 		<div class="g-hd">
-			<div class="logo">
-				<a href="/course/"><img src="http://static.ymark.wang/static/img/logo.png" /></a>
-			</div>
-    		<div class="title">{{ controller.model.name }}</div>
+    		<div class="title" style="padding-left:10px;">{{ controller.model.name }}</div>
 		</div>
 		<div class="g-sd">
-		    <header class="m-hd m-hd-fw m-hd-ra">
-			    <ul>
-			        <li class="z-crt"><a href="#">目录</a></li>
-			        <li><a href="#">收藏</a></li>
-			        <li><a href="#">搜索</a></li>
-			    </ul>
-			</header>
 			<div id="catalogtree"></div>
 		</div>
 		<div class="g-mn">
@@ -48,8 +39,8 @@
 		<script type="text/javascript">
 	    	var courseuid = "{{ controller.cuid }}";
 	    </script>
-		<script type="text/javascript" src="http://static.ymark.wang/static/js/pace.min.js"></script>
-		<script src="http://static.ymark.wang/static/js/sea.js"></script>
-	    <script src="http://static.ymark.wang/static/course/js/detail.js"></script>
+		<script type="text/javascript" src="{{controller.STATICURL}}/static/js/pace.min.js"></script>
+		<script src="{{controller.STATICURL}}/static/js/sea.js"></script>
+	    <script src="{{controller.STATICURL}}/static/course/js/detail.js"></script>
 	</body>
 </html>

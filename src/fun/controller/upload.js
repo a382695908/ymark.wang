@@ -7,8 +7,13 @@ export default class extends Base {
     let file = this.http.file('file') ,
         self = this;
 
-    let filepath    = file.path ,
-        filename    = filepath.substr(filepath.lastIndexOf('\\')+1) ,
+    console.log('file:' ,file);
+
+    let filepath    = file.path ;
+    if(!filepath){
+      return '';
+    }
+    let filename    = filepath.substr(filepath.lastIndexOf('\\')+1) ,
         type        = file.headers['content-type'] ,
         outdir      = think.RESOURCE_PATH + '/upload/' + filename ; 
 

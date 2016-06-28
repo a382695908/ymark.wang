@@ -1,12 +1,12 @@
 seajs.config({
 	// 设置路径，方便跨目录调用
 	paths: {
-		'editor': '/static/fun/editor/',
+		'editor': BASEURL+'/static/fun/editor/',
 	},
 	// 设置别名，方便调用
 	alias: {
 		'jquery': '//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js',
-		'tree': '/static/m/js/bootstrap-treeview.js',
+		'tree': BASEURL+'/static/m/js/bootstrap-treeview.js',
 		'hlcss': 'editor/atelier-forest-dark.css',
 	},
 	preload: 'jquery'
