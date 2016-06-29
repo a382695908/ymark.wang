@@ -36,7 +36,7 @@ seajs.use(['jquery', 'layer', 'util', 'ionic', 'bootgrid', 'tree', 'treestyle'],
         height = dimension.height;
 
     layer.config({
-        path: '/static/fun/layer/'
+        path: BASE_PATH+'/static/fun/layer/'
     });
 
     var loadingIndex = undefined;
