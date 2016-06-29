@@ -1,9 +1,9 @@
 seajs.config({
 	// 设置路径，方便跨目录调用
 	paths: {
-		'mjs': '/static/m/js/',
-		'fjs': '/static/fun/',
-		'editor': '/static/fun/editor/',
+		'mjs': STATICURL+'/static/m/js/',
+		'fjs': STATICURL+'/static/fun/',
+		'editor': STATICURL+'/static/fun/editor/',
 	},
 	// 设置别名，方便调用
 	alias: {
@@ -11,7 +11,7 @@ seajs.config({
 		'editor': 'editor/wangEditor.js',
 		'layer': '//apps.bdimg.com/libs/layer/2.1/layer.js',
 		'util': 'mjs/util.js',
-		'ionic': '/static/css/ionicons.min.css',
+		'ionic': STATICURL+'/static/css/ionicons.min.css',
 
 		'tree': 'fjs/tree/jstree.min.js',
 		'treestyle': 'fjs/tree/default/style.min.css',
@@ -281,10 +281,12 @@ function loadEditor() {
 			CCT.setSaveStatus(1);
 		}
 		objEditor.create();
-		CCG.loadTree();
-		var panelHeigh = $('#panelEditor').height();
-		$('#divEditor').height(panelHeigh - 30 - 18);
+		
 	});
+
+	// CCG.loadTree();
+		// var panelHeigh = $('#panelEditor').height();
+		// $('#divEditor').height(panelHeigh - 30 - 18);
 }
 
 function CWindow() {

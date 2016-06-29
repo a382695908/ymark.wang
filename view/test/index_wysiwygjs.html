@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>YMAK - 12</title>
+
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="ymark">
+		<script src='/static/fun/tinymce/tinymce.min.js'></script>
+	</head>
+
+	<body>
+		<!-- <script src="/static/js/highlight.pack.js"></script> -->
+
+		<button onclick="getHtml()">get html</button>
+		<button onclick="setHtml();">set html</button>
+
+		<textarea  id="divEditor">
+		    <p>请输入内容...</p>
+		</textarea >
+		<script type="text/javascript">
+			tinymce.init({
+		    	selector: '#divEditor',
+		    	height : 700,
+		    	menubar : false,
+		    	body_class : '',
+		    	// external_plugins : {},
+		    	toolbar_items_size :'small',
+		    	content_css : '/static/css/pre/monokai-sublime.css',
+		    	plugins: ['autolink lists link image preview hr code fullscreen media table'],
+		    	toolbar :  ['undo redo | styleselect | bold italic underline | alignleft aligncenter alignright | bullist numlist hr outdent indent | link image | code table fullscreen preview  media removeformat']
+		  	});
+
+
+			function getHtml(){
+				console.log('html\n' ,tinymce.get('divEditor').getContent())
+
+			}
+
+			function setHtml(){
+
+			}
+		</script>
+	</body>
+</html>
