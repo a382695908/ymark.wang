@@ -1,9 +1,9 @@
 seajs.config({
     // 设置路径，方便跨目录调用
     paths: {
-        'js': '/static/js/',
-        'mjs': '/static/m/js/',
-        'fjs': '/static/fun/'
+        'js': BASE_PATH+'/static/js/',
+        'mjs': BASE_PATH+'/static/m/js/',
+        'fjs': BASE_PATH+'/static/fun/'
     },
 
     // 设置别名，方便调用
@@ -12,7 +12,7 @@ seajs.config({
         'layer': '//apps.bdimg.com/libs/layer/2.1/layer.js',
         'util': 'mjs/util.js',
         'bootgrid': 'mjs/jquery.bootgrid.min.js',
-        'ionic': '/static/css/ionicons.min.css',
+        'ionic': BASE_PATH+'/static/css/ionicons.min.css',
         'jquery-ui': '//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js',
         'plupload': 'fjs/upload/plupload.full.min.js',
         'plupload-ui': 'fjs/upload/jquery.ui.plupload.min.js',
