@@ -27,11 +27,13 @@
 		<canvas id="support_canvas" style="display: none;"></canvas>
 	  	<script type="text/javascript">
 	  		if(window.top==window.self){//不存在父页面
-	  			window.location.href = '/error';
+	  			// window.location.href = '/error';
 	  		}
 	  		if (!document.getElementById("support_canvas").getContext) {
 	      		window.location.href = "/diagraming/not_support";
 	    	}
+        var STATICURL='{{controller.STATICURL}}'; 
+        var MANAGEURL='{{controller.MANAGEURL}}';
 	    </script>
 	    <div id="header_bar">
 		    <div class="header_block">

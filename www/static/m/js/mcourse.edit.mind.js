@@ -1,7 +1,7 @@
 seajs.config({
 	// 设置路径，方便跨目录调用
 	paths: {
-		'mind': '/static/fun/mind/',
+		'mind': STATICURL+'/static/fun/mind/',
 	},
 	// 设置别名，方便调用
 	alias: {

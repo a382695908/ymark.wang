@@ -937,9 +937,6 @@ function Designer(a) {
 			if (c + g.outerWidth() > $(window).width()) {
 				f = c - g.outerWidth()
 			}
-			console.log('--->');
-			console.log(e);
-			console.log(window.canvasOffsetTop);
 			g.css({
 				left: f,
 				top: e

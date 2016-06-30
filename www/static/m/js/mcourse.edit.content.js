@@ -99,7 +99,7 @@ var extFun = {
 
 seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic' ,'editor'], function() {
 	layer.config({
-		path: '/static/fun/layer/'
+		path: STATICURL+'/static/fun/layer/'
 	});
 	CW = CWindow();
 	CCG = CCatalog();
