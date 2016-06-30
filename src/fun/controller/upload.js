@@ -7,8 +7,6 @@ export default class extends Base {
     let file = this.http.file('file') ,
         self = this;
 
-    console.log('file:' ,this.http.file());
-
     let filepath    = file.path ;
     if(!filepath){
       self.success({msg:'上传失败！'});
