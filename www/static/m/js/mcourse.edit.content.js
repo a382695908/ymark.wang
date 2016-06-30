@@ -208,7 +208,7 @@ function loadEditor() {
     		{ title: 'code', block: 'code' },
     	],
     	toolbar_items_size :'small',
-    	content_css : '/static/css/pre/monokai-sublime.css',
+    	content_css : STATICURL+'/static/css/pre/monokai-sublime.css',
     	plugins: ['autolink lists link image preview hr code media table codesample textcolor '],
     	toolbar :  ['undo redo | styleselect | bold italic underline forecolor  | alignleft aligncenter alignright | bullist numlist hr outdent indent | link image table  media codesample | code removeformat  preview']
   	});
