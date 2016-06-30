@@ -14,12 +14,18 @@ export default class extends Base {
       self.success({msg:'上传失败！'});
       return '';
     }
-    let filename    = filepath.substr(filepath.lastIndexOf('\\')+1) ,
-        type        = file.headers['content-type'] ,
-        outdir      = think.RESOURCE_PATH + '/upload/' + filename ; 
 
-    // TODO : 判断格式是否正确
-    
+    let filename    = '' ;
+
+    if(think.env == 'production'){
+      filename = filepath.substr(filepath.lastIndexOf('/')+1);
+    }else{
+      filename = filepath.substr(filepath.lastIndexOf('\\')+1);
+    }
+
+    let type        = file.headers['content-type'] ,
+        outdir      = think.RESOURCE_PATH + '/upload/' + filename ;
+
     // 移动文件
     fs.rename(filepath, outdir, function(err) {
       if (err) throw err;
@@ -47,9 +53,15 @@ export default class extends Base {
     }
 
     let filepath    = file.path ;
-    console.log('filePath:' ,filepath);
-    let filename    = filepath.substr(filepath.lastIndexOf('\\')+1) ,
-        type        = file.headers['content-type'] ,
+    let filename    = '' ;
+
+    if(think.env == 'production'){
+      filename = filepath.substr(filepath.lastIndexOf('/')+1);
+    }else{
+      filename = filepath.substr(filepath.lastIndexOf('\\')+1);
+    }
+
+    let type        = file.headers['content-type'] ,
         outdir      = think.RESOURCE_PATH + '/upload/' + filename ; 
 
     // 移动文件
@@ -68,15 +80,17 @@ export default class extends Base {
     let file = this.http.file('file') ,
         self = this;
 
-    let filepath    = file.path ,
-        filename    = filepath.substr(filepath.lastIndexOf('\\')+1) ,
-        type        = file.headers['content-type'] ,outdir ;
+    let filename    = '' ;
 
-    if(filename.indexOf('/') >= 0){
-      filename = filename.split('/');
-      filename = filename[filename.length - 1];
+    if(think.env == 'production'){
+      filename = filepath.substr(filepath.lastIndexOf('/')+1);
+    }else{
+      filename = filepath.substr(filepath.lastIndexOf('\\')+1);
     }
-    outdir          = think.RESOURCE_PATH + '/upload/editor/' + filename ; 
+
+    let type        = file.headers['content-type'] ,
+        outdir      = think.RESOURCE_PATH + '/upload/' + filename ;
+
     // 移动文件
     fs.rename(filepath, outdir, function(err) {
       if (err) throw err;
