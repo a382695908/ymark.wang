@@ -1,6 +1,6 @@
 'use strict';
 
-export default class extends think.controller.base {
+export default class extends think.controller.rest {
   /**
    * some base method in here
    */
@@ -10,12 +10,8 @@ export default class extends think.controller.base {
 
     this.header('Access-Control-Allow-Origin', allowAccessOrigin);
     this.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With');
+    this.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
     this.header('Access-Control-Allow-Credentials', 'true');
-
-    let method = this.http.method;
-    if(method == 'OPTIONS'){
-      return this.fail(-1);
-    }
 
     this.getUser = function(){
 
@@ -27,10 +23,12 @@ export default class extends think.controller.base {
 
     if(think.env == 'development'){
       this.STATICURL='';
-      this.MANAGEURL='http://localhost:3000';
     }else{
       this.STATICURL='http://static.ymark.wang';
-      this.MANAGEURL='http://m.ymark.wang';
     }
+  }
+
+  __call(){
+    return this.fail('not found');
   }
 }

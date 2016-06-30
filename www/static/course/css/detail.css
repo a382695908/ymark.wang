@@ -334,7 +334,8 @@ html{_height:auto;_padding:100px 0 50px;}
 .glyphicon-menu-down:before{content: "\e259";}
 .glyphicon-menu-up:before{content: "\e260";}
 
-.think-editor-content{line-height:1.7em;font-size:1.14em;padding:2em;}
+.think-editor-content{line-height:1.7em;font-size:1.14em;}
+.think-editor-content .content{padding:2em;}
 .think-editor-content a:hover{text-decoration: underline;}
 .think-editor-content>:first-child{margin-top:0!important}
 .think-editor-content>:last-child{margin-bottom:0!important}
@@ -395,3 +396,112 @@ html pre.prettyprint:hover .m-copy-code{visibility:visible;left:auto;right:0;top
 .g-hd .logo{float:left;width:140px;}
 .g-hd .logo img{height: 37px; margin-left: 20px; margin-top: 7px;}
 .g-hd .title{float:left;font:20px/2.4 normal , microsoft yahei;color:#EFEFEF;padding-left:15px;}
+
+
+.bird{
+	position:absolute;
+	width:200px;
+	height:200px;
+	top:40%;
+	left:50%;
+	cursor:pointer;
+	
+	transform:translate(-50%,-50%);
+	-webkit-transform:translate(-50%,-50%);
+	-moz-transform:translate(-50%,-50%);
+}
+
+.noneContent{
+	width: 200px;
+    height: 20px;
+    top: 55%;
+    text-align: center;
+    color: gray;
+    cursor: default ;
+}
+
+.big{
+	position:absolute;
+	top:0;
+	left:0;
+	border-radius:50%;
+	border-color:transparent transparent rgba(215, 41, 40, 0.2) rgba(219, 62, 61, 0.2);
+	border-width:100px;
+	border-style:solid;
+	
+	transform:rotate(45deg);
+	-webkit-transform:rotate(45deg);
+	-moz-transform:rotate(45deg);
+	
+	transition:0.5s;
+	-webkit-transition:0.5s;
+	-moz-transition:0.5s;
+}
+.middle{
+	position:absolute;
+	top:10%;
+	left:10%;
+	border-radius:50%;
+	border-color:rgba(248, 210, 69, 0.2) transparent #f2f2f2 #fff;
+	border-style:solid;
+	border-width:80px;
+	
+	transform:rotate(45deg);
+	-webkit-transform:rotate(45deg);
+	-moz-transform:rotate(45deg);
+	
+	transition:0.5s;
+	-webkit-transition:0.5s;
+	-moz-transition:0.5s;
+}
+.small{
+	position:absolute;
+	top:30%;
+	left:30%;
+	border-radius:50%;
+	border-color:transparent rgba(247, 167, 3, 0.2) transparent transparent;
+	border-style:solid;
+	border-width:40px;
+	
+	transform:rotate(45deg);
+	-webkit-transform:rotate(45deg);
+	-moz-transform:rotate(45deg);
+	
+	transition:0.5s;
+	-webkit-transition:0.5s;
+	-moz-transition:0.5s;
+}
+.small:before{
+	content:"";
+	background:rgba(0, 0, 0, 0.2);
+	width:20px;
+	height:20px;
+	border-radius:50%;
+	position:absolute;
+    top:-10px;
+    right:20px;
+}
+.bird:hover .big{
+	transform:rotate(225deg);
+	-webkit-transform:rotate(225deg);
+	-moz-transform:rotate(225deg);
+	
+	border-color:transparent transparent #1fe8b6 #16d7a7;
+}
+.bird:hover .middle{
+	transform:rotate(-135deg);
+	-webkit-transform:rotate(-135deg);
+	-moz-transform:rotate(-135deg);
+	
+	border-color:transparent #f8d245 #fff #f2f2f2;
+}
+.bird:hover .small{
+	transform:rotate(135deg);
+	-webkit-transform:rotate(135deg);
+	-moz-transform:rotate(135deg);
+	
+	border-color:transparent #f7a703 transparent transparent;;
+}
+.bird:hover .small:before{
+	background:#000;
+}

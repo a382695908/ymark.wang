@@ -4,24 +4,46 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
 */
 
+body{
+  font: 12px/1.14 arial,\5b8b\4f53;
+  line-height: 1.7em;
+}
+
 code,pre{
   font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New",monospace;
 }
 
+blockquote{
+    margin:0px;
+    margin-top:10px;
+    padding: 5px 5px 5px 15px;
+    color: #A43636;
+    border-left: 4px solid #ddd;
+    background-color: rgb(244, 244, 244);
+    font-size: 13px;
+}
+
 code{
-  /*border:1px solid gray;*/
+    color: #c7254e;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 0 .4em;
+    background-color: #f9f2f4;
+    word-break: break-all;
+    font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+    white-space: pre;
+    line-height: 1.3;
 }
 
 pre{
-    margin: .5em 0;
-    padding: .4em .6em;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 2px;
-    background: #f8f8f8;
-
-    word-wrap: normal;
-    white-space: pre;
+    padding: 15px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: rgba(205, 206, 216, 0.32);
+    border-radius: 0;
+    font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+    border-left: 4px solid #AF9797;
 }
 
 .hljs {

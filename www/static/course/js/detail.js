@@ -13,6 +13,8 @@ seajs.config({
 });
 
 var CNT = CMD = extFun = null;
+var isContent = false ,	//是否有内容
+	contentHeight = 0;	// 内容的高度
 seajs.use(['jquery', 'tree', 'hlcss'], function() {
 	Catalog();
 	CNT = Content();
@@ -34,6 +36,8 @@ seajs.use(['jquery', 'tree', 'hlcss'], function() {
 			}
 		}
 	}
+	contentHeight = $('body').height() - 50 - 20 - 30;
+	console.log('height:' ,contentHeight);
 });
 
 function Catalog() {
@@ -79,20 +83,35 @@ function Catalog() {
 function CourseMind() {
 	var $panelFrame = $('#divFrame'),
 		$frame = $('#iframeMind');
+
+	var show = false;
 	return {
 		hide: function() {
+			console.log('hide isContent:' ,isContent);
 			$frame.removeAttr('src');
 			$panelFrame.height(0);
+			show = false;
 		},
 		show: function() {
-			$panelFrame.height('700');
+			console.log('isContent:' ,isContent);
+			if(!isContent){
+				$panelFrame.height(contentHeight);	
+			}else{
+				$panelFrame.height('700');
+			}
+			
 		},
 		reset: function(catalogId) {
 			if (!catalogId) {
 				$panelFrame.height(0);
+				show = false;
 				return;
 			}
 			$frame.attr('src', '/course/mind/index/' + courseuid + '/' + catalogId);
+			show = true;
+		},
+		getStatus : function(){
+			return show;
 		}
 	}
 }
@@ -105,11 +124,19 @@ function Content() {
 	var loadInfo = function(data, callback) {
 		$title.html(data.title);
 		setTimeout(function() {
-			$content.html(data.content);
-			//所有的a标签，都是打开一个新页面
-			$content.find('a').each(function() {
-				$(this).attr('target', '_blank');
-			});
+			if(data.content){
+				isContent = true;
+				$content.html('<div class="content">'+data.content+'</div>');
+				//所有的a标签，都是打开一个新页面
+				$content.find('a').each(function() {
+					$(this).attr('target', '_blank');
+				});
+			}else{
+				isContent = false;
+				if(!CMD.getStatus()){
+					$content.html('<div class="bird noneContent"> 还没有录入内容 </div> <div class="bird"> <div class="big"></div> <div class="middle"></div> <div class="small"></div> </div>');	
+				}
+			}
 		}, 200);
 		callback(data);
 	}

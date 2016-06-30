@@ -11,7 +11,6 @@
 		<meta name="keywords" content=""/>
 		<meta name="description" content=""/>
 		<link rel="stylesheet" href="{{controller.STATICURL}}/static/m/css/ymark.base.css"/>
-		<link rel="stylesheet" href="{{controller.STATICURL}}/static/fun/editor/wangEditor.css" type="text/css" />
 		<link rel="stylesheet" href="{{controller.STATICURL}}/static/m/css/mcourse.edit.content.css"/>
 
 		<link rel="shortcut icon" href="{{controller.STATICURL}}/static/img/favicon.ico"/>
@@ -27,7 +26,8 @@
 		<input type="hidden" id="uid" value="{{ controller.uid }}" />
 		<input type="hidden" id="cid" value="" />
 		<div class="g-hd">
-			<a href="javascript:CW.toggleCatalog();" class="btn ionic ion-navicon">&nbsp;&nbsp;目录</a><a href="javascript:;" read="0" id="btnContentSaveQuick" class="btn ionic ion-ios-download-outline">&nbsp;&nbsp;快速保存</a><a href="javascript:;" id="btnSave" class="btn ionic ion-upload disable">&nbsp;&nbsp;完整保存</a>
+			<!-- <a href="javascript:CW.toggleCatalog();" class="btn ionic ion-navicon">&nbsp;&nbsp;目录</a> -->
+			<a href="javascript:CW.goBack()" class="btn ionic ion-arrow-left-c">&nbsp;&nbsp;返回</a><a href="javascript:;" read="0" id="btnContentSaveQuick" class="btn ionic ion-ios-download-outline">&nbsp;&nbsp;快速保存</a><a href="javascript:;" id="btnSave" class="btn ionic ion-upload disable">&nbsp;&nbsp;完整保存</a>
 		</div>
 		<div class="g-hd g-right">
 			<a href="javascript:;" id="btnPreview" target="_blank" class="btn ionic ion-upload">&nbsp;&nbsp;预览</a>
@@ -74,7 +74,7 @@
 			    </form>
 			</div>
 		</div>
-		<script type="text/javascript">var STATICURL='{{controller.STATICURL}}';</script>
+		<script type="text/javascript">var STATICURL='{{controller.STATICURL}}'; var MANAGEURL='{{controller.MANAGEURL}}';</script>
 		<script src="{{controller.STATICURL}}/static/js/sea.js"></script>
 		<script src="{{controller.STATICURL}}/static/js/pace.min.js"></script>
 		<script async src="{{controller.STATICURL}}/static/m/js/mcourse.edit.content.js"></script>

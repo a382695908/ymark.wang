@@ -3,25 +3,19 @@ seajs.config({
 	paths: {
 		'mjs': STATICURL+'/static/m/js/',
 		'fjs': STATICURL+'/static/fun/',
-		'editor': STATICURL+'/static/fun/editor/',
 	},
 	// 设置别名，方便调用
 	alias: {
-		'jquery': '//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js',
-		'editor': 'editor/wangEditor.js',
-		'layer': '//apps.bdimg.com/libs/layer/2.1/layer.js',
-		'util': 'mjs/util.js',
-		'ionic': STATICURL+'/static/css/ionicons.min.css',
+		'jquery'	: '//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js',
+		'editor'	: 'fjs/tinymce/tinymce.min.js',
+		'layer'		: '//apps.bdimg.com/libs/layer/2.1/layer.js',
+		'util'		: 'mjs/util.js',
+		'ionic'		: STATICURL+'/static/css/ionicons.min.css',
 
-		'tree': 'fjs/tree/jstree.min.js',
-		'treestyle': 'fjs/tree/default/style.min.css',
+		'tree'		: 'fjs/tree/jstree.min.js',
+		'treestyle'	: 'fjs/tree/default/style.min.css',
 
-		'plupload': 'fjs/upload/plupload.full.min.js',
-		'editorcss': 'editor/wangEditor.css',
-		'editorPlugin': 'editor/js/custom-menu.js',
-
-		'hlcss': 'editor/atelier-forest-dark.css',
-		'hljs': 'editor/highlight.min.js'
+		'plupload'	: 'fjs/upload/plupload.full.min.js',
 	},
 	preload: 'jquery'
 });
@@ -103,7 +97,7 @@ var extFun = {
 	}
 }
 
-seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() {
+seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic' ,'editor'], function() {
 	layer.config({
 		path: '/static/fun/layer/'
 	});
@@ -192,101 +186,34 @@ seajs.use(['jquery', 'layer', 'util', 'tree', 'treestyle', 'ionic'], function() 
 			});
 		}
 	});
-	setTimeout(function() {
-		extFun.saveAuto();
-	}, 3000);
+	setTimeout(function() {extFun.saveAuto(); }, 3000);
 });
 
 
 
 function loadEditor() {
 	var awidth = aheight = 0;
-	var uploaderInit = function() {
-		//加载自定义上传图片的功能
-		seajs.use(['plupload'], function() {
-			var btnId = objEditor.customUploadBtnId;
-			var containerId = objEditor.customUploadContainerId;
-			//实例化一个上传对象
-			var uploader = new plupload.Uploader({
-				browse_button: btnId,
-				url: '/fun/upload/editorimg',
-				flash_swf_url: '/static/fun/upload/Moxie.swf',
-				sliverlight_xap_url: '/static/fun/upload/Moxie.xap',
-				filters: {
-					mime_types: [
-						//只允许上传图片文件 （注意，extensions中，逗号后面不要加空格）
-						{
-							title: "图片文件",
-							extensions: "jpg,gif,png,bmp"
-						}
-					]
-				}
-			});
-			//存储所有图片的url地址
-			var urls = [];
-			//初始化
-			uploader.init();
-			//绑定文件添加到队列的事件
-			uploader.bind('FilesAdded', function(uploader, files) {
-				// 文件添加之后，开始执行上传
-				uploader.start();
-			});
 
-			//单个文件上传之后
-			uploader.bind('FileUploaded', function(uploader, file, responseObject) {
-				//注意，要从服务器返回图片的url地址，否则上传的图片无法显示在编辑器中
-				var url = eval('(' + responseObject.response + ')');
-				//先将url地址存储来，待所有图片都上传完了，再统一处理
-				urls.push(url.data);
-			});
+	// CCT.setSaveStatus(1);
+	var panelHeigh = $('#panelEditor').height();
+	tinymce.init({
+    	selector: '#divEditor',
+    	height : panelHeigh - 30 - 18 - 20,
+    	menubar : false,
+    	body_class : '',
+    	style_formats : [
+    		{ title: '大标题', block: 'h2' },
+    		{ title: '中标题', block: 'h3' },
+    		{ title: '小标题', block: 'h4' },
+    		{ title: 'code', block: 'code' },
+    	],
+    	toolbar_items_size :'small',
+    	content_css : '/static/css/pre/monokai-sublime.css',
+    	plugins: ['autolink lists link image preview hr code media table codesample textcolor '],
+    	toolbar :  ['undo redo | styleselect | bold italic underline forecolor  | alignleft aligncenter alignright | bullist numlist hr outdent indent | link image table  media codesample | code removeformat  preview']
+  	});
 
-			//全部文件上传时候
-			uploader.bind('UploadComplete', function(uploader, files) {
-				// 用 try catch 兼容IE低版本的异常情况
-				try {
-					//打印出所有图片的url地址
-					$.each(urls, function(key, value) {
-						// 插入到编辑器中
-						objEditor.command(null, 'insertHtml', '<img src="' + value + '" style="max-width:100%;"/>');
-					});
-				} catch (ex) {
-					// 此处可不写代码
-				} finally {
-					//清空url数组
-					urls = [];
-					// 隐藏进度条
-					objEditor.hideUploadProgress();
-				}
-			});
-
-			// 上传进度条
-			uploader.bind('UploadProgress', function(uploader, file) {
-				// 显示进度条
-				objEditor.showUploadProgress(file.percent);
-			});
-		});
-	}
-	seajs.use(['editor', 'hlcss', 'hljs'], function(e) {
-		objEditor = new wangEditor('divEditor');
-		// console.log(objEditor.config);
-		objEditor.config.printLog = false;
-		objEditor.config.customUpload = true; // 配置自定义上传
-		objEditor.config.customUploadInit = uploaderInit; // 配置上传事件
-		objEditor.config.menus = ['bold', 'underline', 'italic', 'strikethrough', 'forecolor', 'indent', '|',
-			'quote', 'head', 'code', 'unorderlist', 'orderlist', '|',
-			'link', 'unlink', 'table', '|',
-			'img', 'insertcode', 'eraser'
-		];
-		objEditor.onchange = function() {
-			CCT.setSaveStatus(1);
-		}
-		objEditor.create();
-		
-	});
-
-	// CCG.loadTree();
-		// var panelHeigh = $('#panelEditor').height();
-		// $('#divEditor').height(panelHeigh - 30 - 18);
+	CCG.loadTree();
 }
 
 function CWindow() {
@@ -302,27 +229,18 @@ function CWindow() {
 		 * @return {[type]} [description]
 		 */
 		showEditor: function() {
-			$panelEditor.css({
-				zIndex: 99,
-				visibility: 'visible'
-			});
-			$panelMind.css({
-				zIndex: -1,
-				visibility: 'hidden'
-			});
+			$panelEditor.css({zIndex: 99, visibility: 'visible'});
+			$panelMind.css({zIndex: -1, visibility: 'hidden'});
 		},
 		showMind: function() {
-			$panelMind.css({
-				zIndex: 99,
-				visibility: 'visible'
-			});
-			$panelEditor.css({
-				zIndex: -1,
-				visibility: 'hidden'
-			});
+			$panelMind.css({zIndex: 99, visibility: 'visible'});
+			$panelEditor.css({zIndex: -1, visibility: 'hidden'});
 		},
 		refreshMind: function(_id) {
 			$iframeMind.attr('src', '/mcourse/cm/index/' + quid + '/' + _id);
+		},
+		goBack : function(){
+			window.location.href = MANAGEURL+'/course'
 		},
 		/**
 		 * 显示或隐藏目录
@@ -330,24 +248,12 @@ function CWindow() {
 		 */
 		toggleCatalog: function() {
 			if (isShowCatalog) {
-				$panelEditor.css({
-					left: '0px',
-					_marginLeft: '0px;'
-				});
-				$panelMind.css({
-					left: '0px',
-					_marginLeft: '0px;'
-				});
+				$panelEditor.css({left: '0px', _marginLeft: '0px;'});
+				$panelMind.css({left: '0px', _marginLeft: '0px;'});
 				isShowCatalog = false;
 			} else {
-				$panelEditor.css({
-					left: '250px',
-					_marginLeft: '250px;'
-				});
-				$panelMind.css({
-					left: '250px',
-					_marginLeft: '250px;'
-				});
+				$panelEditor.css({left: '250px', _marginLeft: '250px;'});
+				$panelMind.css({left: '250px', _marginLeft: '250px;'});
 				isShowCatalog = true;
 			}
 		}
@@ -370,7 +276,7 @@ function CContent() {
 		callback = callback || emptyFunction;
 		var param = {
 			id: id,
-			content: objEditor.$txt.html(),
+			content: tinymce.get('divEditor').getContent(),
 			savetype: 'quick'
 		}
 		$.query('/mcourse/cc/' + id, param, callback, 'post');
@@ -398,11 +304,9 @@ function CContent() {
 				content = e.content;
 				lasttime = e.lasttime;
 				recontent = e.recontent;
-				saveStatus = 0;
-				objEditor.$txt.html(content);
-				$content.find('pre code').each(function(i, block) {
-					hljs.highlightBlock(block);
-				});
+				// saveStatus = 0;
+				tinymce.get('divEditor').setDirty(false);
+				tinymce.get('divEditor').setContent(content || '');
 				callback();
 			});
 		},
@@ -410,10 +314,8 @@ function CContent() {
 		 * 调用快速保存的方法
 		 */
 		quickSave: function(callback) {
-			if (saveStatus == '0') {
-				callback({
-					errno: 0
-				});
+			if (!tinymce.get('divEditor').isDirty()) {
+				callback({errno: 0 });
 			} else {
 				saveQuick(callback);
 			}
@@ -423,14 +325,18 @@ function CContent() {
 		 * @param {[type]} status 要设置的状态
 		 */
 		setSaveStatus: function(status) {
-			saveStatus = status;
+			// saveStatus = status;
+			var st = true;
+			if(!status) st = false;
+			return tinymce.get('divEditor').setDirty(st);
 		},
 		/**
 		 * 得到文章保存的状态
 		 * @return {[type]} [description]
 		 */
 		getSaveStatus: function() {
-			return saveStatus;
+			return tinymce.get('divEditor').isDirty() ? '1' : '0';
+			// return saveStatus;
 		},
 		/**
 		 * 得到当前文章的CID
@@ -694,9 +600,7 @@ function CCatalog() {
 						multiple: false
 					},
 					types: {
-						"default": {
-							"icon": "ionic ion-ios-bell"
-						}
+						"default": {"icon": "ionic ion-ios-bell"}
 					},
 					contextmenu: {
 						"items": {
@@ -893,7 +797,6 @@ function CCatalog() {
 						}
 					}
 					nodeSortStatus = '1';
-					// console.log(updateList);
 				});
 			});
 		},
@@ -910,7 +813,6 @@ function CCatalog() {
 		saveNodeSort: function(callback) {
 			callback = callback || emptyFunction;
 			if (nodeSortStatus == '1') {
-				console.log('saveing sort');
 				$.query('/mcourse/nexus/sort/' + $('#uid').val(), {
 					data: JSON.stringify(updateList)
 				}, callback, 'post');
