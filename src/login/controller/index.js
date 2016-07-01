@@ -27,7 +27,8 @@ export default class extends Base {
       openid : param.openid ,
       token  : param.access_token,
       authtype : param.type
-    };
+    } ,
+    returnParam = {};
 
     let userlogin = await model_userlogin.where(queryParamLogin).field(['userid' ,'lastlogintime']).select();
 
@@ -47,7 +48,7 @@ export default class extends Base {
         phone : '',
         addtime : time,
       });
-      
+
       await model_userlogin.add({
         userid :userid ,
         lastlogintime : time,
@@ -55,16 +56,19 @@ export default class extends Base {
         openid :  param.openid ,
         token : param.access_token,
       });
-
-      return this.success({
+      await this.session("userInfo", {
+        token : param.access_token ,
+        userid : userid
+      });
+      returnParam = {
          nickname : _userinfo.nickname ,
          nickimg : _userinfo.nickimg ,
-         username : _userinfo.username ,
          userid : userid ,
-         lastlogintime : time
-      });
+      };
 
-    }else{
+    }else{  // 直接查询用户并更新登录时间
+
+
       let user = userlogin[0];
       let userList = await model_userinfo.where({id:user.userid}).field('nickname ,nickimg ,username').select();
       if(userList.length == 0){
@@ -72,17 +76,17 @@ export default class extends Base {
       }else{
         let usermodel = userList[0];
         await model_userlogin.where(queryParamLogin).update({lastlogintime:time}); //更新最后登录时间
-        return this.success({
+        returnParam = {
            nickname : usermodel.nickname ,
            nickimg : usermodel.nickimg ,
-           username : usermodel.username ,
-           userid : user.userid ,
-           lastlogintime : user.lastlogintime
-        });
+           userid : user.userid 
+        };
       }
+    
     }
-
-    return this.success('222');
+    this.cookie("token", param.access_token);
+    this.cookie("userid", returnParam.userid);
+    return this.success(returnParam);
   }
 
   loginoutAction(){

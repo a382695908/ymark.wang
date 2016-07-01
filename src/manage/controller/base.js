@@ -13,6 +13,10 @@ export default class extends think.controller.rest {
     this.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
     this.header('Access-Control-Allow-Credentials', 'true');
 
+    console.log('qingqiudaodecookie:');
+    console.log(this.http.cookie("token"))
+    console.log(this.http.cookie("userid"))
+
     this.getUser = function(){
 
     }
