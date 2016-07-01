@@ -35,7 +35,6 @@ export default class extends Base {
               "total": count
             });
         }
-        
     }
 
     // 添加一条数据
