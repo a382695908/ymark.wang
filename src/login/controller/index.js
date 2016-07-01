@@ -84,12 +84,14 @@ export default class extends Base {
       }
     
     }
-    this.cookie("token", param.access_token);
-    this.cookie("userid", returnParam.userid);
+    this.cookie("userInfo", JSON.stringify({token:param.access_token ,userid:returnParam.userid}) ,{
+      timeout: 3600 
+    });
     return this.success(returnParam);
   }
 
   loginoutAction(){
+    this.cookie("userInfo", null);
     return this.success('login out');
   }
 }
