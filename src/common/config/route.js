@@ -2,7 +2,8 @@
 
 export default {
 	mcourse : {reg :/^mcourse/ },
-	course 	: {reg :/^course/ }
+	course 	: {reg :/^course/ },
+	login 	: {reg :/^login/ },
 };
 
 // export default [
