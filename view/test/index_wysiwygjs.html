@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>YMAK - 12</title>
+
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="ymark">
+		<script src='/static/fun/tinymce/tinymce.min.js'></script>
+	</head>
+
+	<body>
+		<!-- <script src="/static/js/highlight.pack.js"></script> -->
+
+		<button onclick="getHtml()">get html</button>
+		<button onclick="setHtml();">set html</button>
+
+		<textarea  id="divEditor"></textarea >
+		<script type="text/javascript">
+			tinymce.init({
+		    	selector: '#divEditor',
+		    	height : 700,
+		    	menubar : false,
+		    	body_class : '',
+		    	style_formats : [
+		    		{ title: '大标题', block: 'h1' },
+		    		{ title: '中标题', block: 'h2' },
+		    		{ title: '小标题', block: 'h3' },
+		    		{ title: 'code', block: 'code' },
+		    	],
+		    	toolbar_items_size :'small',
+		    	content_css : '/static/css/pre/monokai-sublime.css',
+		    	plugins: ['autolink lists link image preview hr code fullscreen media table codesample textcolor '],
+		    	toolbar :  ['undo redo | styleselect | bold italic underline forecolor  | alignleft aligncenter alignright | bullist numlist hr outdent indent | link image table  media codesample | code removeformat  preview fullscreen']
+		  	});
+
+			function getHtml(){
+				console.log(tinymce.activeEditor.isDirty())
+				// console.log('html\n' ,tinymce.get('divEditor').getContent())
+
+			}
+
+			function setHtml(){
+				tinymce.get('divEditor').setContent('<ul> <li>请输入内容...1123123</li> <li>123123 <ul> <li>3312312312</li> </ul> </li> </ul> <p>123</p>');
+			}
+		</script>
+	</body>
+</html>

@@ -1,7 +1,7 @@
 seajs.config({
 	// 设置路径，方便跨目录调用
 	paths: {
-		'mind': '/static/fun/mind/',
+		'mind': STATICURL+'/static/fun/mind/',
 	},
 	// 设置别名，方便调用
 	alias: {
@@ -159,6 +159,7 @@ var CLB = {
 				var os = e.content.updates;
 				for (var i = 0, len = os.length; i < len; i++) {
 					_temp = os[i];
+					delete _temp.children;
 					self.cache.upd.push(_temp);
 				}
 			} else if (opttype == 'remove') {

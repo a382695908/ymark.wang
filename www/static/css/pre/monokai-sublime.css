@@ -1,0 +1,125 @@
+/*
+
+Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-license.org/
+
+*/
+
+body{
+  font: 12px/1.14 arial,\5b8b\4f53;
+  line-height: 1.7em;
+}
+
+code,pre{
+  font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New",monospace;
+}
+
+blockquote{
+    margin:0px;
+    margin-top:10px;
+    padding: 5px 5px 5px 15px;
+    color: #A43636;
+    border-left: 4px solid #ddd;
+    background-color: rgb(244, 244, 244);
+    font-size: 13px;
+}
+
+code{
+    color: #c7254e;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 0 .4em;
+    background-color: #f9f2f4;
+    word-break: break-all;
+    font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+    white-space: pre;
+    line-height: 1.3;
+}
+
+pre{
+    padding: 15px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: rgba(205, 206, 216, 0.32);
+    border-radius: 0;
+    font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+    border-left: 4px solid #AF9797;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #23241f;
+}
+
+.hljs,
+.hljs-tag,
+.hljs-subst {
+  color: #f8f8f2;
+}
+
+.hljs-strong,
+.hljs-emphasis {
+  color: #a8a8a2;
+}
+
+.hljs-bullet,
+.hljs-quote,
+.hljs-number,
+.hljs-regexp,
+.hljs-literal,
+.hljs-link {
+  color: #ae81ff;
+}
+
+.hljs-code,
+.hljs-title,
+.hljs-section,
+.hljs-selector-class {
+  color: #a6e22e;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-name,
+.hljs-attr {
+  color: #f92672;
+}
+
+.hljs-symbol,
+.hljs-attribute {
+  color: #66d9ef;
+}
+
+.hljs-params,
+.hljs-class .hljs-title {
+  color: #f8f8f2;
+}
+
+.hljs-string,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-selector-id,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-variable {
+  color: #e6db74;
+}
+
+.hljs-comment,
+.hljs-deletion,
+.hljs-meta {
+  color: #75715e;
+}

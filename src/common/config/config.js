@@ -8,4 +8,6 @@ export default {
   	timeout 	: 30,
   	json_content_type: "application/json", //json 输出时设置的 Content-Type
   	resource_reg: /^((static|upload)\/|[^\/]+\.(?!js|html)\w+$)/, //静态资源的正则
+
+  	uiStatic : '123123123123'
 };

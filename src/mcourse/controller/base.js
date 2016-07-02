@@ -4,29 +4,33 @@ export default class extends think.controller.base {
   /**
    * some base method in here
    */
-  __before(){
-  	let http = this.http;
-  	// console.log(http.version);
-  	// console.log(http.headers);
-  	// console.log(http.host);
-  	//判断COOKIE中是否有信息
-    // https://thinkjs.org/zh-cn/doc/2.2/question.html#toc-244
-    //部分 action 下不检查
-    // let blankActions = ["login"];
-    // if(blankActions.indexOf(this.http.action)){
-    //   return;
-    // }
-    // let userInfo = await this.session("userInfo");
-    // //判断 session 里的 userInfo
-    // if(think.isEmpty(userInfo)){
-    //   return this.redirect("/user/login");
-    // }
+  async __before() {
+
+    const allowAccessOrigin = this.http.headers.origin;
+
+    this.header('Access-Control-Allow-Origin', allowAccessOrigin);
+    this.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With');
+    this.header('Access-Control-Allow-Credentials', 'true');
+
+    let method = this.http.method;
+    if(method == 'OPTIONS'){
+      return this.fail(-1);
+    }
+
     this.getUser = function(){
 
     }
 
     this.getUserId = function(){
         return '1';
+    }
+
+    if(think.env == 'development'){
+      this.STATICURL='';
+      this.MANAGEURL='http://localhost:3000';
+    }else{
+      this.STATICURL='http://static.ymark.wang';
+      this.MANAGEURL='http://m.ymark.wang';
     }
   }
 }

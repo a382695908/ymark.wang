@@ -102,7 +102,8 @@ export default class extends Base {
                 cuid: uid,
                 deep: 0,
                 title: name,
-                pid: 0
+                pid: 0,
+                sort: 0
             }); //向课程目录表插入默认记录
             let contentId = await model_coursecontent.add({
                 title: name,

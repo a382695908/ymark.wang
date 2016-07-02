@@ -1,9 +1,9 @@
 seajs.config({
     // 设置路径，方便跨目录调用
     paths: {
-        'js': '/static/js/',
-        'mjs': '/static/m/js/',
-        'fjs': '/static/fun/'
+        'js': BASE_PATH+'/static/js/',
+        'mjs': BASE_PATH+'/static/m/js/',
+        'fjs': BASE_PATH+'/static/fun/'
     },
 
     // 设置别名，方便调用
@@ -12,7 +12,7 @@ seajs.config({
         'layer': '//apps.bdimg.com/libs/layer/2.1/layer.js',
         'util': 'mjs/util.js',
         'bootgrid': 'mjs/jquery.bootgrid.min.js',
-        'ionic': '/static/css/ionicons.min.css',
+        'ionic': BASE_PATH+'/static/css/ionicons.min.css',
         'jquery-ui': '//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js',
         'plupload': 'fjs/upload/plupload.full.min.js',
         'plupload-ui': 'fjs/upload/jquery.ui.plupload.min.js',
@@ -21,14 +21,22 @@ seajs.config({
     },
     preload: 'jquery'
 });
-var CLT = CFM = CTG = layer = null;
+/**
+ * CLT = CourseList
+ * CFM = CourseForm
+ * CTG = CourseCatalog
+ * CGF = CatalogForm
+ * CGS = CatalogSort
+ * @type {[type]}
+ */
+var CLT = CFM = CTG = CGF = CGS = layer = null;
 seajs.use(['jquery', 'layer', 'util', 'ionic', 'bootgrid', 'tree', 'treestyle'], function() {
     var navheight = 45 + 15;
     var dimension = $.getDimension(),
         height = dimension.height;
 
     layer.config({
-        path: '/static/fun/layer/'
+        path: BASE_PATH+'/static/fun/layer/'
     });
 
     var loadingIndex = undefined;
@@ -319,7 +327,7 @@ function CourseCatalog() {
                     "icon": "ionic ion-ios-paw"
                 }
             },
-            plugins: ["state", "types", "wholerow"]
+            plugins: ["state", "dnd", "types", "wholerow"]
         },
         /**
          * 表单的一些方法
@@ -541,7 +549,6 @@ function CourseCatalog() {
         } else {
             loadData();
         }
-
     }).on("refresh.jstree", function(e, data) {
         domCatalog.jstree("open_all");
     })
@@ -583,4 +590,12 @@ function CourseCatalog() {
             }
         }
     }
+}
+
+function CatalogForm() {
+
+}
+
+function CatalogSort() {
+
 }

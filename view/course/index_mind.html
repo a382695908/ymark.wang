@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>易马克 - 信息系统项目管理师考试教程</title>
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="ymark">
+		<link rel="icon" href="{{controller.STATICURL}}/static/img/favicon.ico">
+		<style type="text/css">
+			/*#view_container{height: 100%!important;}*/
+		</style>
+		<script type="text/javascript">
+			var isIE=!!window.ActiveXObject;
+			var isIE6=isIE&&!window.XMLHttpRequest;
+			if(isIE6){
+				window.location.href="/error?not_support";
+			}
+			if(window.top==window.self){//不存在父页面
+	  			window.location.href = '/error?not iframe';
+	  		}
+		</script>
+		
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	</head>
+	<body>
+		<script type="text/javascript">var BASEURL='{{controller.STATICURL}}';</script>
+		<div id="view_container" class="pos_relative" style="height: 896px; cursor: default;">
+			<div id="canvas" style="width: 20000px; height: 20000px; left: -9105.05px; top: -9536.5px; background: rgb(255, 255, 255);">
+				<div class="controlls">
+					<div class="item op_zoom">
+						<div id="op_zoomin" class="ico_box"><div class="zoomin"></div></div>
+						<div class="devider"></div>
+						<div id="op_zoomout" class="ico_box"><div class="zoomout"></div></div>
+					</div>
+				</div>
+				<div id="shape_img_container" style="height:0px;overflow: hidden;"></div>
+			</div>
+			<div id="viewbar">
+				<div class="viewtitle">ymark-course-设计</div>
+			</div>
+		</div>
+		<canvas id="support_canvas" style="display: none;"></canvas>
+		<script src="{{controller.STATICURL}}/static/js/sea.js"></script>
+		<script type="text/javascript">
+			var canvasOffsetHeight = 0;
+			var canvasOffsetTop = 100 ;
+			var courseUid = "{{ controller.cuid }}" ;
+	      	var catalogId = "{{ controller.cid }}";
+			var REGX_HTML_DECODE = /&\w{1,};|&#\d{1,};/g;
+		    var HTML_DECODE = {"&lt;"  : "<", "&gt;"  : ">", "&amp;" : "&", "&nbsp;": " ", "&quot;": "\"", "&copy;": "©"};
+		    var _data = decodeHtml("{{ controller.treeJson }}");
+		    var localRuntime = false;
+			var isView = true;
+			var role = "viewer";
+			var tutorial = false;
+			var showToolbar = false;
+			var showCommentIco = false;
+			var UI = {};
+			var definition = null;
+
+		    function decodeHtml(s){
+	        	return (typeof s != "string") ? s : s.replace(REGX_HTML_DECODE, function($0){
+	                var c = HTML_DECODE[$0]; // 尝试查表
+	                if(c === undefined){
+	                    var m = $0.match(/\d{1,}/);
+	                    if(m){var cc = m[0]; cc = (cc === 0xA0) ? 0x20 : cc; c = String.fromCharCode(cc); }
+	                    else{c = $0; }
+	                }
+	                return c;
+	            });
+	        };
+		    
+
+		    seajs.config({
+				// 设置路径，方便跨目录调用
+				paths: {
+					'baseurl': '{{controller.STATICURL}}/static/fun/mind/',
+				},
+				// 设置别名，方便调用
+				alias: {
+					'jquery': 'baseurl/jquery.js',
+					'core': 'baseurl/mind.core.js',
+					'util': 'baseurl/util.js',
+					'view': 'baseurl/view_mind.js',
+					'cssMind' : 'baseurl/css/mind.css',
+					'cssGlob' : 'baseurl/css/global.css',
+				},
+				preload: 'jquery'
+			});
+		    if(!_data) { _data = [{}];}
+		    else{
+		        _data = eval('('+_data+')');
+		        if(_data.length <= 0) {
+		        	_data = [{}];
+		        	window.parent.CMD.hide();
+		        } else{
+		        	if(_data[0].children.length <= 0){
+		        		window.parent.CMD.hide();
+		        	}else{
+		        		window.parent.CMD.show();
+		        		initMind();
+		        	}
+		        }
+		    };
+
+		    function initMind(){
+		    	_data[0].structure = "{{ controller.structure }}";
+	          	_data[0].background = "{{ controller.classic_bg }}";
+	          	_data[0].classic = "{{ controller.classic_classic }}";
+	          	definition = _data[0];
+		    	seajs.use(['jquery','cssGlob','cssMind','core', 'util', 'view'], function() {
+	          		console.log('load over');
+	          	});
+		    }
+			
+		</script>
+	</body>
+</html>

@@ -9,4 +9,8 @@ export default class extends Base {
   mindAction() {
     return this.display('mind');
   }
+
+  wysiwygjsAction() {
+    return this.display('wysiwygjs');
+  }
 }
