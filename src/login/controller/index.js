@@ -84,8 +84,11 @@ export default class extends Base {
       }
     
     }
+
+    console.log('设置 请求端的COOkie：',JSON.stringify({token:param.access_token ,userid:returnParam.userid}));
+
     this.cookie("userInfo", JSON.stringify({token:param.access_token ,userid:returnParam.userid}) ,{
-      timeout: 3600 
+      timeout: 1 * 24 * 3600 // 1天
     });
     return this.success(returnParam);
   }

@@ -14,6 +14,9 @@ export default class extends think.controller.rest {
     this.header('Access-Control-Allow-Credentials', 'true');
 
     console.log('qingqiudaodecookie:');
+    let cookie = this.cookie("userInfo");
+    console.log('this cookie:->' ,cookie)
+
     console.log(this.http.cookie("token"))
     console.log(this.http.cookie("userid"))
 

@@ -12,6 +12,10 @@ export default class extends think.controller.base {
     this.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With');
     this.header('Access-Control-Allow-Methods', "GET");
     this.header('Access-Control-Allow-Credentials', 'true');
+
+   
+
+
   }
 
   __call(){
