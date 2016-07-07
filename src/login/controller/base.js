@@ -10,10 +10,13 @@ export default class extends think.controller.base {
 
     this.header('Access-Control-Allow-Origin', allowAccessOrigin);
     this.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With');
-    this.header('Access-Control-Allow-Methods', "GET");
-    this.header('Access-Control-Allow-Credentials', 'true');
+    this.header('Access-Control-Allow-Methods', "GET, OPTIONS ,POST");
+    // this.header('Access-Control-Allow-Credentials', 'true');
 
-   
+    let method = this.http.method;
+    if(method == 'OPTIONS'){
+      return this.fail(-1);
+    }
 
 
   }

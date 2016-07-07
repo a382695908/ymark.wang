@@ -15,10 +15,10 @@ export default class extends Base {
   async infoAction(){
   	let param = this.get();
     
-    param.userinfo = '{"imgurl":"http://q.qlogo.cn/qqapp/101331678/34DBDCD831787C9417A9AAB22C1720A0/100","gender":"男","nickname":"YMARK","city":"丰台","province":"北京"}';
-    param.access_token = '18FBDE6B1031F6731A84CA4F2F43F06D';
-    param.openid = '34DBDCD831787C9417A9AAB22C1720A0';
-    param.type = 1;
+    // param.userinfo = '{"imgurl":"http://q.qlogo.cn/qqapp/101331678/34DBDCD831787C9417A9AAB22C1720A0/100","gender":"男","nickname":"YMARK","city":"丰台","province":"北京"}';
+    // param.access_token = '18FBDE6B1031F6731A84CA4F2F43F06D';
+    // param.openid = '34DBDCD831787C9417A9AAB22C1720A0';
+    // param.type = 1;
 
     let model_userlogin = this.model('userlogin') ;
     let model_userinfo = this.model('userinfo');
@@ -91,6 +91,13 @@ export default class extends Base {
       timeout: 1 * 24 * 3600 // 1天
     });
     return this.success(returnParam);
+  }
+
+  async logininAction(){
+
+    console.log('post :', this.post());
+
+    return this.success('login in');
   }
 
   loginoutAction(){
