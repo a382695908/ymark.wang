@@ -1,5 +1,8 @@
 'use strict';
 
+let CryptoJS = require("crypto-js");
+let crypKey = think.config('crypKey');
+
 export default class extends think.controller.rest {
   /**
    * some base method in here
@@ -14,18 +17,30 @@ export default class extends think.controller.rest {
     this.header('Access-Control-Allow-Credentials', 'true');
 
     console.log('qingqiudaodecookie:');
-    let cookie = this.cookie("userInfo");
-    console.log('this cookie:->' ,cookie)
+    let ciphertext = this.cookie("token");
+    console.log('this cookie:->' ,ciphertext)
 
-    console.log(this.http.cookie("token"))
-    console.log(this.http.cookie("userid"))
+    if(!ciphertext){
+      return this.fail(-2, '未登录！');
+    }
+
+    // 解密
+    let bytes  = CryptoJS.AES.decrypt(ciphertext, crypKey);
+    let _userInfo = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+
+    if(!_userInfo || !_userInfo.userid){
+      return this.fail(-2 ,'登录信息不正确！');
+    }
+
+    console.log('_userInfo:',_userInfo)
 
     this.getUser = function(){
 
     }
 
     this.getUserId = function(){
-        return '1';
+        return _userInfo.userid;
     }
 
     if(think.env == 'development'){
