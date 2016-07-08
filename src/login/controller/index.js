@@ -89,9 +89,9 @@ export default class extends Base {
     }
     // 加密用户数据
     let userStr = CryptoJS.AES.encrypt(JSON.stringify(returnParam), crypKey).toString();
-    this.cookie("token", userStr ,{
-      timeout: 7 * 24 * 3600 //设置 cookie 有效期为 7 天
-    });
+    // this.cookie("token", userStr ,{
+    //   timeout: 7 * 24 * 3600 //设置 cookie 有效期为 7 天
+    // });
     return this.success(userStr);
   }
 
@@ -126,9 +126,9 @@ export default class extends Base {
     model_userinfo.where({id:userInfo.userid}).update({lastlogintime:time});
     // 加密用户数据
     let userStr = CryptoJS.AES.encrypt(JSON.stringify(userInfo), crypKey).toString();
-    this.cookie("token", userStr ,{
-      timeout: 7 * 24 * 3600 //设置 cookie 有效期为 7 天
-    });
+    // this.cookie("token", userStr ,{
+    //   timeout: 7 * 24 * 3600 //设置 cookie 有效期为 7 天
+    // });
     return this.success(userStr);
   }
 
