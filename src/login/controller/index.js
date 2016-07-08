@@ -2,6 +2,10 @@
 
 import Base from './base.js';
 let DateFormat = require('dateformat');
+let CryptoJS = require("crypto-js");
+let MD5 = require("blueimp-md5");
+
+let crypKey = think.config('crypKey');
 
 export default class extends Base {
   /**
@@ -68,11 +72,10 @@ export default class extends Base {
 
     }else{  // 直接查询用户并更新登录时间
 
-
       let user = userlogin[0];
       let userList = await model_userinfo.where({id:user.userid}).field('nickname ,nickimg ,username').select();
       if(userList.length == 0){
-        return this.fail('用户数据不存在！');
+        return this.fail(-1,'用户数据不存在！');
       }else{
         let usermodel = userList[0];
         await model_userlogin.where(queryParamLogin).update({lastlogintime:time}); //更新最后登录时间
@@ -84,20 +87,43 @@ export default class extends Base {
       }
     
     }
-
-    console.log('设置 请求端的COOkie：',JSON.stringify({token:param.access_token ,userid:returnParam.userid}));
-
-    this.cookie("userInfo", JSON.stringify({token:param.access_token ,userid:returnParam.userid}) ,{
-      timeout: 1 * 24 * 3600 // 1天
-    });
-    return this.success(returnParam);
+    // 加密用户数据
+    let userStr = CryptoJS.AES.encrypt(JSON.stringify(returnParam), crypKey);
+    return this.success(userStr.toString());
   }
 
   async logininAction(){
+    let ciphertext = this.post().s;
+    if(!ciphertext) return this.fail(-1,'empty');
 
-    console.log('post :', this.post());
+    // 解密
+    let bytes  = CryptoJS.AES.decrypt(ciphertext, crypKey);
+    let _userInfo = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-    return this.success('login in');
+    if(!_userInfo.userName || !_userInfo.password){
+      return this.fail(-1,'用户名或密码为空！');
+    }
+
+    // 实例表
+    let model_userinfo = this.model('userinfo');
+
+    // 查询是否存在
+    let userInfo =  await model_userinfo.field('id userid,nickname,nickimg,phone').where({
+      username : _userInfo.userName ,
+      password : MD5(_userInfo.password)
+    }).select();
+
+    if(userInfo.length <= 0){
+      return this.fail(-1,'用户名或密码错误！');
+    }
+    userInfo = userInfo[0];
+
+    let time = DateFormat(new Date(), "yyyy-mm-dd hh:MM:ss");
+    // 更新最后登录时间
+    model_userinfo.where({id:userInfo.userid}).update({lastlogintime:time});
+    // 加密用户数据
+    let userStr = CryptoJS.AES.encrypt(JSON.stringify(userInfo), crypKey);
+    return this.success(userStr.toString());
   }
 
   loginoutAction(){
