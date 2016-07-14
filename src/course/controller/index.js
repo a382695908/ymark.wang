@@ -32,6 +32,8 @@ export default class extends Base {
     let catalogmodel = cataloglist[0];
     let data = treeUtil.getMindTree(list);
 
+    console.log('data:' ,JSON.stringify(data));
+
     // 设置一些全局变量
     this.treeJson = JSON.stringify(data); //脑图数的数据
     this.cuid = cuid; //课程的UID
@@ -68,9 +70,7 @@ export default class extends Base {
     let uid = this.get().uid;
     if (!uid) return this.fail('UID为空！');
     let model_catalog = this.model('coursecatalog');
-    let list = await model_catalog.where({
-      cuid: uid
-    }).order('pid,sort').select();
+    let list = await model_catalog.where(" cuid='"+uid+"'").order('pid,sort').select();
     if (!list || list.length <= 0) return this.success({});
     let list_len = list.length;
     /**
@@ -111,9 +111,7 @@ export default class extends Base {
               text: k.title,
               remark: k.remark
             };
-            childs = getChilds(v, k.id);
-            if (childs.length > 0) node.nodes = childs;
-            res.push(node);
+            res = getChilds(v, k.id);
           }
         });
         return res;

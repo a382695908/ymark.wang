@@ -16,9 +16,7 @@ export default class extends think.controller.rest {
     this.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
     this.header('Access-Control-Allow-Credentials', 'true');
 
-    console.log('qingqiudaodecookie:');
     let ciphertext = this.cookie("token");
-    console.log('this cookie:->' ,ciphertext)
 
     if(!ciphertext){
       return this.fail(-2, '未登录！');
@@ -33,10 +31,8 @@ export default class extends think.controller.rest {
       return this.fail(-2 ,'登录信息不正确！');
     }
 
-    console.log('_userInfo:',_userInfo)
-
     this.getUser = function(){
-
+      return _userInfo;
     }
 
     this.getUserId = function(){
