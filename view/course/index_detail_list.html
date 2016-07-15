@@ -7,8 +7,8 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="ymark">
-		<link rel="stylesheet" type="text/css" href="{{controller.STATICURL}}/static/css/pace.css">
 		<link rel="stylesheet" type="text/css" href="{{controller.STATICURL}}/static/course/css/detail.css">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 		<!-- Favicons -->
 		<link rel="icon" href="{{controller.STATICURL}}/static/img/favicon.ico">
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -17,28 +17,54 @@
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 	</head>
-	<body>
-		<script type="text/javascript">var BASEURL='{{controller.STATICURL}}';</script>
-		<div class="g-hd">
-    		<div class="title" style="padding-left:10px;">{{ controller.model.name }}</div>
+	<body id="body">
+		<script type="text/javascript">var BASEURL='{{controller.STATICURL}}';var courseuid = "{{ controller.cuid }}";</script>
+		<div class="container">
+			<header class="site-header header-large">
+				<div class="logo">
+					<h1><a href="/"><b>Y</b>mark</a></h1>
+				</div>
+			</header>
+			<header class="site-header header-small">
+				<span class="glyphicon glyphicon-align-justify" onclick="CTG.togglePhoneSide();"></span>
+				{{ controller.model.name }}
+				<span class="glyphicon glyphicon-home" onclick="javascript:window.location.href='/';"></span>
+			</header>
 		</div>
-		<div class="g-sd">
-			<div id="catalogtree"></div>
+		<div class="content-body">
+			<div class="container">
+				<div class="row content-row">
+					<aside class="tree-side">
+						<div id="catalogtree"></div>
+					</aside>
+					<div class="main-content mask" onclick="CTG.hidePhoneSide();"></div>
+					<main class="main-content">
+						<article class="post post-1">
+							<header class="entry-header">
+								<h1 class="entry-title" id="info_title"></h1>
+								<div class="entry-meta">
+									<span class="post-category"><a href="javascript:;">{{ controller.model.author }}</a>  </span>
+									<span class="post-date"><a href="javascript:;" id="info_time">最后更新于：{{ controller.model.time }}</a></span>
+								</div>
+							</header>
+							<div id="divFrame">
+								<div id="iframeInfoPhone"><a target="_blank">查看脑图</a></div>
+						    	<iframe scrolling="auto" allowtransparency="true" id="iframeMind" style="width:100%;height:100%;" frameborder="0"></iframe>
+						    </div>
+							<div class="entry-content clearfix" id="divcontent"></div>
+							<div class="entry-content clearfix" id="nonecontent">还没有录入内容</div>
+							<div id="cyReward" role="cylabs" data-use="reward" class="cy-ds"></div>
+							<div id="SOHUCS" sid="{{ controller.cuid }}"></div>
+						</article>
+					</main>
+				</div>
+			</div>
 		</div>
-		<div class="g-mn">
-			<h2 class="u-tt u-tt-xl" id="info_title"></h2>
-			<div id="divFrame">
-		    	<iframe scrolling="auto" allowtransparency="true" id="iframeMind" style="width:100%;height:100%;" frameborder="0"></iframe>
-		    </div>
-		    <div id="divcontent" class="think-editor-content"> </div>
-		    
-		</div>
-		<div class="g-ft">
-		    Copyright © 2016 YMARK. All Rights Reserved.
-		</div>
-		<script type="text/javascript">
-	    	var courseuid = "{{ controller.cuid }}";
-	    </script>
+		<footer class="site-footer">
+			<div class="container">
+				<p class="copyright">Copyright © 2016 YMARK. All Rights Reserved.</p>
+			</div>
+		</footer>
 		<script type="text/javascript" src="{{controller.STATICURL}}/static/js/pace.min.js"></script>
 		<script src="{{controller.STATICURL}}/static/js/sea.js"></script>
 	    <script src="{{controller.STATICURL}}/static/course/js/detail.js"></script>

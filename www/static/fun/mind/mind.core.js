@@ -2980,26 +2980,28 @@ function Designer(a) {
 						d.bind("click.show", function(Y) {
 							var X = $(this);
 							var Z = X.attr("note_tpid");
-							var w = b.model.getTopic(Z).note;
-							var h = w;
+							var h = b.model.getTopic(Z).note;
 							var W = $("#note_view_box");
 							if (W.length == 0) {
 								W = $("<div id='note_view_box'></div>").appendTo("body")
 							}
 							var p = $("<div id='note_view_box_temp'></div>").appendTo("body");
 							p.html(h);
+							console.log('h:' ,h);
 							W.css({
 								height: p.height(),
 								width: p.width() + 25,
-								zIndex: "9999999999"
+								zIndex: "9999999999",
+								right:'0',
+								top:'0'
 							});
 							p.remove();
-							W.html(h).hide();
-							W.dropdown({
-								target: X,
-								position: "center",
-								fade: true
-							})
+							W.html(h)
+							// W.dropdown({
+							// 	target: X,
+							// 	position: "center",
+							// 	fade: true
+							// })
 						}).bind("mouseleave", function(h) {});
 					}
 				}

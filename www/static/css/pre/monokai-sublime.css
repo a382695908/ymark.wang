@@ -3,6 +3,10 @@
 Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-license.org/
 
 */
+p{
+      margin-bottom: 12px;
+      -webkit-margin-after: 0;
+}
 
 body{
   font: 12px/1.14 arial,\5b8b\4f53;
@@ -14,15 +18,19 @@ code,pre{
 }
 
 blockquote{
+    overflow-y: auto;
     margin:0px;
-    margin-top:10px;
     padding: 5px 5px 5px 15px;
     color: #A43636;
     border-left: 4px solid #ddd;
     background-color: rgb(244, 244, 244);
     font-size: 13px;
 }
-
+blockquote p{
+   -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+ 
 code{
     color: #c7254e;
     display: inline-block;
