@@ -2,6 +2,7 @@
 
 import Base from './base.js';
 import treeUtil from '../../mcourse/controller/treeutil.js';
+var moment = require('moment');
 export default class extends Base {
   /**
    * index action
@@ -32,8 +33,6 @@ export default class extends Base {
     let catalogmodel = cataloglist[0];
     let data = treeUtil.getMindTree(list);
 
-    console.log('data:' ,JSON.stringify(data));
-
     // 设置一些全局变量
     this.treeJson = JSON.stringify(data); //脑图数的数据
     this.cuid = cuid; //课程的UID
@@ -53,12 +52,15 @@ export default class extends Base {
   }
 
   async detailAction() {
-    var uid = this.get().id;
-    let list = await this.model('course').where({
-      uid: uid
-    }).field('uid,name,coverpics,summary,lasttime').limit(0, 1).select();
+    let uid = this.get().id;
+    let list = await this.model('course').alias('base')
+    .join('userinfo us on base.adduser = us.id')
+    .where("base.uid='"+uid+"'")
+    .field('base.uid,base.name,base.coverpics,base.lasttime,us.nickname author').limit(0, 1).select();
     this.cuid = uid; //课程的UID
-    this.model = list[0];
+    let model = list[0];
+    model.time = moment(model.lasttime).format('YYYY-MM-DD') 
+    this.model = model;
     return this.display('detail_list');
   }
 
@@ -120,15 +122,17 @@ export default class extends Base {
   }
 
   async contentAction() {
-    var id = this.get().id;
-    let list = await this.model('coursecontent').where({
-      cid: id
-    }).field('id,title,labels,summary,content,lasttime,viewnum,recontent').limit(0, 1).select();
-    return this.success(list[0])
+    let id = this.get().id;
+    let list = await this.model('coursecontent').where({cid:id}).field('id,cuid,title,labels,summary,content,lasttime,viewnum,recontent').limit(0, 1).select();
+    let model = list[0];
+    let mind_count = await this.model('coursemind').where({cid:id ,cuid:model.cuid}).count();
+    model.showmind = mind_count > 1;
+    model.lasttime = moment(model.lasttime).format('YYYY-MM-DD') 
+    return this.success(model);
   }
 
   async mindAction() {
-    var param = this.get(),
+    let param = this.get(),
       uid = param.uid,
       cid = param.id;
     if (!uid || !cid) return this.fail('参数出错！');

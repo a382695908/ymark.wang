@@ -28,6 +28,7 @@
 			<header class="site-header header-small">
 				<span class="glyphicon glyphicon-align-justify" onclick="CTG.togglePhoneSide();"></span>
 				{{ controller.model.name }}
+				<span class="glyphicon glyphicon-home" onclick="javascript:window.location.href='/';"></span>
 			</header>
 		</div>
 		<div class="content-body">
@@ -42,24 +43,19 @@
 							<header class="entry-header">
 								<h1 class="entry-title" id="info_title"></h1>
 								<div class="entry-meta">
-									<span class="post-category"><a href="#">Web Design</a></span>
-			
-									<span class="post-date"><a href="#"><time class="entry-date" datetime="2012-11-09T23:15:57+00:00">February 2, 2013</time></a></span>
-			
-									<span class="post-author"><a href="#">Albert Einstein</a></span>
-			
-									<span class="comments-link"><a href="#">4 Comments</a></span>
+									<span class="post-category"><a href="javascript:;">{{ controller.model.author }}</a>  </span>
+									<span class="post-date"><a href="javascript:;" id="info_time">最后更新于：{{ controller.model.time }}</a></span>
 								</div>
 							</header>
 							<div id="divFrame">
+								<div id="iframeInfoPhone"><a target="_blank">查看脑图</a></div>
 						    	<iframe scrolling="auto" allowtransparency="true" id="iframeMind" style="width:100%;height:100%;" frameborder="0"></iframe>
 						    </div>
 							<div class="entry-content clearfix" id="divcontent"></div>
+							<div class="entry-content clearfix" id="nonecontent">还没有录入内容</div>
 							<div id="cyReward" role="cylabs" data-use="reward" class="cy-ds"></div>
 							<div id="SOHUCS" sid="{{ controller.cuid }}"></div>
-							
 						</article>
-
 					</main>
 				</div>
 			</div>

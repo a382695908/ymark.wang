@@ -16,7 +16,7 @@
 			var isIE=!!window.ActiveXObject;
 			var isIE6=isIE&&!window.XMLHttpRequest;
 			if(isIE6){
-				// window.location.href="/error?not_support";
+				window.location.href="/error?not_support";
 			}
 			if(window.top==window.self){//不存在父页面
 	  			// window.location.href = '/error?not iframe';
@@ -29,10 +29,10 @@
 	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	</head>
-	<body style="overflow:hidden;max-width:768px;">
+	<body style="overflow:hidden;">
 		<script type="text/javascript">var BASEURL='{{controller.STATICURL}}';</script>
 		<div id="view_container" class="pos_relative" style="height: 896px; cursor: default;">
-			<div id="canvas" style="border:1px solid yellow;width: 20000px; height: 20000px; left: -9105.05px; top: -9536.5px; background: rgb(255, 255, 255);">
+			<div id="canvas" style="width: 20000px; height: 20000px; left: -9105.05px; top: -9536.5px; background: rgb(255, 255, 255);">
 				<div class="controlls">
 					<div class="item op_zoom">
 						<div id="op_zoomin" class="ico_box"><div class="zoomin"></div></div>
@@ -79,12 +79,16 @@
 				},
 				preload: 'jquery'
 			});
-		    if(!_data || _data.length <= 0 || _data[0].children.length <= 0) { 
-		    	window.parent.CMD.hide();
+		    if(!_data || _data.length <= 0 || _data[0].children.length <= 0) {
+		    	if(window.top!=window.self){
+		    		window.parent.CMD.hide();
+		    	}
 		    	_data = [{}];
 		    }
 		    else{
-		        window.parent.CMD.show();
+		    	if(window.top!=window.self){
+		    		window.parent.CMD.show();
+		    	}
 	        	initMind();
 		    };
 
@@ -93,9 +97,7 @@
 	          	_data[0].background = "{{ controller.classic_bg }}";
 	          	_data[0].classic = "{{ controller.classic_classic }}";
 	          	definition = _data[0];
-		    	seajs.use(['jquery','cssGlob','cssMind','core', 'util', 'view'], function() {
-	          		console.log('load over');
-	          	});
+		    	seajs.use(['jquery','cssGlob','cssMind','core', 'util', 'view']);
 		    }
 			
 		</script>

@@ -35,21 +35,15 @@ seajs.use(['jquery', 'tree', 'hlcss'], function() {
 			if (hash) {
 				hash = hash.substring(1);
 				var p = hash.split('-');
-				return {
-					cid: p[0],
-					nodeId: p[1]
-				};
+				return {cid: p[0], nodeId: p[1] };
 			}
 		}
 	}
 	contentHeight = $('body').height() - 50 - 20 - 30;
 	isPhone = 'fixed' == $treeSide.css('position');
-	if(isPhone){ // 移动端，不加载评论
-
-	}else{
+	if(!isPhone){ // 移动端，不加载评论
 		setTimeout(CY,100);
 	}
-	
 });
 
 // 畅云相关
@@ -77,9 +71,7 @@ function Catalog() {
 			onNodeSelected: function(e, node) {
 				document.location.hash = '#' + node.id + '-' + node.nodeId;
 				CMD.hide();
-				CNT.loadContent(node.id, function() {
-					CMD.reset(node.id);
-				});
+				CNT.loadContent(node.id);
 				if(isPhone){	//移动用户；单击后应该隐藏选择框
 					$body.removeClass('phone-side-open');
 					$treeSide.animate({left:'-250px'});
@@ -91,9 +83,7 @@ function Catalog() {
 		var p = extFun.getUrlNid();
 		if (!p) {
 			p = e[0].id;
-			CNT.loadContent(p, function() {
-				CMD.reset(p);
-			});
+			CNT.loadContent(p);
 		} else {
 			// 加载左侧的变蓝
 			var nodeId = p.nodeId,
@@ -102,9 +92,7 @@ function Catalog() {
 				color: '#FFFFFF',
 				backgroundColor: '#428bca'
 			});
-			CNT.loadContent(cid, function() {
-				CMD.reset(cid);
-			});
+			CNT.loadContent(cid);
 		}
 	})
 
@@ -128,46 +116,66 @@ function Catalog() {
 
 function CourseMind() {
 	var $panelFrame = $('#divFrame'),
-		$frame = $('#iframeMind');
+		$frame = $('#iframeMind') ,
+		$finfo = $('#iframeInfoPhone') ,
+		$flink = $finfo.children('a');
 
 	var show = false;
 	return {
 		hide: function() {
-			$frame.removeAttr('src');
+			if(isPhone){
+				$finfo.hide();
+			}else{
+				$frame.removeAttr('src');
+			}
 			$panelFrame.height(0);
-			show = false;
 		},
 		show: function() {
-			if(!isContent){
-				$panelFrame.height(contentHeight);	
+			if(isPhone){
+				$finfo.show();
 			}else{
-				$panelFrame.height('700');
+				if(!isContent){$panelFrame.height(contentHeight); }
+				else{$panelFrame.height('700'); }
 			}
 		},
 		reset: function(catalogId) {
 			if (!catalogId) {
 				$panelFrame.height(0);
-				show = false;
+				$finfo.hide();
 				return;
 			}
-			$frame.attr('src', '/course/mind/index/' + courseuid + '/' + catalogId);
-			show = true;
+			if(isPhone){
+				$flink.attr('href' ,'/course/mind/index/' + courseuid + '/' + catalogId);
+				$finfo.show();
+			}else{
+				$frame.attr('src', '/course/mind/index/' + courseuid + '/' + catalogId);
+			}
 		},
 		getStatus : function(){
 			return show;
+		},
+		setStatus : function(status){
+			show = status;
 		}
 	}
 }
 
 function Content() {
-	var $content = $('#divcontent'),
-		$title = $('#info_title'),
+	var $content 	= $('#divcontent'),
+		$title 		= $('#info_title'),
+		$time  		= $('#info_time'),
+		$none 		= $('#nonecontent'),
 		cacheData = {};
 
-	var loadInfo = function(data, callback) {
+	var loadInfo = function(cid ,data, callback) {
 		$title.html(data.title);
+		$time.html('最后更新于：'+data.lasttime);
+		CMD.setStatus(data.showmind);
+		if(data.showmind){CMD.reset(cid); }
+		else{CMD.hide();}
 		setTimeout(function() {
 			if(data.content){
+				$none.hide();
 				$content.show();
 				isContent = true;
 				$content.html('<div class="content">'+data.content+'</div>');
@@ -177,13 +185,14 @@ function Content() {
 				});
 			}else{
 				isContent = false;
+				$content.hide();
 				if(!CMD.getStatus()){
-					$content.html('还没有录入内容');	
+					$none.show();
 				}else{
-					$content.hide();
+					$none.hide();
 				}
 			}
-		}, 200);
+		}, 100);
 		callback(data);
 	}
 
@@ -191,26 +200,10 @@ function Content() {
 		loadContent: function(cid, callback) {
 			callback = callback || function() {};
 			var data = cacheData[cid];
-			$content.html('');
+			$content.hide();
 			if (data) { //已经存在值了
-				loadInfo(data, callback);
+				loadInfo(cid ,data, callback);
 			} else {
-				// jQuery.ajax({
-	   //              url: '/course/content/' + cid, // 跳转到 action  
-	   //              // async   : true ,            //默认值: true。默认设置下，所有请求均为异步请求。如果需要发送同步请求，请将此选项设置为 false。同步请求将锁住浏览器
-	   //              cache: true, //默认值: true，dataType 为 script 和 jsonp 时默认为 false。设置为 false 将不缓存此页面。
-	   //              ifModified  : true ,       //仅在服务器数据改变时获取新数据。默认值: false。使用 HTTP 包 Last-Modified 头信息判断。
-	   //              timeout: '5000', //设置请求超时时间（毫秒）。此设置将覆盖全局设置。
-	   //              type: 'get',
-	   //              dataType: 'json',
-	   //              success: function(data) {
-	   //              	console.log('sss:' ,data);
-	   //                  callback(data);
-	   //              },
-	   //              error: function() {
-	   //                  callback({err: '错误！'});
-	   //              }
-	   //          });
 				$.get('/course/content/' + cid, {}, function(e) {
 					if (e.errno > 0) {
 						console.error(e.errmsg);
@@ -218,7 +211,7 @@ function Content() {
 					}
 					e = e.data;
 					cacheData[cid] = e;
-					loadInfo(e, callback);
+					loadInfo(cid ,e, callback);
 				});
 			}
 		}
