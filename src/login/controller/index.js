@@ -2,6 +2,10 @@
 
 import Base from './base.js';
 let DateFormat = require('dateformat');
+let CryptoJS = require("crypto-js");
+let MD5 = require("blueimp-md5");
+
+let crypKey = think.config('crypKey');
 
 export default class extends Base {
   /**
@@ -15,10 +19,10 @@ export default class extends Base {
   async infoAction(){
   	let param = this.get();
     
-    param.userinfo = '{"imgurl":"http://q.qlogo.cn/qqapp/101331678/34DBDCD831787C9417A9AAB22C1720A0/100","gender":"男","nickname":"YMARK","city":"丰台","province":"北京"}';
-    param.access_token = '18FBDE6B1031F6731A84CA4F2F43F06D';
-    param.openid = '34DBDCD831787C9417A9AAB22C1720A0';
-    param.type = 1;
+    // param.userinfo = '{"imgurl":"http://q.qlogo.cn/qqapp/101331678/34DBDCD831787C9417A9AAB22C1720A0/100","gender":"男","nickname":"YMARK","city":"丰台","province":"北京"}';
+    // param.access_token = '18FBDE6B1031F6731A84CA4F2F43F06D';
+    // param.openid = '34DBDCD831787C9417A9AAB22C1720A0';
+    // param.type = 1;
 
     let model_userlogin = this.model('userlogin') ;
     let model_userinfo = this.model('userinfo');
@@ -68,11 +72,10 @@ export default class extends Base {
 
     }else{  // 直接查询用户并更新登录时间
 
-
       let user = userlogin[0];
       let userList = await model_userinfo.where({id:user.userid}).field('nickname ,nickimg ,username').select();
       if(userList.length == 0){
-        return this.fail('用户数据不存在！');
+        return this.fail(-1,'用户数据不存在！');
       }else{
         let usermodel = userList[0];
         await model_userlogin.where(queryParamLogin).update({lastlogintime:time}); //更新最后登录时间
@@ -84,14 +87,53 @@ export default class extends Base {
       }
     
     }
-    this.cookie("userInfo", JSON.stringify({token:param.access_token ,userid:returnParam.userid}) ,{
-      timeout: 3600 
-    });
-    return this.success(returnParam);
+    // 加密用户数据
+    let userStr = CryptoJS.AES.encrypt(JSON.stringify(returnParam), crypKey).toString();
+    // this.cookie("token", userStr ,{
+    //   timeout: 7 * 24 * 3600 //设置 cookie 有效期为 7 天
+    // });
+    return this.success(userStr);
+  }
+
+  async logininAction(){
+    let ciphertext = this.post().s;
+    if(!ciphertext) return this.fail(-1,'empty');
+
+    // 解密
+    let bytes  = CryptoJS.AES.decrypt(ciphertext, crypKey);
+    let _userInfo = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+    if(!_userInfo.userName || !_userInfo.password){
+      return this.fail(-1,'用户名或密码为空！');
+    }
+
+    // 实例表
+    let model_userinfo = this.model('userinfo');
+
+    // 查询是否存在
+    let userInfo =  await model_userinfo.field('id userid,nickname,nickimg,phone').where({
+      username : _userInfo.userName ,
+      password : MD5(_userInfo.password)
+    }).select();
+
+    if(userInfo.length <= 0){
+      return this.fail(-1,'用户名或密码错误！');
+    }
+    userInfo = userInfo[0];
+
+    let time = DateFormat(new Date(), "yyyy-mm-dd hh:MM:ss");
+    // 更新最后登录时间
+    model_userinfo.where({id:userInfo.userid}).update({lastlogintime:time});
+    // 加密用户数据
+    let userStr = CryptoJS.AES.encrypt(JSON.stringify(userInfo), crypKey).toString();
+    // this.cookie("token", userStr ,{
+    //   timeout: 7 * 24 * 3600 //设置 cookie 有效期为 7 天
+    // });
+    return this.success(userStr);
   }
 
   loginoutAction(){
-    this.cookie("userInfo", null);
+    this.cookie("token", null);
     return this.success('login out');
   }
 }
