@@ -120,6 +120,7 @@ a {color: #333; }
 
 #catalogtree{margin-right:10px; }
 #catalogtree ul li {
+	list-style:none;
 	padding: 5px 15px;
 	font-size:14px;
 	font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
