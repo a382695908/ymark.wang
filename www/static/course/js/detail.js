@@ -69,6 +69,10 @@ function Catalog() {
 			data: e,
 			levels: 100,
 			onNodeSelected: function(e, node) {
+				// window.location.href= 'http://www.baidu.com'
+				// window.location.href = window.location.href;
+				window.location.href = window.location.pathname + '#' + node.id + '-' + node.nodeId;
+				return;
 				document.location.hash = '#' + node.id + '-' + node.nodeId;
 				CMD.hide();
 				CNT.loadContent(node.id);

@@ -14,7 +14,6 @@ caption,th{text-align:left;font-weight:normal;}
 html,body,fieldset,img,iframe,abbr{border:0;}
 i,cite,em,var,address,dfn{font-style:normal;}
 [hidefocus],summary{outline:0;}
-li{list-style:none;}
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {font-family: inherit; font-weight: 500; line-height: 1.1; color: inherit; }
 .h1, h1 {font-size: 36px; }
 sup,sub{font-size:83%;}
@@ -121,6 +120,7 @@ a {color: #333; }
 
 #catalogtree{margin-right:10px; }
 #catalogtree ul li {
+	list-style:none;
 	padding: 5px 15px;
 	font-size:14px;
 	font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -155,6 +155,7 @@ a {color: #333; }
 .entry-content{line-height:1.7em;font-size:1.14em;}
 .entry-content p{word-break: break-all;}
 .entry-content .content{padding:2em;}
+.entry-content a{color:#4078c0;}
 .entry-content a:hover{text-decoration: underline;}
 .entry-content>:first-child{margin-top:0!important}
 .entry-content>:last-child{margin-bottom:0!important}
@@ -168,8 +169,6 @@ a {color: #333; }
 .entry-content br{display:block;margin:.2em}
 .entry-content hr{border:0;border-bottom:1px solid #ddd}
 .entry-content ul,.entry-content ol{padding-left:28px}
-.entry-content ul li{list-style-type: disc;}
-.entry-content ol li{list-style-type: decimal;}
 .entry-content h1,.entry-content h2,.entry-content h3,.entry-content h4,.entry-content h5,.entry-content h6,.entry-content p,.entry-content ul,.entry-content ol,.entry-content blockquote,.entry-content pre,.entry-content table{margin-bottom:12px}
 .entry-content code{color: #c7254e;display:inline-block;border-radius:4px;padding:0 .4em;background-color:#f9f2f4;word-break:break-all;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;line-height:1.3}
 .entry-content pre{    word-break: break-all; padding: 16px; overflow: auto; font-size: 85%; line-height: 1.45; background-color: rgba(205, 206, 216, 0.32); border-radius: 0; font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace; border-left: 4px solid #AF9797;}
