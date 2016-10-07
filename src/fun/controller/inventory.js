@@ -8,51 +8,11 @@ export default class extends Base {
         let key = this.id;
         let model_inventory = this.model('inventory');
         //获取信息
-        if(key){
-            if(key == 'new'){
-                let dataList = await model_inventory.field('date,data,type').group('type').order('date desc').select();
-                console.log('dataList:',dataList)
-                let dateObj = {};
-                let nowData = null;
-                dataList.map((k) => {
-                    if(k.type == 1){
-                        dateObj.survival = DateFormat(new Date(k.date), "yyyy-mm-dd");
-                    }else if(k.type == 2){
-                        dateObj.pickup = DateFormat(new Date(k.date), "yyyy-mm-dd");
-                    }else if(k.type == 3){
-                        dateObj.now = DateFormat(new Date(k.date), "yyyy-mm-dd");
-                        nowData = k.data;
-                    }
-                })
-                return this.success({data:nowData ,date:dateObj});
-            }
-            return this.success('data');
-        }
-        // 获取列表
-        else{
-
-            // let params      = this.get() || {},
-            //     key         = params.searchPhrase,
-            //     current     = params.current || 1,
-            //     rowCount    = params.rowCount || 10;
-
-            // let where = {'adduser': this.getUserId() }
-            // if (key) { where['name'] = ['like', '%' + key + '%']; }
-
-            // let model = this.model('course');
-            // let articleList = await model.alias('base').join(['question q on base.uid=q.cuid']).group('base.uid').order('base.lasttime desc')
-            //                     .field(['base.uid', 'base.name', 'base.summary', 'base.coverpics', 'base.lasttime' ,'count(q.id) questionnum'])
-            //                     .page(current, rowCount).where(where).select();
-
-            // let count = await model.where(where).count('uid');
-
-            // return this.success({
-            //   "current": current,
-            //   "rowCount": rowCount,
-            //   "rows": articleList,
-            //   "total": count
-            // });
-            return this.success('2');
+        if(key == 'new'){
+            let nowData = await model_inventory.field('date,data').where('type=3').select();
+            let clist = await model_inventory.field('addtime,data').order('addtime desc').where("type=1").limit(10).select();
+            let qlist = await model_inventory.field('addtime,data').order('addtime desc').where("type=2").limit(10).select();
+            return this.success({data:nowData[0].data,record:{pickup:qlist ,survival:clist}});
         }
     }
 
@@ -125,32 +85,5 @@ export default class extends Base {
             uid: uid
         }).update(row);
         return this.success('修改成功');
-    }
-
-    async testAction(){
-        
-        return this.success('删除成功！');
-    }
-
-    async deleteAction(){
-        let uid = this.id;
-        if (!uid) return this.fail('id为空！');
-        // 需要删除 课程表、课程目录表、课程内容表、课程结构表、课程分享表、试题表、纠错表
-        let model_course = this.model('course'),
-            model_coursecatalog = this.model('coursecatalog'),
-            model_coursecontent = this.model('coursecontent'),
-            model_coursemind = this.model('coursemind'),
-            model_courseshare = this.model('courseshare'),
-            model_question = this.model('question'),
-            model_buglog = this.model('buglog');
-
-        model_course.delete({where: {uid: uid } });
-        model_coursemind.delete({where: {cuid: uid } });
-        model_coursecatalog.delete({where: {cuid: uid } });
-        model_coursecontent.delete({where: {cuid: uid } });
-        model_courseshare.delete({where: {cuid: uid } });
-        model_question.delete({where: {cuid: uid } });
-        model_buglog.delete({where: {cuid: uid } });
-        return this.success('删除成功！');
     }
 }
